@@ -1,0 +1,14 @@
+{
+  "name": "Connect Communication Sandbox",
+  "short_name": "Connect",
+  "description": "A mobile research sandbox for digital communication tasks.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#41658a",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

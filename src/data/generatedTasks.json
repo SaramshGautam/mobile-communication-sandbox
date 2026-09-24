@@ -1,0 +1,107 @@
+{
+  "generatedAt": "2026-09-24T00:43:42.968Z",
+  "taskPairs": [
+    {
+      "pairId": "FIND_01",
+      "intentFamily": "find",
+      "difficulty": "easy",
+      "semanticIntent": "Locate photos shared by Anna",
+      "breakdownTargets": [
+        "navigation",
+        "social_object_identification"
+      ],
+      "objects": {
+        "people": [
+          "person_anna"
+        ],
+        "groups": [
+          "group_family"
+        ],
+        "photos": [
+          "photo_trip_02"
+        ],
+        "posts": [
+          "post_trip"
+        ],
+        "messages": [
+          "m1"
+        ],
+        "events": []
+      },
+      "groundTruth": {
+        "contentIds": [
+          "photo_trip_02"
+        ],
+        "recipientIds": [],
+        "visibility": "private",
+        "expectedAction": "find",
+        "completionState": "completed"
+      },
+      "variants": {
+        "feed": {
+          "id": "FIND_01_FEED",
+          "instruction": "Find the New Orleans photos Anna posted on Monday",
+          "startState": "home_feed"
+        },
+        "messaging": {
+          "id": "FIND_01_MSG",
+          "instruction": "Find the New Orleans photos Anna sent to the Family Group on Monday",
+          "startState": "conversation_list"
+        }
+      }
+    },
+    {
+      "pairId": "SHARE_01",
+      "intentFamily": "share",
+      "difficulty": "hard",
+      "semanticIntent": "Send selected photos privately to family",
+      "breakdownTargets": [
+        "audience_visibility",
+        "group_identification"
+      ],
+      "objects": {
+        "people": [
+          "person_anna"
+        ],
+        "groups": [
+          "group_family"
+        ],
+        "photos": [
+          "photo_trip_02",
+          "photo_trip_03"
+        ],
+        "posts": [
+          "post_trip"
+        ],
+        "messages": [
+          "m1"
+        ],
+        "events": []
+      },
+      "groundTruth": {
+        "contentIds": [
+          "photo_trip_02",
+          "photo_trip_03"
+        ],
+        "recipientIds": [
+          "group_family"
+        ],
+        "visibility": "private",
+        "expectedAction": "share",
+        "completionState": "completed"
+      },
+      "variants": {
+        "feed": {
+          "id": "SHARE_01_FEED",
+          "instruction": "Share photos 2 and 3 only with the Family audience",
+          "startState": "home_feed"
+        },
+        "messaging": {
+          "id": "SHARE_01_MSG",
+          "instruction": "Send photos 2 and 3 only to the Family Group",
+          "startState": "conversation_list"
+        }
+      }
+    }
+  ]
+}

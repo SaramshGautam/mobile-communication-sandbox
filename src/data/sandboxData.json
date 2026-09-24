@@ -1,0 +1,36 @@
+{
+  "people": [
+    { "id": "person_anna", "firstName": "Anna", "name": "Anna Morgan", "initials": "AM", "relationship": "daughter" },
+    { "id": "person_robert", "firstName": "Robert", "name": "Robert Lee", "initials": "RL", "relationship": "brother" },
+    { "id": "person_maya", "firstName": "Maya", "name": "Maya Patel", "initials": "MP", "relationship": "friend" },
+    { "id": "person_elena", "firstName": "Elena", "name": "Elena Ruiz", "initials": "ER", "relationship": "book club organizer" }
+  ],
+  "groups": [
+    { "id": "group_family", "name": "Family Group", "memberIds": ["person_anna", "person_robert"] },
+    { "id": "group_reunion", "name": "Family Reunion Planning", "memberIds": ["person_anna", "person_robert", "person_maya"] },
+    { "id": "group_book_club", "name": "Book Club", "memberIds": ["person_robert", "person_elena"] }
+  ],
+  "posts": [
+    { "id": "post_trip", "authorId": "person_anna", "time": "Monday · 9:14 AM", "text": "A few favorites from my New Orleans trip!", "photo": { "id": "photo_trip_02", "label": "New Orleans trip photos" } },
+    { "id": "post_book_club", "authorId": "person_elena", "time": "Yesterday · 4:20 PM", "text": "Book club meets Thursday at 5:30 PM. Who can join us?" },
+    { "id": "post_picnic", "authorId": "person_maya", "time": "Yesterday · 11:05 AM", "text": "Neighborhood picnic this Saturday. The garden entrance is on Pine Street." }
+  ],
+  "conversations": [
+    { "id": "conversation_family", "title": "Family Group", "initials": "FG", "members": "4 members", "preview": "Robert: I like the earlier one", "time": "1:42 PM", "messages": [
+      { "id": "m1", "sender": "Anna", "text": "Here are the photos from New Orleans.", "time": "1:37 PM" },
+      { "id": "m2", "sender": "Robert", "text": "I like the earlier one best.", "time": "1:42 PM" }
+    ]},
+    { "id": "conversation_anna", "title": "Anna Morgan", "initials": "AM", "members": "Active recently", "preview": "I sent the trip photos", "time": "12:18 PM", "messages": [
+      { "id": "m3", "sender": "Anna", "text": "I sent the trip photos to the family chat.", "time": "12:18 PM" }
+    ]},
+    { "id": "conversation_book_club", "title": "Book Club", "initials": "BC", "members": "5 members", "preview": "Elena: Thursday at 5:30 PM", "time": "Yesterday", "messages": [
+      { "id": "m4", "sender": "Elena", "text": "We will meet Thursday at 5:30 PM.", "time": "4:20 PM" }
+    ]}
+  ],
+  "tasks": [
+    { "id": "FIND_01_FEED", "pairId": "FIND_01", "intentFamily": "find", "difficulty": "easy", "instruction": "Find the New Orleans photos Anna posted on Monday.", "breakdownTargets": ["navigation", "social-object identification"], "groundTruth": { "objectIds": ["post_trip", "photo_trip_02"] } },
+    { "id": "UNDERSTAND_01_MSG", "pairId": "UNDERSTAND_01", "intentFamily": "understand", "difficulty": "medium", "instruction": "In the Family Group, determine which photo Robert means by ‘the earlier one.’", "breakdownTargets": ["context recovery", "reference resolution"], "groundTruth": { "conversationId": "conversation_family", "messageId": "m2" } },
+    { "id": "RESPOND_01_MSG", "pairId": "RESPOND_01", "intentFamily": "respond", "difficulty": "medium", "instruction": "Tell the Book Club you can join after 4:00 PM.", "breakdownTargets": ["recipient selection", "action execution"], "groundTruth": { "conversationId": "conversation_book_club", "requiredMeaning": "available after 4:00 PM" } },
+    { "id": "SHARE_01_FEED", "pairId": "SHARE_01", "intentFamily": "share", "difficulty": "hard", "instruction": "Share Anna’s selected trip photos only with the Family Group.", "breakdownTargets": ["audience visibility", "group identification"], "groundTruth": { "contentIds": ["photo_trip_02"], "recipientIds": ["group_family"], "visibility": "private" } }
+  ]
+}
