@@ -1,36 +1,348 @@
 {
   "people": [
-    { "id": "person_anna", "firstName": "Anna", "name": "Anna Morgan", "initials": "AM", "relationship": "daughter" },
-    { "id": "person_robert", "firstName": "Robert", "name": "Robert Lee", "initials": "RL", "relationship": "brother" },
-    { "id": "person_maya", "firstName": "Maya", "name": "Maya Patel", "initials": "MP", "relationship": "friend" },
-    { "id": "person_elena", "firstName": "Elena", "name": "Elena Ruiz", "initials": "ER", "relationship": "book club organizer" }
+    {
+      "id": "person_sam",
+      "firstName": "Sam",
+      "name": "Sam Rivera",
+      "initials": "SR",
+      "avatar": "/assets/avatars/sam-rivera.webp",
+      "relationship": "neighbor"
+    },
+    {
+      "id": "person_lee",
+      "firstName": "Lee",
+      "name": "Lee Johnson",
+      "initials": "LJ",
+      "avatar": "/assets/avatars/lee-johnson.webp",
+      "relationship": "neighbor"
+    },
+    {
+      "id": "person_pat",
+      "firstName": "Pat",
+      "name": "Pat Williams",
+      "initials": "PW",
+      "avatar": "/assets/avatars/pat-williams.webp",
+      "relationship": "neighbor"
+    },
+    {
+      "id": "person_maria",
+      "firstName": "Maria",
+      "name": "Maria Santos",
+      "initials": "MS",
+      "avatar": "/assets/avatars/maria-santos.webp",
+      "relationship": "friend"
+    },
+    {
+      "id": "person_david",
+      "firstName": "David",
+      "name": "David Morgan",
+      "initials": "DM",
+      "avatar": "/assets/avatars/david-morgan.webp",
+      "relationship": "husband"
+    },
+    {
+      "id": "person_anna",
+      "firstName": "Anna",
+      "name": "Anna Morgan",
+      "initials": "AM",
+      "avatar": "/assets/avatars/anna-morgan.webp",
+      "relationship": "daughter"
+    },
+    {
+      "id": "person_robert",
+      "firstName": "Robert",
+      "name": "Robert Lee",
+      "initials": "RL",
+      "relationship": "brother"
+    },
+    {
+      "id": "person_elena",
+      "firstName": "Elena",
+      "name": "Elena Ruiz",
+      "initials": "ER",
+      "relationship": "book club organizer"
+    }
   ],
   "groups": [
-    { "id": "group_family", "name": "Family Group", "memberIds": ["person_anna", "person_robert"] },
-    { "id": "group_reunion", "name": "Family Reunion Planning", "memberIds": ["person_anna", "person_robert", "person_maya"] },
-    { "id": "group_book_club", "name": "Book Club", "memberIds": ["person_robert", "person_elena"] }
+    {
+      "id": "group_oak_street",
+      "name": "Oak Street Neighbors",
+      "memberIds": ["person_lee", "person_pat"]
+    },
+    {
+      "id": "group_family",
+      "name": "Family",
+      "memberIds": ["person_anna", "person_david", "person_robert"]
+    },
+    {
+      "id": "group_book_club",
+      "name": "Book Club",
+      "memberIds": ["person_robert", "person_elena"]
+    }
   ],
   "posts": [
-    { "id": "post_trip", "authorId": "person_anna", "time": "Monday · 9:14 AM", "text": "A few favorites from my New Orleans trip!", "photo": { "id": "photo_trip_02", "label": "New Orleans trip photos" } },
-    { "id": "post_book_club", "authorId": "person_elena", "time": "Yesterday · 4:20 PM", "text": "Book club meets Thursday at 5:30 PM. Who can join us?" },
-    { "id": "post_picnic", "authorId": "person_maya", "time": "Yesterday · 11:05 AM", "text": "Neighborhood picnic this Saturday. The garden entrance is on Pine Street." }
+    {
+      "id": "post_noah_100_days",
+      "authorId": "person_anna",
+      "time": "Today · 9:14 AM",
+      "text": "Noah celebrating with his class today!",
+      "photo": {
+        "id": "photo_noah_100_days",
+        "src": "/assets/feed/noah-kindergarten-100-days.webp",
+        "width": 1200,
+        "height": 800,
+        "alt": "Noah and his classmates wearing decorated paper crowns in their classroom"
+      },
+      "comments": [
+        {
+          "id": "comment_noah_question",
+          "author": "Pat Morgan",
+          "text": "What’s the celebration for?"
+        },
+        {
+          "id": "comment_noah_answer",
+          "author": "Anna Morgan",
+          "text": "They’ve reached their hundredth day of school! Everyone made a crown with 100 decorations."
+        }
+      ]
+    },
+    {
+      "id": "post_garden",
+      "authorId": "person_lee",
+      "time": "Yesterday · 3:40 PM",
+      "text": "The neighborhood garden is looking wonderful after the rain."
+    },
+    {
+      "id": "post_lunch_flyer",
+      "authorId": "person_sam",
+      "time": "Monday · 11:05 AM",
+      "text": "Please join us for the Oak Street community lunch. Everyone is welcome!",
+      "photo": {
+        "id": "photo_lunch_flyer",
+        "src": "/assets/feed/community-lunch-flyer.webp",
+        "width": 800,
+        "height": 1200,
+        "alt": "Flyer for the Oak Street Community Lunch"
+      }
+    },
+    {
+      "id": "post_book_club",
+      "authorId": "person_elena",
+      "time": "Monday · 8:20 AM",
+      "text": "Book club meets Thursday at 5:30 PM. Who can join us?"
+    }
   ],
   "conversations": [
-    { "id": "conversation_family", "title": "Family Group", "initials": "FG", "members": "4 members", "preview": "Robert: I like the earlier one", "time": "1:42 PM", "messages": [
-      { "id": "m1", "sender": "Anna", "text": "Here are the photos from New Orleans.", "time": "1:37 PM" },
-      { "id": "m2", "sender": "Robert", "text": "I like the earlier one best.", "time": "1:42 PM" }
-    ]},
-    { "id": "conversation_anna", "title": "Anna Morgan", "initials": "AM", "members": "Active recently", "preview": "I sent the trip photos", "time": "12:18 PM", "messages": [
-      { "id": "m3", "sender": "Anna", "text": "I sent the trip photos to the family chat.", "time": "12:18 PM" }
-    ]},
-    { "id": "conversation_book_club", "title": "Book Club", "initials": "BC", "members": "5 members", "preview": "Elena: Thursday at 5:30 PM", "time": "Yesterday", "messages": [
-      { "id": "m4", "sender": "Elena", "text": "We will meet Thursday at 5:30 PM.", "time": "4:20 PM" }
-    ]}
+    {
+      "id": "conversation_family",
+      "title": "Family",
+      "initials": "FM",
+      "members": "4 members",
+      "preview": "Anna: They’ve reached their hundredth day...",
+      "time": "9:28 AM",
+      "messages": [
+        {
+          "id": "family_photo",
+          "sender": "Anna",
+          "text": "Noah celebrating with his class today!",
+          "time": "9:14 AM",
+          "attachment": {
+            "id": "photo_noah_100_days",
+            "src": "/assets/feed/noah-kindergarten-100-days.webp",
+            "width": 1200,
+            "height": 800,
+            "alt": "Noah and classmates wearing decorated crowns"
+          }
+        },
+        {
+          "id": "family_reaction_1",
+          "sender": "Robert",
+          "text": "What a wonderful picture!",
+          "time": "9:16 AM"
+        },
+        {
+          "id": "family_reaction_2",
+          "sender": "David",
+          "text": "Look at that crown!",
+          "time": "9:18 AM"
+        },
+        {
+          "id": "family_question",
+          "sender": "Pat Morgan",
+          "text": "What’s the celebration for?",
+          "time": "9:22 AM",
+          "mine": true
+        },
+        {
+          "id": "family_answer",
+          "sender": "Anna",
+          "text": "They’ve reached their hundredth day of school! Everyone made a crown with 100 decorations.",
+          "time": "9:28 AM"
+        }
+      ]
+    },
+    {
+      "id": "conversation_oak_street",
+      "title": "Oak Street Neighbors",
+      "initials": "OS",
+      "members": "8 members",
+      "preview": "Pat: Who’s planning to come to the lunch?",
+      "time": "Yesterday",
+      "messages": [
+        {
+          "id": "oak_flyer",
+          "sender": "Pat Morgan",
+          "text": "Sam asked me to share the community lunch flyer.",
+          "time": "4:02 PM",
+          "mine": true,
+          "attachment": {
+            "id": "photo_lunch_flyer",
+            "src": "/assets/feed/community-lunch-flyer.webp",
+            "width": 800,
+            "height": 1200,
+            "alt": "Flyer for the Oak Street Community Lunch"
+          }
+        },
+        {
+          "id": "oak_reply_1",
+          "sender": "Neighbor",
+          "text": "I’ll join!",
+          "time": "4:05 PM"
+        },
+        {
+          "id": "oak_entrance_question",
+          "sender": "Lee",
+          "text": "I’m bringing my father, who uses a walker. There’s an entrance on Oak Street and another beside the parking lot. Which would be easier for us?",
+          "time": "4:11 PM"
+        },
+        {
+          "id": "oak_entrance_answer",
+          "sender": "Pat",
+          "text": "The second one has a ramp and a step-free path to the lunch room. I’d use that one.",
+          "time": "4:14 PM"
+        },
+        {
+          "id": "oak_attendance",
+          "sender": "Pat",
+          "text": "Who’s planning to come to the lunch? Please let us know if you’re bringing anyone.",
+          "time": "4:20 PM"
+        }
+      ]
+    },
+    {
+      "id": "conversation_sam",
+      "title": "Sam Rivera",
+      "initials": "SR",
+      "members": "Active recently",
+      "preview": "Here is the community lunch flyer",
+      "time": "Monday",
+      "messages": [
+        {
+          "id": "sam_smalltalk_1",
+          "sender": "Sam",
+          "text": "It was good seeing you at the garden meeting.",
+          "time": "10:54 AM"
+        },
+        {
+          "id": "sam_flyer",
+          "sender": "Sam",
+          "text": "Here is the community lunch flyer I mentioned.",
+          "time": "11:02 AM",
+          "attachment": {
+            "id": "photo_lunch_flyer",
+            "src": "/assets/feed/community-lunch-flyer.webp",
+            "width": 800,
+            "height": 1200,
+            "alt": "Flyer for the Oak Street Community Lunch"
+          }
+        },
+        {
+          "id": "sam_smalltalk_2",
+          "sender": "Sam",
+          "text": "I hope some of the neighbors can make it.",
+          "time": "11:04 AM"
+        }
+      ]
+    },
+    {
+      "id": "conversation_maria",
+      "title": "Maria Santos",
+      "initials": "MS",
+      "members": "Active now",
+      "preview": "You could try the first recipe...",
+      "time": "2:18 PM",
+      "messages": [
+        {
+          "id": "recipe_lentil",
+          "sender": "Maria",
+          "text": "LENTIL SOUP — lentils, onion, carrots, celery, vegetable broth, garlic, cumin, salt, and pepper. Simmer for 30 minutes.",
+          "time": "1:35 PM"
+        },
+        {
+          "id": "recipe_mushroom",
+          "sender": "Maria",
+          "text": "MUSHROOM SOUP — mushrooms, onion, garlic, butter, milk, vegetable broth, thyme, salt, and pepper. Cook until creamy.",
+          "time": "1:39 PM"
+        },
+        {
+          "id": "recipe_vegetable",
+          "sender": "Maria",
+          "text": "VEGETABLE SOUP — tomatoes, carrots, green beans, peas, potatoes, vegetable broth, herbs, salt, and pepper.",
+          "time": "1:43 PM"
+        },
+        {
+          "id": "maria_smalltalk",
+          "sender": "Maria",
+          "text": "How is your afternoon going?",
+          "time": "2:03 PM"
+        },
+        {
+          "id": "milk_allergy",
+          "sender": "Pat Morgan",
+          "text": "The mushroom soup looks good, but I’m allergic to milk.",
+          "time": "2:10 PM",
+          "mine": true
+        },
+        {
+          "id": "maria_recommendation",
+          "sender": "Maria",
+          "text": "You could try the first recipe. You don’t need milk for that.",
+          "time": "2:18 PM"
+        }
+      ]
+    },
+    {
+      "id": "conversation_david",
+      "title": "David Morgan",
+      "initials": "DM",
+      "members": "Active recently",
+      "preview": "Can I pick anything up for dinner?",
+      "time": "12:42 PM",
+      "messages": [
+        {
+          "id": "david_dinner",
+          "sender": "David",
+          "text": "Can I pick anything up for dinner?",
+          "time": "12:42 PM"
+        }
+      ]
+    },
+    {
+      "id": "conversation_book_club",
+      "title": "Book Club",
+      "initials": "BC",
+      "members": "5 members",
+      "preview": "Elena: Thursday at 5:30 PM",
+      "time": "Monday",
+      "messages": [
+        {
+          "id": "book_club_time",
+          "sender": "Elena",
+          "text": "We will meet Thursday at 5:30 PM.",
+          "time": "8:20 AM"
+        }
+      ]
+    }
   ],
-  "tasks": [
-    { "id": "FIND_01_FEED", "pairId": "FIND_01", "intentFamily": "find", "difficulty": "easy", "instruction": "Find the New Orleans photos Anna posted on Monday.", "breakdownTargets": ["navigation", "social-object identification"], "groundTruth": { "objectIds": ["post_trip", "photo_trip_02"] } },
-    { "id": "UNDERSTAND_01_MSG", "pairId": "UNDERSTAND_01", "intentFamily": "understand", "difficulty": "medium", "instruction": "In the Family Group, determine which photo Robert means by ‘the earlier one.’", "breakdownTargets": ["context recovery", "reference resolution"], "groundTruth": { "conversationId": "conversation_family", "messageId": "m2" } },
-    { "id": "RESPOND_01_MSG", "pairId": "RESPOND_01", "intentFamily": "respond", "difficulty": "medium", "instruction": "Tell the Book Club you can join after 4:00 PM.", "breakdownTargets": ["recipient selection", "action execution"], "groundTruth": { "conversationId": "conversation_book_club", "requiredMeaning": "available after 4:00 PM" } },
-    { "id": "SHARE_01_FEED", "pairId": "SHARE_01", "intentFamily": "share", "difficulty": "hard", "instruction": "Share Anna’s selected trip photos only with the Family Group.", "breakdownTargets": ["audience visibility", "group identification"], "groundTruth": { "contentIds": ["photo_trip_02"], "recipientIds": ["group_family"], "visibility": "private" } }
-  ]
+  "tasks": []
 }

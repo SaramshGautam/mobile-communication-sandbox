@@ -1,105 +1,731 @@
 {
-  "generatedAt": "2026-09-24T00:43:42.968Z",
+  "generatedAt": "2026-10-06T20:44:30.437Z",
+  "tasks": [
+    {
+      "id": "P01-M",
+      "pairId": "P01",
+      "platform": "messaging",
+      "intentFamily": "find",
+      "scenario": "Sam is helping organize a community lunch and has sent you a flyer.",
+      "instruction": "Find the community lunch flyer Sam sent you.",
+      "taskDemands": "1. Locate Sam’s conversation by browsing or searching the conversation list. 2. Open Sam’s conversation. 3. Browse the messages to locate the community lunch flyer. 4. Open the flyer to view it.",
+      "startState": "The conversation list is open. Sam’s chat contains the flyer among other messages.",
+      "correctOutcome": "Locate and display Sam’s lunch flyer. No sharing is required.",
+      "difficulty": "unrated",
+      "uiRequirements": "Create a contact named Sam and a group chat named Oak Street Neighbors, containing the participant, some random neighbors with random replies (👌, 👍, I'll join, nice, etc.).  Lee, and Pat. Sam is not a member of this group. In Sam’s private conversation, display an incoming message containing the community lunch flyer. The participant must be able to forward the flyer to Oak Street Neighbors.",
+      "sourceRow": 2,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P01-S",
+      "pairId": "P01",
+      "platform": "social",
+      "intentFamily": "find",
+      "scenario": "Sam is helping organize a community lunch and has posted a flyer. You previously saw Sam’s community lunch flyer in your feed. You want to find it again.",
+      "instruction": "Find the community lunch flyer Sam posted. You do not need to share it.",
+      "taskDemands": "1. Locate Sam’s profile using the app’s search feature. 2. Open Sam’s profile. 3. Browse Sam’s posts to locate the community lunch flyer.",
+      "startState": "Start on the participant’s feed, where the flyer is not currently visible. Sam’s profile is accessible through search and contains the lunch flyer among several other posts.",
+      "correctOutcome": "The participant locates and displays the community lunch flyer on Sam’s profile.",
+      "difficulty": "unrated",
+      "uiRequirements": "Create a profile named Sam and a Facebook-style group named Oak Street Neighbors, containing the participant, some members, Lee, and Pat. Display a public, shareable post by Sam in the participant’s feed, containing the community lunch flyer. Show Sam’s name, a profile picture, and a Share control. Allow sharing to the existing Oak Street Neighbors group.",
+      "sourceRow": 3,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P02-M",
+      "pairId": "P02",
+      "platform": "messaging",
+      "intentFamily": "understand",
+      "scenario": "You have shared Sam’s community lunch flyer in the Oak Street Neighbors group chat. Lee asks about the building’s entrances, and Pat replies.",
+      "instruction": "Read the group discussion. Which entrance does Pat recommend to Lee?",
+      "taskDemands": "1. Read Lee’s question in the Oak Street Neighbors group chat. 2. Identify the two entrances Lee mentions: Oak Street and beside the parking lot. 3. Read Pat’s reply recommending “the second one.” 4. Connect “the second one” to the entrance beside the parking lot. 5. State which entrance Pat recommends. No message is required.",
+      "startState": "In the Oak Street Neighbors group chat, the flyer appears as an earlier message sent by the participant’s account. Lee’s question and Pat’s reply are visible below it.",
+      "correctOutcome": "Identify the entrance beside the parking lot. No message is required.",
+      "difficulty": "unrated",
+      "uiRequirements": "Lee: “I’m bringing my father, who uses a walker. There’s an entrance on Oak Street and another beside the parking lot. Which would be easier for us?”\nPat: “The second one has a ramp and a step-free path to the lunch room. I’d use that one.”",
+      "sourceRow": 4,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P02-S",
+      "pairId": "P02",
+      "platform": "social",
+      "intentFamily": "understand",
+      "scenario": "You have shared Sam’s community lunch post in the Oak Street Neighbors Group. Lee asks about the building’s entrances in the comments under your shared post, and Pat replies.",
+      "instruction": "Read the comments under your shared post. Which entrance does Pat recommend to Lee?",
+      "taskDemands": "1. Neighbors group chat.Read Lee’s question in the comments under the shared lunch post in Oak Street Neighbors. 2. dentify the two entrances Lee mentions: Oak Street and beside the parking lot. 3. Read Pat’s reply recommending “the second one.” 4. Connect “the second one” to the entrance beside the parking lot. 5. State which entrance Pat recommends. No comment is required.",
+      "startState": "The Oak Street Neighbors group’s feed displays the participant’s shared copy of Sam’s post. Its comments are open, showing Lee’s question and Pat’s reply.",
+      "correctOutcome": "Identify the entrance beside the parking lot. No comment is required.",
+      "difficulty": "unrated",
+      "uiRequirements": "In the Oak Street Neighbors group chat, display a message from Pat below the previously shared community lunch flyer: “Who’s planning to come to the lunch? Please let us know if you’re bringing anyone.”",
+      "sourceRow": 5,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P03-M",
+      "pairId": "P03",
+      "platform": "messaging",
+      "intentFamily": "respond",
+      "scenario": "You have shared Sam’s community lunch flyer in Oak Street Neighbors group chat. Pat asks who plans to attend.",
+      "instruction": "Reply to Pat in the group chat, saying that you will attend with one guest.",
+      "taskDemands": "1. Read Pat’s message asking who will attend the lunch and whether they are bringing anyone. 2.Select the reply option for Pat’s message. 3. Compose a reply stating that you will attend with one guest. 4. Send the reply in Oak Street Neighbors. 5. Check that your reply appears and correctly communicates attendance with one guest.",
+      "startState": "Open Oak Street Neighbors. Preload the shared flyer and Pat’s message: “Who’s planning to come to the lunch? Please let us know if you’re bringing anyone.” Show the message input and support replying directly to Pat’s message.",
+      "correctOutcome": "A reply to Pat’s message states that the participant will attend with one guest. Equivalent wording is acceptable.",
+      "difficulty": "unrated",
+      "uiRequirements": "In Oak Street Neighbors, add this message from Pat after the shared lunch flyer: “Who’s planning to come to the lunch? Please let us know if you’re bringing anyone.”",
+      "sourceRow": 6,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P03-S",
+      "pairId": "P03",
+      "platform": "social",
+      "intentFamily": "respond",
+      "scenario": "You have shared Sam’s community lunch post in the Oak Street Neighbors group. Pat asks who plans to attend in the comments.",
+      "instruction": "Reply to Pat’s comment, saying that you will attend with one guest.",
+      "taskDemands": "1. Read Pat’s comment asking who will attend the lunch and whether they are bringing anyone. 2. Select the reply option under Pat’s comment. 3. Compose a reply stating that you will attend with one guest. 4. Post the reply under Pat’s comment. 5. Check that your reply appears under Pat’s comment and correctly communicates attendance with one guest.",
+      "startState": "Open the participant’s shared lunch post in Oak Street Neighbors. Preload Pat’s comment: “Who’s planning to come to the lunch? Please let us know if you’re bringing anyone.” Expand the comments and support replying directly to Pat.",
+      "correctOutcome": "A reply to Pat’s comment states that the participant will attend with one guest. Equivalent wording is acceptable.",
+      "difficulty": "unrated",
+      "uiRequirements": "In the Oak Street Neighbors group, display a comment from Pat under the participant’s previously shared community lunch post: “Who’s planning to come to the lunch? Please let us know if you’re bringing anyone.”",
+      "sourceRow": 7,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P04-M",
+      "pairId": "P04",
+      "platform": "messaging",
+      "intentFamily": "share",
+      "scenario": "Sam is helping organize a community lunch. He sent you the flyer, and you belong to the Oak Street Neighbors group chat.",
+      "instruction": "Share the lunch flyer Sam sent you with the Oak Street Neighbors group chat only.",
+      "taskDemands": "1. Identify the community lunch flyer in Sam’s open conversation. 2. Select the flyer’s forward or share option. 3. Choose Oak Street Neighbors as the destination group chat. 4. Check that the correct flyer and only the intended group are selected. 5. Send the flyer. 6. Check that the flyer appears in Oak Street Neighbors.",
+      "startState": "Sam’s conversation already exists, with the clearly labeled flyer visible. The Oak Street Neighbors group already exists.",
+      "correctOutcome": "The flyer is sent to the intended group chat, with no other destinations.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 8,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P04-S",
+      "pairId": "P04",
+      "platform": "social",
+      "intentFamily": "share",
+      "scenario": "Sam is helping organize a community lunch. He posted the flyer, and you belong to the Oak Street Neighbors Facebook Group.",
+      "instruction": "Share Sam’s lunch post in the Oak Street Neighbors group only.",
+      "taskDemands": "1. Identify Sam’s community lunch post in the feed. 2. Select the post’s share option. 3. Choose Oak Street Neighbors as the destination social-media group. 4. Check that the correct post and only the intended group are selected. 5. Publish the shared post in the group. 6. Check that the shared post appears in Oak Street Neighbors.",
+      "startState": "Sam’s public, shareable post is open, with the flyer visible.",
+      "correctOutcome": "Sam’s post is shared in the intended Facebook Group, with no other destinations.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 9,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P05-M",
+      "pairId": "P05",
+      "platform": "messaging",
+      "intentFamily": "find",
+      "scenario": "During a conversation, Maria sends you several soup recipes. You noticed the mushroom soup recipe but continued chatting. Now you want to return to it.",
+      "instruction": "Locate a recipe earlier in the conversation.",
+      "taskDemands": "Search within Maria’s conversation or scroll through earlier messages; identify and display the mushroom soup recipe.",
+      "startState": "Maria’s conversation is open at its latest messages. Earlier messages contain separately labeled lentil Soup, mushroom Soup, and Vegetable Soup recipes, mixed with everyday conversation. The recipes are not initially visible. Support scrolling and searching message text.",
+      "correctOutcome": "Display the mushroom soup recipe. Searching or scrolling is acceptable.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 10,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P05-S",
+      "pairId": "P05",
+      "platform": "social",
+      "intentFamily": "find",
+      "scenario": "During a direct-message conversation, Maria sent you several soup recipes. You noticed the mushroom soup recipe but continued chatting. Now you want to return to it.",
+      "instruction": "Locate a recipe earlier in a direct-message conversation.",
+      "taskDemands": "Search within Maria’s direct-message conversation or scroll through earlier messages; identify and display the mushroom soup recipe.",
+      "startState": "Maria’s direct-message conversation is open at its latest messages. Earlier messages contain separately labeled lentil Soup, mushroom Soup, and Vegetable Soup recipes, mixed with everyday conversation. The recipes are not initially visible. Support scrolling and searching message text.",
+      "correctOutcome": "Display the mushroom soup recipe. Searching or scrolling is acceptable.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 11,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P06-M",
+      "pairId": "P06",
+      "platform": "messaging",
+      "intentFamily": "understand",
+      "scenario": "In the middle of a conversation with Maria, she sent you several soup recipes. You like one of them but there is milk in it and you're allergic to it and she recommends one of the other recepies she shared with you.",
+      "instruction": "Connect a later description to an earlier recipe.",
+      "taskDemands": "Read Maria’s recommendation; inspect the earlier recipes; match her description to a recipe; state its name.",
+      "startState": "Open Maria’s conversation at her message: “You could try the the first recipe. You don't need milk for that.” Preload the participant’s message about Milk allergy. Earlier recipe messages list Lentil Soup, mushroom Soup using milk, and Vegetable Soup using fresh vegetables.",
+      "correctOutcome": "Identify the first recepie(lentil soup) with out sending a mssage.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 12,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P06-S",
+      "pairId": "P06",
+      "platform": "social",
+      "intentFamily": "understand",
+      "scenario": "In the middle of a conversation with Maria, she sent you several soup recipes. You like one of them but there is milk in it and you're allergic to it and she recommends one of the other recepies she shared with you.",
+      "instruction": "Connect a later description to an earlier recipe.",
+      "taskDemands": "Read Maria’s recommendation; inspect the earlier recipes; match her description to a recipe; state its name.",
+      "startState": "Open Maria’s conversation at her message: “You could try the the first recipe. You don't need milk for that.” Preload the participant’s message about Milk allergy. Earlier recipe messages list Lentil Soup, mushroom Soup using milk, and Vegetable Soup using fresh vegetables.",
+      "correctOutcome": "Identify the first recepie(lentil soup) with out sending a mssage.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 13,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P07-M",
+      "pairId": "P07",
+      "platform": "messaging",
+      "intentFamily": "respond",
+      "scenario": "Maria sent you several recipes during your conversation, and you continued chatting afterward. The mushroom soup recipe caught your interest, but the you see it contains milk, which you are allergic to. You want to ask Maria whether you can make it without milk.",
+      "instruction": "Replying to a message.",
+      "taskDemands": "reply to mushroom recepie and explain the milk allergy and ask whether milk can be omitted from mushroom recepie.",
+      "startState": "Open Maria’s conversation at the latest messages. Earlier messages contain separately labeled lentil, mushroom, and tomato soup recipes, followed by everyday conversation. The mushroom soup recipe lists milk as an ingredient. Support replying to individual messages.",
+      "correctOutcome": "Send a reply linked to the mushroom soup recipe that mentions the milk allergy and asks whether the recipe can be made without milk.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 14,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P07-S",
+      "pairId": "P07",
+      "platform": "social",
+      "intentFamily": "respond",
+      "scenario": "Maria sent you several recipes during your conversation, and you continued chatting afterward. The mushroom soup recipe caught your interest, but the you see it contains milk, which you are allergic to. You want to ask Maria whether you can make it without milk.",
+      "instruction": "Replying to a message.",
+      "taskDemands": "reply to mushroom recepie and explain the milk allergy and ask whether milk can be omitted from mushroom recepie.",
+      "startState": "Open Maria’s conversation at the latest messages. Earlier messages contain separately labeled lentil, mushroom, and tomato soup recipes, followed by everyday conversation. The mushroom soup recipe lists milk as an ingredient. Support replying to individual messages.",
+      "correctOutcome": "Send a reply linked to the mushroom soup recipe that mentions the milk allergy and asks whether the recipe can be made without milk.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 15,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P08-M",
+      "pairId": "P08",
+      "platform": "messaging",
+      "intentFamily": "share",
+      "scenario": "You decided to make the lentil soup Maria sent you today for dinner with your husband, David. You want to send him the recipe so he can buy the ingredients.",
+      "instruction": "Send the selected recipe to the intended person.",
+      "taskDemands": "1. Identify the lentil soup recipe.\n2. Forward it or copy its text.\n3. Select David’s conversation and send the recipe.\n4. Verify the content and recipient.",
+      "startState": "Open Maria’s conversation with her complete lentil soup recipe visible as a text message among other recipes. David’s conversation exists alongside other contacts. Support forwarding and copying message text. The recipe has not been sent to David.",
+      "correctOutcome": "Deliver the complete lentil soup recipe to David only, without other recipes or recipients.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 16,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P08-S",
+      "pairId": "P08",
+      "platform": "social",
+      "intentFamily": "share",
+      "scenario": "You decided to make the lentil soup Maria sent you today for dinner with your husband, David. You want to send him the recipe so he can buy the ingredients.",
+      "instruction": "Send the selected recipe to the intended person.",
+      "taskDemands": "1. Identify the lentil soup recipe.\n2. Copy the recipe text.\n3. Open David’s direct-message conversation.\n4. Paste and send the recipe.\n5. Verify the content and recipient.",
+      "startState": "Open Maria’s direct-message conversation with the same complete lentil soup recipe visible as a text message among other recipes. David’s direct-message conversation exists alongside other contacts. For this proposed sandbox version, support copying and pasting message text; omit forwarding. The recipe has not been sent to David.",
+      "correctOutcome": "Deliver the complete lentil soup recipe to David only through direct messages, without other recipes or recipients.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 17,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P09-M",
+      "pairId": "P09",
+      "platform": "messaging",
+      "intentFamily": "find",
+      "scenario": "Your daughter Anna just sent a photo of her son, Noah, celebrating something at kindergarten in the Family group chat that everyone in the group is replying to it.",
+      "instruction": "Locate a particular photo shared by a known person.",
+      "taskDemands": "Locate and open Family; Find the photo that everybody's talking about.",
+      "startState": "Start at the conversation list. Family contains Anna’s photo with the caption “Noah celebrating with his class today!”  and later replies to this message. The briefing identifies Anna as the participant’s daughter and Noah as her son.",
+      "correctOutcome": "Locate and open Anna’s kindergarten celebration photo of Noah. No message or sharing is required.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 18,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P09-S",
+      "pairId": "P09",
+      "platform": "social",
+      "intentFamily": "find",
+      "scenario": "Your daughter Anna just posted a photo of her son, Noah, celebrating something at kindergarten.",
+      "instruction": "Locate a particular photo posted by a known person.",
+      "taskDemands": "Find the kindergarten celebration photo Anna posted of Noah.",
+      "startState": "Start at the main feed. Anna’s post shows up in the feed as the first post.  Contains photo and caption.",
+      "correctOutcome": "Locate and open Anna’s kindergarten celebration photo of Noah. No comment or sharing is required.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 19,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P10-M",
+      "pairId": "P10",
+      "platform": "messaging",
+      "intentFamily": "understand",
+      "scenario": "Anna is your daughter and she shared a photo of her son Noah celebrating at kindergarten. You previously asked what was the occasion and she has replied.",
+      "instruction": "Interpret an explanation to identify the occasion shown in a photo.",
+      "taskDemands": "Read the existing question and Anna’s reply; connect her explanation to the photo; state the occasion.",
+      "startState": "Open Family with the photo and a preloaded exchange visible. Participant: “What’s the celebration for?” Anna: “They’ve reached their hundredth day of school! Everyone made a crown with 100 decorations.” The caption does not name the event.",
+      "correctOutcome": "Explain that the class is celebrating its 100th day of school. Equivalent wording is acceptable.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 20,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P10-S",
+      "pairId": "P10",
+      "platform": "social",
+      "intentFamily": "understand",
+      "scenario": "Anna is your daughter and she posted a photo of her son Noah celebrating at kindergarten. You previously asked in the comments what the occasion was, and she has replied. You have received a notification that Anna replied.",
+      "instruction": "Locate the reply and interpret an explanation to identify the occasion shown in a photo.",
+      "taskDemands": "find Anna’s reply in notification center and  connect her explanation to the photo; state the occasion.",
+      "startState": "Start at the main feed with an unread-notification indicator. The notifications list includes “Anna replied to your comment” among several unrelated notifications. Selecting it opens Anna’s kindergarten photo post at the preloaded exchange: Participant: “What’s the celebration for?” Anna: “They’ve reached their hundredth day of school! Everyone made a crown with 100 decorations.”",
+      "correctOutcome": "Open Anna’s reply through the notification and identify the celebration as the class’s 100th day of school. No new comment is required.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 21,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P11-M",
+      "pairId": "P11",
+      "platform": "messaging",
+      "intentFamily": "respond",
+      "scenario": "Your daughter Anna shared a photo of Noah celebrating with his kindergarten class in Family. Her caption does not explain the occasion, and you want to ask her about it.",
+      "instruction": "Ask for missing context about a specific photo.",
+      "taskDemands": "Identify the photo message; select its reply option; compose the question; send it; verify that it is linked to the photo.",
+      "startState": "Open Family with Anna’s photo and “Noah celebrating with his class today!” visible. No message explains the occasion. The photo shows a celebration but does not contain a readable event name. Support replying to the photo message.",
+      "correctOutcome": "Send a reply linked to Anna’s photo asking about the occasion. Equivalent wording is acceptable.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 22,
+      "breakdownTargets": []
+    },
+    {
+      "id": "P11-S",
+      "pairId": "P11",
+      "platform": "social",
+      "intentFamily": "respond",
+      "scenario": "Your daughter Anna posted a photo of Noah celebrating with his kindergarten class. Her caption does not explain the occasion, and you want to ask her about it.",
+      "instruction": "Ask for missing context about a specific photo.",
+      "taskDemands": "Identify the photo post; open the comment field; compose the question; post it; verify that it appears under the photo.",
+      "startState": "Open Anna’s photo post with the same caption. No comment explains the occasion. Use the same photo. The comment field is available.",
+      "correctOutcome": "Add a comment under Anna’s photo asking about the occasion. Equivalent wording is acceptable.",
+      "difficulty": "unrated",
+      "uiRequirements": "",
+      "sourceRow": 23,
+      "breakdownTargets": []
+    }
+  ],
   "taskPairs": [
     {
-      "pairId": "FIND_01",
+      "pairId": "P01",
       "intentFamily": "find",
-      "difficulty": "easy",
-      "semanticIntent": "Locate photos shared by Anna",
-      "breakdownTargets": [
-        "navigation",
-        "social_object_identification"
-      ],
-      "objects": {
-        "people": [
-          "person_anna"
-        ],
-        "groups": [
-          "group_family"
-        ],
-        "photos": [
-          "photo_trip_02"
-        ],
-        "posts": [
-          "post_trip"
-        ],
-        "messages": [
-          "m1"
-        ],
-        "events": []
-      },
-      "groundTruth": {
-        "contentIds": [
-          "photo_trip_02"
-        ],
-        "recipientIds": [],
-        "visibility": "private",
-        "expectedAction": "find",
-        "completionState": "completed"
-      },
       "variants": {
-        "feed": {
-          "id": "FIND_01_FEED",
-          "instruction": "Find the New Orleans photos Anna posted on Monday",
-          "startState": "home_feed"
-        },
         "messaging": {
-          "id": "FIND_01_MSG",
-          "instruction": "Find the New Orleans photos Anna sent to the Family Group on Monday",
-          "startState": "conversation_list"
+          "id": "P01-M",
+          "pairId": "P01",
+          "platform": "messaging",
+          "intentFamily": "find",
+          "scenario": "Sam is helping organize a community lunch and has sent you a flyer.",
+          "instruction": "Find the community lunch flyer Sam sent you.",
+          "taskDemands": "1. Locate Sam’s conversation by browsing or searching the conversation list. 2. Open Sam’s conversation. 3. Browse the messages to locate the community lunch flyer. 4. Open the flyer to view it.",
+          "startState": "The conversation list is open. Sam’s chat contains the flyer among other messages.",
+          "correctOutcome": "Locate and display Sam’s lunch flyer. No sharing is required.",
+          "difficulty": "unrated",
+          "uiRequirements": "Create a contact named Sam and a group chat named Oak Street Neighbors, containing the participant, some random neighbors with random replies (👌, 👍, I'll join, nice, etc.).  Lee, and Pat. Sam is not a member of this group. In Sam’s private conversation, display an incoming message containing the community lunch flyer. The participant must be able to forward the flyer to Oak Street Neighbors.",
+          "sourceRow": 2,
+          "breakdownTargets": []
+        },
+        "social": {
+          "id": "P01-S",
+          "pairId": "P01",
+          "platform": "social",
+          "intentFamily": "find",
+          "scenario": "Sam is helping organize a community lunch and has posted a flyer. You previously saw Sam’s community lunch flyer in your feed. You want to find it again.",
+          "instruction": "Find the community lunch flyer Sam posted. You do not need to share it.",
+          "taskDemands": "1. Locate Sam’s profile using the app’s search feature. 2. Open Sam’s profile. 3. Browse Sam’s posts to locate the community lunch flyer.",
+          "startState": "Start on the participant’s feed, where the flyer is not currently visible. Sam’s profile is accessible through search and contains the lunch flyer among several other posts.",
+          "correctOutcome": "The participant locates and displays the community lunch flyer on Sam’s profile.",
+          "difficulty": "unrated",
+          "uiRequirements": "Create a profile named Sam and a Facebook-style group named Oak Street Neighbors, containing the participant, some members, Lee, and Pat. Display a public, shareable post by Sam in the participant’s feed, containing the community lunch flyer. Show Sam’s name, a profile picture, and a Share control. Allow sharing to the existing Oak Street Neighbors group.",
+          "sourceRow": 3,
+          "breakdownTargets": []
         }
       }
     },
     {
-      "pairId": "SHARE_01",
-      "intentFamily": "share",
-      "difficulty": "hard",
-      "semanticIntent": "Send selected photos privately to family",
-      "breakdownTargets": [
-        "audience_visibility",
-        "group_identification"
-      ],
-      "objects": {
-        "people": [
-          "person_anna"
-        ],
-        "groups": [
-          "group_family"
-        ],
-        "photos": [
-          "photo_trip_02",
-          "photo_trip_03"
-        ],
-        "posts": [
-          "post_trip"
-        ],
-        "messages": [
-          "m1"
-        ],
-        "events": []
-      },
-      "groundTruth": {
-        "contentIds": [
-          "photo_trip_02",
-          "photo_trip_03"
-        ],
-        "recipientIds": [
-          "group_family"
-        ],
-        "visibility": "private",
-        "expectedAction": "share",
-        "completionState": "completed"
-      },
+      "pairId": "P02",
+      "intentFamily": "understand",
       "variants": {
-        "feed": {
-          "id": "SHARE_01_FEED",
-          "instruction": "Share photos 2 and 3 only with the Family audience",
-          "startState": "home_feed"
-        },
         "messaging": {
-          "id": "SHARE_01_MSG",
-          "instruction": "Send photos 2 and 3 only to the Family Group",
-          "startState": "conversation_list"
+          "id": "P02-M",
+          "pairId": "P02",
+          "platform": "messaging",
+          "intentFamily": "understand",
+          "scenario": "You have shared Sam’s community lunch flyer in the Oak Street Neighbors group chat. Lee asks about the building’s entrances, and Pat replies.",
+          "instruction": "Read the group discussion. Which entrance does Pat recommend to Lee?",
+          "taskDemands": "1. Read Lee’s question in the Oak Street Neighbors group chat. 2. Identify the two entrances Lee mentions: Oak Street and beside the parking lot. 3. Read Pat’s reply recommending “the second one.” 4. Connect “the second one” to the entrance beside the parking lot. 5. State which entrance Pat recommends. No message is required.",
+          "startState": "In the Oak Street Neighbors group chat, the flyer appears as an earlier message sent by the participant’s account. Lee’s question and Pat’s reply are visible below it.",
+          "correctOutcome": "Identify the entrance beside the parking lot. No message is required.",
+          "difficulty": "unrated",
+          "uiRequirements": "Lee: “I’m bringing my father, who uses a walker. There’s an entrance on Oak Street and another beside the parking lot. Which would be easier for us?”\nPat: “The second one has a ramp and a step-free path to the lunch room. I’d use that one.”",
+          "sourceRow": 4,
+          "breakdownTargets": []
+        },
+        "social": {
+          "id": "P02-S",
+          "pairId": "P02",
+          "platform": "social",
+          "intentFamily": "understand",
+          "scenario": "You have shared Sam’s community lunch post in the Oak Street Neighbors Group. Lee asks about the building’s entrances in the comments under your shared post, and Pat replies.",
+          "instruction": "Read the comments under your shared post. Which entrance does Pat recommend to Lee?",
+          "taskDemands": "1. Neighbors group chat.Read Lee’s question in the comments under the shared lunch post in Oak Street Neighbors. 2. dentify the two entrances Lee mentions: Oak Street and beside the parking lot. 3. Read Pat’s reply recommending “the second one.” 4. Connect “the second one” to the entrance beside the parking lot. 5. State which entrance Pat recommends. No comment is required.",
+          "startState": "The Oak Street Neighbors group’s feed displays the participant’s shared copy of Sam’s post. Its comments are open, showing Lee’s question and Pat’s reply.",
+          "correctOutcome": "Identify the entrance beside the parking lot. No comment is required.",
+          "difficulty": "unrated",
+          "uiRequirements": "In the Oak Street Neighbors group chat, display a message from Pat below the previously shared community lunch flyer: “Who’s planning to come to the lunch? Please let us know if you’re bringing anyone.”",
+          "sourceRow": 5,
+          "breakdownTargets": []
+        }
+      }
+    },
+    {
+      "pairId": "P03",
+      "intentFamily": "respond",
+      "variants": {
+        "messaging": {
+          "id": "P03-M",
+          "pairId": "P03",
+          "platform": "messaging",
+          "intentFamily": "respond",
+          "scenario": "You have shared Sam’s community lunch flyer in Oak Street Neighbors group chat. Pat asks who plans to attend.",
+          "instruction": "Reply to Pat in the group chat, saying that you will attend with one guest.",
+          "taskDemands": "1. Read Pat’s message asking who will attend the lunch and whether they are bringing anyone. 2.Select the reply option for Pat’s message. 3. Compose a reply stating that you will attend with one guest. 4. Send the reply in Oak Street Neighbors. 5. Check that your reply appears and correctly communicates attendance with one guest.",
+          "startState": "Open Oak Street Neighbors. Preload the shared flyer and Pat’s message: “Who’s planning to come to the lunch? Please let us know if you’re bringing anyone.” Show the message input and support replying directly to Pat’s message.",
+          "correctOutcome": "A reply to Pat’s message states that the participant will attend with one guest. Equivalent wording is acceptable.",
+          "difficulty": "unrated",
+          "uiRequirements": "In Oak Street Neighbors, add this message from Pat after the shared lunch flyer: “Who’s planning to come to the lunch? Please let us know if you’re bringing anyone.”",
+          "sourceRow": 6,
+          "breakdownTargets": []
+        },
+        "social": {
+          "id": "P03-S",
+          "pairId": "P03",
+          "platform": "social",
+          "intentFamily": "respond",
+          "scenario": "You have shared Sam’s community lunch post in the Oak Street Neighbors group. Pat asks who plans to attend in the comments.",
+          "instruction": "Reply to Pat’s comment, saying that you will attend with one guest.",
+          "taskDemands": "1. Read Pat’s comment asking who will attend the lunch and whether they are bringing anyone. 2. Select the reply option under Pat’s comment. 3. Compose a reply stating that you will attend with one guest. 4. Post the reply under Pat’s comment. 5. Check that your reply appears under Pat’s comment and correctly communicates attendance with one guest.",
+          "startState": "Open the participant’s shared lunch post in Oak Street Neighbors. Preload Pat’s comment: “Who’s planning to come to the lunch? Please let us know if you’re bringing anyone.” Expand the comments and support replying directly to Pat.",
+          "correctOutcome": "A reply to Pat’s comment states that the participant will attend with one guest. Equivalent wording is acceptable.",
+          "difficulty": "unrated",
+          "uiRequirements": "In the Oak Street Neighbors group, display a comment from Pat under the participant’s previously shared community lunch post: “Who’s planning to come to the lunch? Please let us know if you’re bringing anyone.”",
+          "sourceRow": 7,
+          "breakdownTargets": []
+        }
+      }
+    },
+    {
+      "pairId": "P04",
+      "intentFamily": "share",
+      "variants": {
+        "messaging": {
+          "id": "P04-M",
+          "pairId": "P04",
+          "platform": "messaging",
+          "intentFamily": "share",
+          "scenario": "Sam is helping organize a community lunch. He sent you the flyer, and you belong to the Oak Street Neighbors group chat.",
+          "instruction": "Share the lunch flyer Sam sent you with the Oak Street Neighbors group chat only.",
+          "taskDemands": "1. Identify the community lunch flyer in Sam’s open conversation. 2. Select the flyer’s forward or share option. 3. Choose Oak Street Neighbors as the destination group chat. 4. Check that the correct flyer and only the intended group are selected. 5. Send the flyer. 6. Check that the flyer appears in Oak Street Neighbors.",
+          "startState": "Sam’s conversation already exists, with the clearly labeled flyer visible. The Oak Street Neighbors group already exists.",
+          "correctOutcome": "The flyer is sent to the intended group chat, with no other destinations.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 8,
+          "breakdownTargets": []
+        },
+        "social": {
+          "id": "P04-S",
+          "pairId": "P04",
+          "platform": "social",
+          "intentFamily": "share",
+          "scenario": "Sam is helping organize a community lunch. He posted the flyer, and you belong to the Oak Street Neighbors Facebook Group.",
+          "instruction": "Share Sam’s lunch post in the Oak Street Neighbors group only.",
+          "taskDemands": "1. Identify Sam’s community lunch post in the feed. 2. Select the post’s share option. 3. Choose Oak Street Neighbors as the destination social-media group. 4. Check that the correct post and only the intended group are selected. 5. Publish the shared post in the group. 6. Check that the shared post appears in Oak Street Neighbors.",
+          "startState": "Sam’s public, shareable post is open, with the flyer visible.",
+          "correctOutcome": "Sam’s post is shared in the intended Facebook Group, with no other destinations.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 9,
+          "breakdownTargets": []
+        }
+      }
+    },
+    {
+      "pairId": "P05",
+      "intentFamily": "find",
+      "variants": {
+        "messaging": {
+          "id": "P05-M",
+          "pairId": "P05",
+          "platform": "messaging",
+          "intentFamily": "find",
+          "scenario": "During a conversation, Maria sends you several soup recipes. You noticed the mushroom soup recipe but continued chatting. Now you want to return to it.",
+          "instruction": "Locate a recipe earlier in the conversation.",
+          "taskDemands": "Search within Maria’s conversation or scroll through earlier messages; identify and display the mushroom soup recipe.",
+          "startState": "Maria’s conversation is open at its latest messages. Earlier messages contain separately labeled lentil Soup, mushroom Soup, and Vegetable Soup recipes, mixed with everyday conversation. The recipes are not initially visible. Support scrolling and searching message text.",
+          "correctOutcome": "Display the mushroom soup recipe. Searching or scrolling is acceptable.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 10,
+          "breakdownTargets": []
+        },
+        "social": {
+          "id": "P05-S",
+          "pairId": "P05",
+          "platform": "social",
+          "intentFamily": "find",
+          "scenario": "During a direct-message conversation, Maria sent you several soup recipes. You noticed the mushroom soup recipe but continued chatting. Now you want to return to it.",
+          "instruction": "Locate a recipe earlier in a direct-message conversation.",
+          "taskDemands": "Search within Maria’s direct-message conversation or scroll through earlier messages; identify and display the mushroom soup recipe.",
+          "startState": "Maria’s direct-message conversation is open at its latest messages. Earlier messages contain separately labeled lentil Soup, mushroom Soup, and Vegetable Soup recipes, mixed with everyday conversation. The recipes are not initially visible. Support scrolling and searching message text.",
+          "correctOutcome": "Display the mushroom soup recipe. Searching or scrolling is acceptable.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 11,
+          "breakdownTargets": []
+        }
+      }
+    },
+    {
+      "pairId": "P06",
+      "intentFamily": "understand",
+      "variants": {
+        "messaging": {
+          "id": "P06-M",
+          "pairId": "P06",
+          "platform": "messaging",
+          "intentFamily": "understand",
+          "scenario": "In the middle of a conversation with Maria, she sent you several soup recipes. You like one of them but there is milk in it and you're allergic to it and she recommends one of the other recepies she shared with you.",
+          "instruction": "Connect a later description to an earlier recipe.",
+          "taskDemands": "Read Maria’s recommendation; inspect the earlier recipes; match her description to a recipe; state its name.",
+          "startState": "Open Maria’s conversation at her message: “You could try the the first recipe. You don't need milk for that.” Preload the participant’s message about Milk allergy. Earlier recipe messages list Lentil Soup, mushroom Soup using milk, and Vegetable Soup using fresh vegetables.",
+          "correctOutcome": "Identify the first recepie(lentil soup) with out sending a mssage.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 12,
+          "breakdownTargets": []
+        },
+        "social": {
+          "id": "P06-S",
+          "pairId": "P06",
+          "platform": "social",
+          "intentFamily": "understand",
+          "scenario": "In the middle of a conversation with Maria, she sent you several soup recipes. You like one of them but there is milk in it and you're allergic to it and she recommends one of the other recepies she shared with you.",
+          "instruction": "Connect a later description to an earlier recipe.",
+          "taskDemands": "Read Maria’s recommendation; inspect the earlier recipes; match her description to a recipe; state its name.",
+          "startState": "Open Maria’s conversation at her message: “You could try the the first recipe. You don't need milk for that.” Preload the participant’s message about Milk allergy. Earlier recipe messages list Lentil Soup, mushroom Soup using milk, and Vegetable Soup using fresh vegetables.",
+          "correctOutcome": "Identify the first recepie(lentil soup) with out sending a mssage.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 13,
+          "breakdownTargets": []
+        }
+      }
+    },
+    {
+      "pairId": "P07",
+      "intentFamily": "respond",
+      "variants": {
+        "messaging": {
+          "id": "P07-M",
+          "pairId": "P07",
+          "platform": "messaging",
+          "intentFamily": "respond",
+          "scenario": "Maria sent you several recipes during your conversation, and you continued chatting afterward. The mushroom soup recipe caught your interest, but the you see it contains milk, which you are allergic to. You want to ask Maria whether you can make it without milk.",
+          "instruction": "Replying to a message.",
+          "taskDemands": "reply to mushroom recepie and explain the milk allergy and ask whether milk can be omitted from mushroom recepie.",
+          "startState": "Open Maria’s conversation at the latest messages. Earlier messages contain separately labeled lentil, mushroom, and tomato soup recipes, followed by everyday conversation. The mushroom soup recipe lists milk as an ingredient. Support replying to individual messages.",
+          "correctOutcome": "Send a reply linked to the mushroom soup recipe that mentions the milk allergy and asks whether the recipe can be made without milk.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 14,
+          "breakdownTargets": []
+        },
+        "social": {
+          "id": "P07-S",
+          "pairId": "P07",
+          "platform": "social",
+          "intentFamily": "respond",
+          "scenario": "Maria sent you several recipes during your conversation, and you continued chatting afterward. The mushroom soup recipe caught your interest, but the you see it contains milk, which you are allergic to. You want to ask Maria whether you can make it without milk.",
+          "instruction": "Replying to a message.",
+          "taskDemands": "reply to mushroom recepie and explain the milk allergy and ask whether milk can be omitted from mushroom recepie.",
+          "startState": "Open Maria’s conversation at the latest messages. Earlier messages contain separately labeled lentil, mushroom, and tomato soup recipes, followed by everyday conversation. The mushroom soup recipe lists milk as an ingredient. Support replying to individual messages.",
+          "correctOutcome": "Send a reply linked to the mushroom soup recipe that mentions the milk allergy and asks whether the recipe can be made without milk.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 15,
+          "breakdownTargets": []
+        }
+      }
+    },
+    {
+      "pairId": "P08",
+      "intentFamily": "share",
+      "variants": {
+        "messaging": {
+          "id": "P08-M",
+          "pairId": "P08",
+          "platform": "messaging",
+          "intentFamily": "share",
+          "scenario": "You decided to make the lentil soup Maria sent you today for dinner with your husband, David. You want to send him the recipe so he can buy the ingredients.",
+          "instruction": "Send the selected recipe to the intended person.",
+          "taskDemands": "1. Identify the lentil soup recipe.\n2. Forward it or copy its text.\n3. Select David’s conversation and send the recipe.\n4. Verify the content and recipient.",
+          "startState": "Open Maria’s conversation with her complete lentil soup recipe visible as a text message among other recipes. David’s conversation exists alongside other contacts. Support forwarding and copying message text. The recipe has not been sent to David.",
+          "correctOutcome": "Deliver the complete lentil soup recipe to David only, without other recipes or recipients.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 16,
+          "breakdownTargets": []
+        },
+        "social": {
+          "id": "P08-S",
+          "pairId": "P08",
+          "platform": "social",
+          "intentFamily": "share",
+          "scenario": "You decided to make the lentil soup Maria sent you today for dinner with your husband, David. You want to send him the recipe so he can buy the ingredients.",
+          "instruction": "Send the selected recipe to the intended person.",
+          "taskDemands": "1. Identify the lentil soup recipe.\n2. Copy the recipe text.\n3. Open David’s direct-message conversation.\n4. Paste and send the recipe.\n5. Verify the content and recipient.",
+          "startState": "Open Maria’s direct-message conversation with the same complete lentil soup recipe visible as a text message among other recipes. David’s direct-message conversation exists alongside other contacts. For this proposed sandbox version, support copying and pasting message text; omit forwarding. The recipe has not been sent to David.",
+          "correctOutcome": "Deliver the complete lentil soup recipe to David only through direct messages, without other recipes or recipients.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 17,
+          "breakdownTargets": []
+        }
+      }
+    },
+    {
+      "pairId": "P09",
+      "intentFamily": "find",
+      "variants": {
+        "messaging": {
+          "id": "P09-M",
+          "pairId": "P09",
+          "platform": "messaging",
+          "intentFamily": "find",
+          "scenario": "Your daughter Anna just sent a photo of her son, Noah, celebrating something at kindergarten in the Family group chat that everyone in the group is replying to it.",
+          "instruction": "Locate a particular photo shared by a known person.",
+          "taskDemands": "Locate and open Family; Find the photo that everybody's talking about.",
+          "startState": "Start at the conversation list. Family contains Anna’s photo with the caption “Noah celebrating with his class today!”  and later replies to this message. The briefing identifies Anna as the participant’s daughter and Noah as her son.",
+          "correctOutcome": "Locate and open Anna’s kindergarten celebration photo of Noah. No message or sharing is required.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 18,
+          "breakdownTargets": []
+        },
+        "social": {
+          "id": "P09-S",
+          "pairId": "P09",
+          "platform": "social",
+          "intentFamily": "find",
+          "scenario": "Your daughter Anna just posted a photo of her son, Noah, celebrating something at kindergarten.",
+          "instruction": "Locate a particular photo posted by a known person.",
+          "taskDemands": "Find the kindergarten celebration photo Anna posted of Noah.",
+          "startState": "Start at the main feed. Anna’s post shows up in the feed as the first post.  Contains photo and caption.",
+          "correctOutcome": "Locate and open Anna’s kindergarten celebration photo of Noah. No comment or sharing is required.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 19,
+          "breakdownTargets": []
+        }
+      }
+    },
+    {
+      "pairId": "P10",
+      "intentFamily": "understand",
+      "variants": {
+        "messaging": {
+          "id": "P10-M",
+          "pairId": "P10",
+          "platform": "messaging",
+          "intentFamily": "understand",
+          "scenario": "Anna is your daughter and she shared a photo of her son Noah celebrating at kindergarten. You previously asked what was the occasion and she has replied.",
+          "instruction": "Interpret an explanation to identify the occasion shown in a photo.",
+          "taskDemands": "Read the existing question and Anna’s reply; connect her explanation to the photo; state the occasion.",
+          "startState": "Open Family with the photo and a preloaded exchange visible. Participant: “What’s the celebration for?” Anna: “They’ve reached their hundredth day of school! Everyone made a crown with 100 decorations.” The caption does not name the event.",
+          "correctOutcome": "Explain that the class is celebrating its 100th day of school. Equivalent wording is acceptable.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 20,
+          "breakdownTargets": []
+        },
+        "social": {
+          "id": "P10-S",
+          "pairId": "P10",
+          "platform": "social",
+          "intentFamily": "understand",
+          "scenario": "Anna is your daughter and she posted a photo of her son Noah celebrating at kindergarten. You previously asked in the comments what the occasion was, and she has replied. You have received a notification that Anna replied.",
+          "instruction": "Locate the reply and interpret an explanation to identify the occasion shown in a photo.",
+          "taskDemands": "find Anna’s reply in notification center and  connect her explanation to the photo; state the occasion.",
+          "startState": "Start at the main feed with an unread-notification indicator. The notifications list includes “Anna replied to your comment” among several unrelated notifications. Selecting it opens Anna’s kindergarten photo post at the preloaded exchange: Participant: “What’s the celebration for?” Anna: “They’ve reached their hundredth day of school! Everyone made a crown with 100 decorations.”",
+          "correctOutcome": "Open Anna’s reply through the notification and identify the celebration as the class’s 100th day of school. No new comment is required.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 21,
+          "breakdownTargets": []
+        }
+      }
+    },
+    {
+      "pairId": "P11",
+      "intentFamily": "respond",
+      "variants": {
+        "messaging": {
+          "id": "P11-M",
+          "pairId": "P11",
+          "platform": "messaging",
+          "intentFamily": "respond",
+          "scenario": "Your daughter Anna shared a photo of Noah celebrating with his kindergarten class in Family. Her caption does not explain the occasion, and you want to ask her about it.",
+          "instruction": "Ask for missing context about a specific photo.",
+          "taskDemands": "Identify the photo message; select its reply option; compose the question; send it; verify that it is linked to the photo.",
+          "startState": "Open Family with Anna’s photo and “Noah celebrating with his class today!” visible. No message explains the occasion. The photo shows a celebration but does not contain a readable event name. Support replying to the photo message.",
+          "correctOutcome": "Send a reply linked to Anna’s photo asking about the occasion. Equivalent wording is acceptable.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 22,
+          "breakdownTargets": []
+        },
+        "social": {
+          "id": "P11-S",
+          "pairId": "P11",
+          "platform": "social",
+          "intentFamily": "respond",
+          "scenario": "Your daughter Anna posted a photo of Noah celebrating with his kindergarten class. Her caption does not explain the occasion, and you want to ask her about it.",
+          "instruction": "Ask for missing context about a specific photo.",
+          "taskDemands": "Identify the photo post; open the comment field; compose the question; post it; verify that it appears under the photo.",
+          "startState": "Open Anna’s photo post with the same caption. No comment explains the occasion. Use the same photo. The comment field is available.",
+          "correctOutcome": "Add a comment under Anna’s photo asking about the occasion. Equivalent wording is acceptable.",
+          "difficulty": "unrated",
+          "uiRequirements": "",
+          "sourceRow": 23,
+          "breakdownTargets": []
         }
       }
     }
