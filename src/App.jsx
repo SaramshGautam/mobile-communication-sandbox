@@ -1,92 +1,60 @@
-import { useMemo, useState } from "react";
-import { Home, MessageCircle, ClipboardList, UserRound } from "lucide-react";
-import Header from "./components/Header.jsx";
-import FeedView from "./components/FeedView.jsx";
-import MessagesView from "./components/MessagesView.jsx";
+import { useCallback, useMemo, useRef, useState } from "react";
+import SocialApp from "./social/SocialApp.jsx";
+import LegacyApp from "./components/LegacyApp.jsx";
 import TaskPanel from "./components/TaskPanel.jsx";
 import InstallPrompt from "./components/InstallPrompt.jsx";
-import Avatar from "./components/Avatar.jsx";
-import data from "./data/sandboxData.json";
 import generatedTasks from "./data/generatedTasks.json";
 
-const tabs = [
-  { id: "feed", label: "Feed", icon: Home },
-  { id: "messages", label: "Messages", icon: MessageCircle },
-  { id: "tasks", label: "Tasks", icon: ClipboardList },
-  { id: "profile", label: "Profile", icon: UserRound },
-];
+const initialTaskId = () => {
+  try {
+    return new URLSearchParams(window.location.search).get("task");
+  } catch {
+    return null;
+  }
+};
 
 export default function App() {
-  const tasks = generatedTasks.tasks?.length
-    ? generatedTasks.tasks
-    : data.tasks;
-  const [activeTab, setActiveTab] = useState("feed");
-  const [activeTaskId, setActiveTaskId] = useState(data.tasks[0]?.id ?? null);
+  const tasks = generatedTasks.tasks ?? [];
+  const [activeTaskId, setActiveTaskId] = useState(() => {
+    const id = initialTaskId();
+    return tasks.some((t) => t.id === id) ? id : null;
+  });
+  const [session, setSession] = useState(0);
+  const [showTasks, setShowTasks] = useState(false);
   const [eventLog, setEventLog] = useState([]);
-  const activeTask = useMemo(
-    () => data.tasks.find((task) => task.id === activeTaskId),
-    [activeTaskId, tasks]
-  );
+  const taskRef = useRef(activeTaskId);
+  taskRef.current = activeTaskId;
+  const activeTask = useMemo(() => tasks.find((t) => t.id === activeTaskId) ?? null, [activeTaskId, tasks]);
 
-  const logEvent = (type, properties = {}) => {
+  const logEvent = useCallback((type, properties = {}) => {
     setEventLog((current) => [
       ...current,
-      {
-        id: crypto.randomUUID(),
-        timestamp: new Date().toISOString(),
-        taskId: activeTaskId,
-        type,
-        ...properties,
-      },
+      { id: crypto.randomUUID?.() ?? String(Date.now() + Math.random()), timestamp: new Date().toISOString(), taskId: taskRef.current, type, ...properties },
     ]);
+  }, []);
+
+  const startTask = (id) => {
+    taskRef.current = id;
+    setActiveTaskId(id);
+    setSession((n) => n + 1);
+    setShowTasks(false);
+    logEvent("task_started", { selectedTaskId: id });
+    try {
+      const url = new URL(window.location.href);
+      if (id) url.searchParams.set("task", id); else url.searchParams.delete("task");
+      window.history.replaceState(null, "", url);
+    } catch { /* ignore */ }
   };
 
-  const navigate = (tab) => {
-    setActiveTab(tab);
-    logEvent("navigation", { destination: tab });
-  };
+  const openTasks = () => setShowTasks(true);
+  const Shell = activeTask?.platform === "messaging" ? LegacyApp : SocialApp;
 
   return (
     <div className="app-shell">
-      <Header title="Connect" task={activeTask} />
-      <main className="app-content">
-        {activeTab === "feed" && <FeedView data={data} logEvent={logEvent} />}
-        {activeTab === "messages" && (
-          <MessagesView data={data} logEvent={logEvent} />
-        )}
-        {activeTab === "tasks" && (
-          <TaskPanel
-            tasks={data.tasks}
-            activeTaskId={activeTaskId}
-            onSelectTask={(id) => {
-              setActiveTaskId(id);
-              logEvent("task_started", { selectedTaskId: id });
-            }}
-            eventLog={eventLog}
-          />
-        )}
-        {activeTab === "profile" && (
-          <section className="screen padded">
-            <div className="profile-card">
-              <Avatar name="Pat Morgan" initials="PM" size="large" />
-              <h2>Pat Morgan</h2>
-              <p>Study sandbox profile</p>
-            </div>
-          </section>
-        )}
-      </main>
-      <nav className="bottom-nav" aria-label="Primary navigation">
-        {tabs.map(({ id, label, icon: Icon }) => (
-          <button
-            key={id}
-            className={activeTab === id ? "nav-item active" : "nav-item"}
-            onClick={() => navigate(id)}
-          >
-            <Icon size={22} strokeWidth={2} />
-            <span>{label}</span>
-          </button>
-        ))}
-      </nav>
+      <Shell key={`${activeTaskId}-${session}`} task={activeTask} logEvent={logEvent} openTasks={openTasks} />
+      {showTasks && (
+        <TaskPanel tasks={tasks} activeTaskId={activeTaskId} onSelectTask={startTask} eventLog={eventLog} onClose={() => setShowTasks(false)} />
+      )}
       <InstallPrompt />
     </div>
   );

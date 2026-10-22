@@ -10,7 +10,7 @@ if (!input) {
   process.exit(1);
 }
 
-const parsed = Papa.parse(fs.readFileSync(input, "utf8"), {
+const parsed = Papa.parse(fs.readFileSync(input, "utf8").replace(/^\uFEFF/, ""), {
   header: true,
   skipEmptyLines: "greedy",
   transformHeader: (header) => header.trim().toLowerCase(),
@@ -49,9 +49,15 @@ if (isTaskBank) {
     const instruction = clean(row["task goal"]);
     if (!currentPairId || !instruction) continue;
 
-    const platform = rowWithinPair === 0 ? "messaging" : "social";
+    // Prefer an explicit Task ID ("P01-S"); fall back to row order (M first, then S).
+    const explicitId = clean(row["task id"]);
+    const idMatch = explicitId.match(/^(P\d+)-([MS])$/i);
+    const platform = idMatch
+      ? idMatch[2].toUpperCase() === "M" ? "messaging" : "social"
+      : rowWithinPair === 0 ? "messaging" : "social";
     tasks.push({
       id: `${currentPairId}-${platform === "messaging" ? "M" : "S"}`,
+      background: clean(row.background),
       pairId: currentPairId,
       platform,
       intentFamily: slug(clean(row["intent family"]) || currentIntent),
