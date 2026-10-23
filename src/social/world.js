@@ -13,31 +13,31 @@ export const people = {
   me: { id: "me", name: "Alex Morgan", firstName: "Alex", bio: "Gardening, good books and neighborhood walks.", relationship: "you" },
   sam: { id: "sam", name: "Sam Rivera", firstName: "Sam", avatar: A + "sam-rivera.webp", bio: "Neighbor on Oak Street", relationship: "friend" },
   adam: { id: "adam", name: "Adam Reed", firstName: "Adam", avatar: A + "david-morgan.webp", bio: "Neighbor · Retired teacher", relationship: "friend" },
-  susan: { id: "susan", name: "Susan Clark", firstName: "Susan", avatar: A + "maria-santos.webp", bio: "Neighbor · Always cooking something", relationship: "friend" },
+  susan: { id: "susan", name: "Susan Clark", firstName: "Susan", avatar: A + "susan-clark.webp", bio: "Neighbor · Always cooking something", relationship: "friend" },
   lee: { id: "lee", name: "Lee Johnson", firstName: "Lee", avatar: A + "lee-johnson.webp", bio: "Oak Street since 2009", relationship: "friend" },
   pat: { id: "pat", name: "Pat Williams", firstName: "Pat", avatar: A + "pat-williams.webp", bio: "Admin, Oak Street Neighbors", relationship: "friend" },
-  grace: { id: "grace", name: "Grace Hill", firstName: "Grace", bio: "Maple resident", relationship: "friend" },
-  tom: { id: "tom", name: "Tom Baker", firstName: "Tom", bio: "", relationship: "friend" },
-  rosa: { id: "rosa", name: "Rosa Martinez", firstName: "Rosa", bio: "Local gardening volunteer", relationship: "friend" },
-  elena: { id: "elena", name: "Elena Ruiz", firstName: "Elena", avatar: A + "anna-morgan.webp", bio: "Local walk organizer · Garden Volunteers organizer", relationship: "following", public: true },
-  nora: { id: "nora", name: "Nora Kim", firstName: "Nora", bio: "Craft session organizer", relationship: "friend" },
-  maya: { id: "maya", name: "Maya Patel", firstName: "Maya", bio: "Book sale organizer, Maple Hall", relationship: "friend" },
-  priya: { id: "priya", name: "Priya Shah", firstName: "Priya", bio: "Coordinator, Community Volunteers", relationship: "friend" },
-  luis: { id: "luis", name: "Luis Ortega", firstName: "Luis", bio: "", relationship: "friend" },
+  grace: { id: "grace", name: "Grace Hill", firstName: "Grace", bio: "Maple resident", relationship: "friend", avatar: A + "grace-hill.webp" },
+  tom: { id: "tom", name: "Tom Baker", firstName: "Tom", bio: "", relationship: "friend", avatar: A + "tom-baker.webp" },
+  rosa: { id: "rosa", name: "Rosa Martinez", firstName: "Rosa", bio: "Local gardening volunteer", relationship: "friend", avatar: A + "rosa-martinez.webp" },
+  elena: { id: "elena", name: "Elena Ruiz", firstName: "Elena", avatar: A + "elena-ruiz.webp", bio: "Local walk organizer · Garden Volunteers organizer", relationship: "following", public: true },
+  nora: { id: "nora", name: "Nora Kim", firstName: "Nora", bio: "Craft session organizer", relationship: "friend", avatar: A + "nora-kim.webp" },
+  maya: { id: "maya", name: "Maya Patel", firstName: "Maya", bio: "Book sale organizer, Maple Hall", relationship: "friend", avatar: A + "maya-patel.webp" },
+  priya: { id: "priya", name: "Priya Shah", firstName: "Priya", bio: "Coordinator, Community Volunteers", relationship: "friend", avatar: A + "priya-shah.webp" },
+  luis: { id: "luis", name: "Luis Ortega", firstName: "Luis", bio: "", relationship: "friend", avatar: A + "luis-ortega.webp" },
   kim: { id: "kim", name: "Kim Nguyen", firstName: "Kim", bio: "", relationship: "friend" },
-  daniel: { id: "daniel", name: "Daniel Brooks", firstName: "Daniel", bio: "Organizes local museum visits", relationship: "friend" },
+  daniel: { id: "daniel", name: "Daniel Brooks", firstName: "Daniel", bio: "Organizes local museum visits", relationship: "friend", avatar: A + "daniel-brooks.webp" },
   // T01-S: two accounts with the same name
   mina_art: { id: "mina_art", name: "Mina Shah", firstName: "Mina", bio: "Art sessions at Maple Community Center", relationship: "none", public: true, followers: "312 followers" },
   mina_travel: { id: "mina_travel", name: "Mina Shah", firstName: "Mina", bio: "Travel photography", relationship: "none", public: true, followers: "1.2K followers" },
   // T02-S: pending friend requests
-  ben_ortiz: { id: "ben_ortiz", name: "Ben Ortiz", firstName: "Ben", bio: "Oak Street Pottery Club", relationship: "request", public: true, lives: "Lives in Maple" },
+  ben_ortiz: { id: "ben_ortiz", name: "Ben Ortiz", firstName: "Ben", bio: "Oak Street Pottery Club", relationship: "request", public: true, lives: "Lives in Maple", avatar: A + "ben.webp" },
   bea_ortega: { id: "bea_ortega", name: "Bea Ortega", firstName: "Bea", bio: "Maple Running Club", relationship: "request", public: true, lives: "Lives in Riverside" },
   // Pages / public accounts
   maple_library: { id: "maple_library", name: "Maple Library", firstName: "Maple Library", isPage: true, public: true, bio: "The local public library for Maple · Official account", relationship: "none", followers: "2.4K followers" },
   maple_music: { id: "maple_music", name: "Maple Music", firstName: "Maple Music", isPage: true, public: true, bio: "Community concerts at Riverside Stage", relationship: "none", followers: "5.1K followers" },
-  everyday_kitchen: { id: "everyday_kitchen", name: "Everyday Kitchen", firstName: "Everyday Kitchen", isPage: true, public: true, bio: "Quick, simple recipes for every day", relationship: "none", followers: "48K followers" },
+  everyday_kitchen: { id: "everyday_kitchen", name: "Everyday Kitchen", firstName: "Everyday Kitchen", isPage: true, public: true, bio: "Quick, simple recipes for every day", relationship: "none", followers: "48K followers", avatar: A + "everyday-kitchen.webp" },
   home_baking: { id: "home_baking", name: "Home Baking", firstName: "Home Baking", isPage: true, public: true, bio: "Breads and bakes from a home kitchen", relationship: "none", followers: "21K followers" },
-  garden_table: { id: "garden_table", name: "Garden Table", firstName: "Garden Table", isPage: true, public: true, bio: "Fresh salads from the garden", relationship: "none", followers: "9K followers" },
+  garden_table: { id: "garden_table", name: "Garden Table", firstName: "Garden Table", isPage: true, public: true, bio: "Fresh salads from the garden", relationship: "none", followers: "9K followers", avatar: A + "garden-table.webp" },
 };
 for (const p of Object.values(people)) if (!p.avatar) p.avatar = realAvatar(p.id);
 
@@ -164,7 +164,7 @@ export const posts = [
   { id: "cook_tip", author: "grace", group: "cooking", time: "October 27",
     text: "Tip: freeze leftover herbs in olive oil in an ice-cube tray.", reactions: { susan: "like" }, comments: [] },
   { id: "cook_kim", author: "kim", group: "cooking", time: "October 21",
-    text: "Does anyone know a good account for slow-cooker meals?", reactions: {}, comments: [] },
+    text: "Making lentil soup tonight. Does anyone know a good account for slow-cooker meals?", photos: [photo("ph_lentils", "/assets/avatars/lentils.webp", "A bowl of red and green lentils")], reactions: {}, comments: [] },
 
   // ----- T07-S: public groups -----
   { id: "fx_boxes", author: "tom", group: "free_exchange", time: "October 29",
