@@ -1,11 +1,11 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   Search, ChevronLeft, Info, Send, Mic, Image as ImageIcon, X, Reply, Forward, Copy, Pencil, Download, Archive,
-  ArchiveRestore, Play, Pause, Trash2, Square, FileText, MapPin, User, Lock, Check, Users, CornerUpLeft, BellOff, ExternalLink,
+  ArchiveRestore, Play, Pause, Trash2, Square, FileText, MapPin, User, Lock, Check, Users, CornerUpLeft, BellOff, ExternalLink, Undo2,
 } from "lucide-react";
 import { useSocial, PersonAvatar, Sheet, SheetItem, RichText, useLongPress, copyText, useFlashScroll } from "../ui.jsx";
 import { GalleryPicker } from "./Sheets.jsx";
-import { person, convTitle, resolveUrl, uid, findDM } from "../store.js";
+import { person, convTitle, resolveUrl, uid, findDM, MSG_REACTIONS } from "../store.js";
 import { ME } from "../world.js";
 
 const EDIT_WINDOW_MS = 15 * 60 * 1000;
@@ -21,10 +21,11 @@ function ConvAvatar({ conv, size }) {
 }
 
 function preview(world, conv) {
-  const last = conv.messages[conv.messages.length - 1];
+  const visible = conv.messages.filter((x) => !x.hiddenForMe);
+  const last = visible[visible.length - 1];
   if (!last) return "";
   const who = last.from === ME ? "You: " : conv.kind === "group" ? `${person(world, last.from).firstName}: ` : "";
-  const body = last.audio ? "Sent a voice message" : last.photos ? "Sent a photo" : last.sharedPostId ? "Sent a post" : last.profileId ? "Shared a profile" : last.text;
+  const body = last.unsent ? (last.from === ME ? "You unsent a message" : "Unsent a message") : last.reaction && last.storyRef ? `Reacted ${last.reaction} to a story` : last.storyRef ? `Replied to a story: ${last.text}` : last.audio ? "Sent a voice message" : last.photos ? "Sent a photo" : last.sharedPostId ? "Sent a post" : last.profileId ? "Shared a profile" : last.text;
   return who + body;
 }
 
@@ -231,13 +232,38 @@ function replyLabel(world, m, quoted) {
   return `${who} replied to ${quoted.from === ME ? "you" : person(world, quoted.from).firstName}`;
 }
 
+function StoryRef({ m }) {
+  const { world } = useSocial();
+  const r = m.storyRef;
+  const mine = m.from === ME;
+  const label = m.reaction
+    ? (mine ? `You reacted to ${person(world, r.author).firstName}’s story` : "Reacted to your story")
+    : (mine ? `You replied to ${person(world, r.author).firstName}’s story` : "Replied to your story");
+  return (
+    <span className="msg-story-ref">
+      <small>{label}</small>
+      <span className="msg-story-thumb" style={r.bg ? { background: r.bg } : undefined}>
+        {r.src ? <img src={r.src} alt="" /> : <span>{r.text}</span>}
+      </span>
+    </span>
+  );
+}
+
 function Bubble({ conv, m, onAction, highlight, onJump }) {
   const { world, openViewer } = useSocial();
   const mine = m.from === ME;
-  const press = useLongPress(() => onAction(m));
+  const press = useLongPress(() => !m.unsent && onAction(m));
+  if (m.unsent)
+    return (
+      <div className={`msg ${mine ? "mine" : ""}`} data-anchor={m.id}>
+        {!mine && <PersonAvatar id={m.from} size="xs" />}
+        <div className="msg-col"><div className="bubble-body unsent">{mine ? "You unsent a message" : `${person(world, m.from).firstName} unsent a message`}</div></div>
+      </div>
+    );
   const quoted = m.replyTo ? conv.messages.find((x) => x.id === m.replyTo) : null;
   const urls = (m.text ?? "").match(/https?:\/\/[^\s]+/g) ?? [];
-  const bare = !m.text && (m.sharedPostId || m.photos || m.audio || m.profileId);
+  const bare = !m.text && (m.sharedPostId || m.photos || m.audio || m.profileId || m.reaction);
+  const reacts = Object.values(m.reactions ?? {});
   return (
     <div className={`msg ${mine ? "mine" : ""} ${highlight ? "highlight" : ""}`} data-anchor={m.id}>
       {!mine && <PersonAvatar id={m.from} size="xs" />}
@@ -247,7 +273,7 @@ function Bubble({ conv, m, onAction, highlight, onJump }) {
           <button className="msg-quote" onClick={() => onJump(quoted.id)} aria-label="Go to the message this replies to">
             <span className="msg-quote-label"><CornerUpLeft size={12} /> {replyLabel(world, m, quoted)}</span>
             <span className="msg-quote-body">
-              {quoted.sharedPostId ? <span className="quote-post">{world.posts[quoted.sharedPostId]?.photos?.[0] && <img src={world.posts[quoted.sharedPostId].photos[0].src} alt="" />}Shared post</span>
+              {quoted.unsent ? "Message unavailable" : quoted.sharedPostId ? <span className="quote-post">{world.posts[quoted.sharedPostId]?.photos?.[0] && <img src={world.posts[quoted.sharedPostId].photos[0].src} alt="" />}<span><strong>{person(world, world.posts[quoted.sharedPostId]?.author).name}</strong>’s post<br /><small>{world.posts[quoted.sharedPostId]?.text.slice(0, 48)}…</small></span></span>
                 : quoted.audio ? "Voice message" : quoted.photos ? <span className="quote-post"><img src={quoted.photos[0].src} alt="" />Photo</span> : quoted.text}
             </span>
           </button>
@@ -263,12 +289,15 @@ function Bubble({ conv, m, onAction, highlight, onJump }) {
               ))}
             </div>
           )}
+          {m.storyRef && <StoryRef m={m} />}
+          {m.reaction && <span className="msg-big-emoji">{m.reaction}</span>}
           {m.sharedPostId && <SharedPostMsg postId={m.sharedPostId} />}
           {m.profileId && <ProfileMsg personId={m.profileId} />}
           {m.audio && <AudioMsg audio={m.audio} msgId={m.id} />}
           {m.text && <span className="msg-text"><RichText text={m.text} /></span>}
           {urls.map((u) => <LinkPreview key={u} url={u} />)}
         </div>
+        {reacts.length > 0 && <span className="msg-reacts" aria-label={`Reactions: ${reacts.join(" ")}`}>{reacts.join("")}{reacts.length > 1 ? ` ${reacts.length}` : ""}</span>}
         <small className="msg-time">{m.time}{m.edited ? " · Edited" : ""}</small>
       </div>
     </div>
@@ -285,6 +314,7 @@ export function ChatView({ route }) {
   const [replyTo, setReplyTo] = useState(null);
   const [editing, setEditing] = useState(null);
   const [actionMsg, setActionMsg] = useState(null);
+  const [unsending, setUnsending] = useState(null);
   const [picking, setPicking] = useState(false);
   const [rec, setRec] = useState(null); // {state:'recording'|'preview', start, url, duration, simulated}
   const [flash, setFlash] = useState(route.quiet ? null : route.focusMsgId ?? null);
@@ -399,6 +429,21 @@ export function ChatView({ route }) {
     if (kind === "forward") openSheet({ type: "forward", convId: conv.id, msgId: m.id });
     if (kind === "save") { m.photos.forEach((p) => dispatch({ type: "saveToGallery", photo: p })); toast("Saved to Photos"); }
     if (kind === "openPost") nav.push({ name: "post", postId: m.sharedPostId });
+    if (kind === "unsend") setUnsending(m);
+  };
+  const reactTo = (emoji) => {
+    const m = actionMsg;
+    setActionMsg(null);
+    const prev = m.reactions?.[ME] ?? null;
+    dispatch({ type: "msgReact", convId: conv.id, msgId: m.id, emoji });
+    log(prev === emoji ? "message_reaction_removed" : "message_reaction_set", { convId: conv.id, msgId: m.id, reaction: emoji, previous: prev, messageText: m.text ?? null });
+  };
+  const doUnsend = (forEveryone) => {
+    const m = unsending;
+    setUnsending(null);
+    dispatch({ type: "unsend", convId: conv.id, msgId: m.id, forEveryone });
+    log(forEveryone ? "message_unsent_for_everyone" : "message_removed_for_you", { convId: conv.id, msgId: m.id, sharedPostId: m.sharedPostId ?? null, text: m.text ?? null });
+    toast(forEveryone ? "Message unsent" : "Removed for you");
   };
 
   let lastDay = null;
@@ -417,7 +462,7 @@ export function ChatView({ route }) {
         {conv.messages.length === 0 && (
           <div className="chat-intro"><ConvAvatar conv={conv} size="xl" /><strong>{title}</strong><small>You’re friends on Connect</small></div>
         )}
-        {conv.messages.map((m) => {
+        {conv.messages.filter((m) => !m.hiddenForMe).map((m) => {
           const sep = m.day !== lastDay ? <div className="day-sep" key={`d-${m.id}`}>{m.day}</div> : null;
           lastDay = m.day;
           return [sep, <Bubble key={m.id} conv={conv} m={m} onAction={(x) => { setActionMsg(x); log("message_menu_opened", { convId: conv.id, msgId: x.id }); }} highlight={flash === m.id} onJump={jump} />];
@@ -472,13 +517,25 @@ export function ChatView({ route }) {
 
       {actionMsg && (
         <Sheet onClose={() => setActionMsg(null)}>
-          <div className="sheet-quote">{actionMsg.text ?? (actionMsg.sharedPostId ? world.posts[actionMsg.sharedPostId].text : actionMsg.audio ? "Voice message" : "Photo")}</div>
+          <div className="msg-react-bar" role="group" aria-label="React to message">
+            {MSG_REACTIONS.map((em) => (
+              <button key={em} className={actionMsg.reactions?.[ME] === em ? "on" : ""} aria-label={`React ${em}`} onClick={() => reactTo(em)}>{em}</button>
+            ))}
+          </div>
+          <div className="sheet-quote">{actionMsg.text ?? (actionMsg.sharedPostId ? world.posts[actionMsg.sharedPostId].text : actionMsg.audio ? "Voice message" : actionMsg.reaction ? `Story reaction ${actionMsg.reaction}` : "Photo")}</div>
           <SheetItem icon={Reply} label="Reply" onClick={() => action("reply")} />
           <SheetItem icon={Forward} label="Forward" onClick={() => action("forward")} />
           {actionMsg.text && <SheetItem icon={Copy} label="Copy" onClick={() => action("copy")} />}
           {canEdit(actionMsg) && <SheetItem icon={Pencil} label="Edit" onClick={() => action("edit")} />}
           {actionMsg.photos && <SheetItem icon={Download} label="Save photo" onClick={() => action("save")} />}
           {actionMsg.sharedPostId && <SheetItem icon={ExternalLink} label="View post" onClick={() => action("openPost")} />}
+          {actionMsg.from === ME && <SheetItem icon={Undo2} label="Unsend" sub="Remove this message" onClick={() => action("unsend")} danger />}
+        </Sheet>
+      )}
+      {unsending && (
+        <Sheet title="Who do you want to unsend this message for?" onClose={() => setUnsending(null)}>
+          <SheetItem icon={Users} label="Unsend for everyone" sub={`This message will be unsent for everyone in the chat.`} onClick={() => doUnsend(true)} danger />
+          <SheetItem icon={User} label="Remove for you" sub="This message will be removed from your device. Others in the chat will still be able to see it." onClick={() => doUnsend(false)} />
         </Sheet>
       )}
       {picking && (

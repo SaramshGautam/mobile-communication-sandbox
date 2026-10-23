@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import {
   ThumbsUp, MessageCircle, Share2, MoreHorizontal, FileText, MapPin, Bookmark,
-  BookmarkCheck, Link2, Send, Lock, ChevronRight, X, Smile, CalendarDays,
+  BookmarkCheck, Link2, Send, Lock, ChevronRight, X, Smile, CalendarDays, Pencil, User,
 } from "lucide-react";
 import {
   useSocial, PersonAvatar, AudienceIcon, RichText, useLongPress, Sheet, SheetItem, copyText,
 } from "../ui.jsx";
 import {
-  REACTIONS, reactionById, person, countComments, canSee, postUrl, uid,
+  REACTIONS, reactionById, person, countComments, canSee, postUrl, uid, profileUrl,
 } from "../store.js";
 import { ME } from "../world.js";
 
@@ -317,6 +317,25 @@ function SharedEmbed({ postId }) {
   );
 }
 
+// Profile shared into a post (via Share profile, or a pasted profile link).
+function profileIdFor(post) {
+  if (post.sharedProfileId) return post.sharedProfileId;
+  const m = (post.text ?? "").match(/https:\/\/connect\.example\/profile\/([\w-]+)/);
+  return m?.[1] ?? null;
+}
+
+function ProfileCard({ personId }) {
+  const { world, nav, log } = useSocial();
+  const p = person(world, personId);
+  return (
+    <button className="profile-card-embed" onClick={(e) => { e.stopPropagation(); log("shared_profile_opened", { objectId: personId }); nav.push({ name: "profile", personId }); }}>
+      <PersonAvatar id={personId} size="lg" />
+      <span><strong>{p.name}</strong><small>{p.bio}</small><small className="url">{profileUrl(personId).replace("https://", "")}</small></span>
+      <User size={18} />
+    </button>
+  );
+}
+
 // ---------------- Header & menu ----------------
 export function PostHeader({ post, compact, onMenu }) {
   const { world, nav } = useSocial();
@@ -338,7 +357,7 @@ export function PostHeader({ post, compact, onMenu }) {
             </>
           )}
         </span>
-        <small>{post.time} · <AudienceIcon post={post} /></small>
+        <small>{post.time}{post.edited ? " · Edited" : ""} · <AudienceIcon post={post} /></small>
       </div>
       {onMenu && (
         <button className="icon-button" aria-label="Post options" onClick={(e) => { e.stopPropagation(); onMenu(); }}>
@@ -350,10 +369,13 @@ export function PostHeader({ post, compact, onMenu }) {
 }
 
 export function PostMenu({ post, onClose }) {
-  const { world, dispatch, log, toast } = useSocial();
+  const { world, dispatch, log, toast, openComposer } = useSocial();
   const saved = world.saved.includes(post.id);
   return (
     <Sheet onClose={onClose}>
+      {post.author === ME && !post.sharedPostId && (
+        <SheetItem icon={Pencil} label="Edit post" sub="Change the text of this post" onClick={() => { log("post_edit_opened", { objectId: post.id }); onClose(); openComposer({ editPostId: post.id }); }} />
+      )}
       <SheetItem icon={saved ? BookmarkCheck : Bookmark} label={saved ? "Unsave post" : "Save post"} sub={saved ? "Remove this from your saved items" : "Add this to your saved items"}
         onClick={() => { dispatch({ type: "toggleSave", postId: post.id }); log(saved ? "post_unsaved" : "post_saved", { objectId: post.id }); toast(saved ? "Removed from saved" : "Saved"); onClose(); }} />
       <SheetItem icon={Link2} label="Copy link" onClick={async () => { await copyText(postUrl(post.id)); log("post_link_copied", { objectId: post.id, url: postUrl(post.id) }); toast("Link copied"); onClose(); }} />
@@ -387,6 +409,7 @@ export default function PostCard({ post, expandComments = false, expandReplies, 
       {post.text && <p className="post-text"><RichText text={post.text} /></p>}
       {post.event && <EventCard ev={post.event} />}
       {post.sharedPostId ? <SharedEmbed postId={post.sharedPostId} /> : <Photos post={post} />}
+      {profileIdFor(post) && <ProfileCard personId={profileIdFor(post)} />}
       {post.links?.map((l, i) => <LinkCard key={i} link={l} post={post} />)}
       {post.files?.map((f) => <FileRow key={f} docId={f} />)}
       {post.poll && <Poll post={post} />}

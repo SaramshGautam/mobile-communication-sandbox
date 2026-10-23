@@ -1,592 +1,353 @@
-// Baseline "social world" for the feed-style (Facebook-like) app.
-// Every -S task starts from a fresh copy of this world (see tasks.js for the
-// per-task start screen and any preloaded state such as an existing reaction).
-//
-// All names, places, URLs and documents are fictional.
+// Shared baseline dataset for the social-media app (task bank v2, T01-S … T13-S).
+// Every scenario starts from a fresh copy of this world; scenarios.js sets the
+// start screen and any extra state. All people, places, URLs and documents are
+// fictional. The study account is Alex.
 
 import { photo as P, avatar as realAvatar } from "./photos.js";
 
 const A = "/assets/avatars/";
-
 export const ME = "me";
 
+// relationship: "you" | "friend" | "following" | "none" | "request" (sent you a friend request)
 export const people = {
-  me: { id: "me", name: "Alex Morgan", firstName: "Alex", bio: "Family, gardening and good books.", relationship: "you" },
-  sam: { id: "sam", name: "Sam Rivera", firstName: "Sam", avatar: A + "sam-rivera.webp", bio: "Neighbor · Community lunch organizer", relationship: "friend" },
-  lee: { id: "lee", name: "Lee Johnson", firstName: "Lee", avatar: A + "lee-johnson.webp", bio: "Oak Street since 2009", relationship: "neighbor" },
-  pat: { id: "pat", name: "Pat Williams", firstName: "Pat", avatar: A + "pat-williams.webp", bio: "Oak Street Neighbors admin", relationship: "neighbor" },
-  anna: { id: "anna", name: "Anna Morgan", firstName: "Anna", avatar: A + "anna-morgan.webp", bio: "Mom of Noah", relationship: "daughter" },
-  adam: { id: "adam", name: "Adam Morgan", firstName: "Adam", avatar: A + "david-morgan.webp", bio: "", relationship: "husband" },
-  susan: { id: "susan", name: "Susan Clark", firstName: "Susan", bio: "Soup enthusiast", relationship: "sister" },
-  maria: { id: "maria", name: "Maria Santos", firstName: "Maria", avatar: A + "maria-santos.webp", bio: "", relationship: "friend" },
-  maya: { id: "maya", name: "Maya Patel", firstName: "Maya", bio: "Community shelf volunteer", relationship: "friend" },
-  daniel: { id: "daniel", name: "Daniel Brooks", firstName: "Daniel", bio: "Museum Friends organizer", relationship: "friend" },
-  nora: { id: "nora", name: "Nora Kim", firstName: "Nora", bio: "Book Club & Craft Circle organizer", relationship: "friend" },
-  ben: { id: "ben", name: "Ben Carter", firstName: "Ben", bio: "", relationship: "friend" },
-  elena: { id: "elena", name: "Elena Ruiz", firstName: "Elena", bio: "Walking Group organizer", relationship: "friend" },
-  omar: { id: "omar", name: "Omar Haddad", firstName: "Omar", bio: "", relationship: "friend" },
-  priya: { id: "priya", name: "Priya Shah", firstName: "Priya", bio: "Volunteer Team coordinator", relationship: "friend" },
+  me: { id: "me", name: "Alex Morgan", firstName: "Alex", bio: "Gardening, good books and neighborhood walks.", relationship: "you" },
+  sam: { id: "sam", name: "Sam Rivera", firstName: "Sam", avatar: A + "sam-rivera.webp", bio: "Neighbor on Oak Street", relationship: "friend" },
+  adam: { id: "adam", name: "Adam Reed", firstName: "Adam", avatar: A + "david-morgan.webp", bio: "Neighbor · Retired teacher", relationship: "friend" },
+  susan: { id: "susan", name: "Susan Clark", firstName: "Susan", avatar: A + "maria-santos.webp", bio: "Neighbor · Always cooking something", relationship: "friend" },
+  lee: { id: "lee", name: "Lee Johnson", firstName: "Lee", avatar: A + "lee-johnson.webp", bio: "Oak Street since 2009", relationship: "friend" },
+  pat: { id: "pat", name: "Pat Williams", firstName: "Pat", avatar: A + "pat-williams.webp", bio: "Admin, Oak Street Neighbors", relationship: "friend" },
+  grace: { id: "grace", name: "Grace Hill", firstName: "Grace", bio: "Maple resident", relationship: "friend" },
+  tom: { id: "tom", name: "Tom Baker", firstName: "Tom", bio: "", relationship: "friend" },
+  rosa: { id: "rosa", name: "Rosa Martinez", firstName: "Rosa", bio: "Local gardening volunteer", relationship: "friend" },
+  elena: { id: "elena", name: "Elena Ruiz", firstName: "Elena", avatar: A + "anna-morgan.webp", bio: "Local walk organizer · Garden Volunteers organizer", relationship: "following", public: true },
+  nora: { id: "nora", name: "Nora Kim", firstName: "Nora", bio: "Craft session organizer", relationship: "friend" },
+  maya: { id: "maya", name: "Maya Patel", firstName: "Maya", bio: "Book sale organizer, Maple Hall", relationship: "friend" },
+  priya: { id: "priya", name: "Priya Shah", firstName: "Priya", bio: "Coordinator, Community Volunteers", relationship: "friend" },
   luis: { id: "luis", name: "Luis Ortega", firstName: "Luis", bio: "", relationship: "friend" },
-  rosa: { id: "rosa", name: "Rosa Martinez", firstName: "Rosa", bio: "Gardening coordinator, Garden Club", relationship: "friend" },
-  grace: { id: "grace", name: "Grace Hill", firstName: "Grace", bio: "", relationship: "neighbor" },
-  tom: { id: "tom", name: "Tom Baker", firstName: "Tom", bio: "", relationship: "neighbor" },
-  // Creator pages (recipes)
-  everyday_kitchen: { id: "everyday_kitchen", name: "Everyday Kitchen", firstName: "Everyday Kitchen", isPage: true, bio: "Quick, healthy recipes for every day · 48K followers" },
-  tomato_thyme: { id: "tomato_thyme", name: "Tomato & Thyme", firstName: "Tomato & Thyme", isPage: true, bio: "Seasonal comfort food · 12K followers" },
-  lentil_lane: { id: "lentil_lane", name: "Lentil Lane", firstName: "Lentil Lane", isPage: true, bio: "Budget plant-based cooking · 9K followers" },
+  kim: { id: "kim", name: "Kim Nguyen", firstName: "Kim", bio: "", relationship: "friend" },
+  daniel: { id: "daniel", name: "Daniel Brooks", firstName: "Daniel", bio: "Organizes local museum visits", relationship: "friend" },
+  // T01-S: two accounts with the same name
+  mina_art: { id: "mina_art", name: "Mina Shah", firstName: "Mina", bio: "Art sessions at Maple Community Center", relationship: "none", public: true, followers: "312 followers" },
+  mina_travel: { id: "mina_travel", name: "Mina Shah", firstName: "Mina", bio: "Travel photography", relationship: "none", public: true, followers: "1.2K followers" },
+  // T02-S: pending friend requests
+  ben_ortiz: { id: "ben_ortiz", name: "Ben Ortiz", firstName: "Ben", bio: "Oak Street Pottery Club", relationship: "request", public: true, lives: "Lives in Maple" },
+  bea_ortega: { id: "bea_ortega", name: "Bea Ortega", firstName: "Bea", bio: "Maple Running Club", relationship: "request", public: true, lives: "Lives in Riverside" },
+  // Pages / public accounts
+  maple_library: { id: "maple_library", name: "Maple Library", firstName: "Maple Library", isPage: true, public: true, bio: "The local public library for Maple · Official account", relationship: "none", followers: "2.4K followers" },
+  maple_music: { id: "maple_music", name: "Maple Music", firstName: "Maple Music", isPage: true, public: true, bio: "Community concerts at Riverside Stage", relationship: "none", followers: "5.1K followers" },
+  everyday_kitchen: { id: "everyday_kitchen", name: "Everyday Kitchen", firstName: "Everyday Kitchen", isPage: true, public: true, bio: "Quick, simple recipes for every day", relationship: "none", followers: "48K followers" },
+  home_baking: { id: "home_baking", name: "Home Baking", firstName: "Home Baking", isPage: true, public: true, bio: "Breads and bakes from a home kitchen", relationship: "none", followers: "21K followers" },
+  garden_table: { id: "garden_table", name: "Garden Table", firstName: "Garden Table", isPage: true, public: true, bio: "Fresh salads from the garden", relationship: "none", followers: "9K followers" },
 };
-
-// People without a bundled avatar use src/assets/photos/avatars/<id>.webp if present.
 for (const p of Object.values(people)) if (!p.avatar) p.avatar = realAvatar(p.id);
 
 export const groups = {
   oak: {
     id: "oak", name: "Oak Street Neighbors", privacy: "Private group", color: "#41658a",
-    members: ["me", "lee", "pat", "grace", "tom"], admins: ["pat"],
-    description: "A private group for Oak Street neighbors to share local news, events and help.",
+    members: ["me", "pat", "lee", "grace", "tom", "sam"], admins: ["pat"],
+    description: "Oak Street residents sharing local activities, news and help.",
   },
-  book: {
-    id: "book", name: "Book Club", privacy: "Private group", color: "#7a4f9a",
-    members: ["me", "nora", "ben"], admins: ["nora"],
-    description: "Monthly book club. Nora organizes our meetings and reading lists.",
-    featured: ["book_reading_list"],
+  garden_vol: {
+    id: "garden_vol", name: "Garden Volunteers", privacy: "Private group", color: "#4a8a3a",
+    members: ["me", "elena", "rosa", "lee", "grace"], admins: ["elena"],
+    description: "Volunteers who look after Maple’s shared gardens. Elena Ruiz organizes our events.",
   },
-  walk: {
-    id: "walk", name: "Walking Group", privacy: "Private group", color: "#2e8b57",
-    members: ["me", "elena", "omar"], admins: ["elena"],
-    description: "Saturday morning walks. Elena organizes our routes.",
+  cooking: {
+    id: "cooking", name: "Cooking Ideas", privacy: "Private group", color: "#d9822b",
+    members: ["me", "susan", "grace", "kim"], admins: ["grace"],
+    description: "Swap useful recipe accounts, ideas and tips.",
   },
-  volunteer: {
-    id: "volunteer", name: "Volunteer Team", privacy: "Private group", color: "#c4553a",
-    members: ["me", "priya", "luis"], admins: ["priya"],
-    description: "Volunteers for the community food pantry. Priya coordinates the team and rota.",
+  community_vol: {
+    id: "community_vol", name: "Community Volunteers", privacy: "Private group", color: "#c4553a",
+    members: ["me", "priya", "luis", "kim", "grace"], admins: ["priya"],
+    description: "Volunteers for Maple community events. Priya Shah coordinates the team. Members can create posts and polls.",
   },
-  family: {
-    id: "family", name: "Family", privacy: "Private group", color: "#d9822b",
-    members: ["me", "anna", "adam"], admins: ["me"],
-    description: "Just us — photos and family news.",
+  free_exchange: {
+    id: "free_exchange", name: "Oak Street Free Exchange", privacy: "Public group", color: "#2e8b57",
+    members: ["sam", "lee", "grace", "tom", "kim"], admins: ["lee"],
+    description: "A public group for giving away usable household items for free.",
+    rules: [
+      { title: "Everything must be free", text: "No prices, swaps for money or “make an offer.”" },
+      { title: "Include a photo and your pickup area", text: "Say roughly where the item can be picked up, for example the street." },
+      { title: "Arrange the exact address privately", text: "Don’t post your home address. Share it in a private message." },
+    ],
   },
-  garden: {
-    id: "garden", name: "Garden Club", privacy: "Private group", color: "#4a8a3a",
-    members: ["me", "rosa", "ben"], admins: ["rosa"],
-    description: "Garden Club for Oak Street gardeners. Rosa Martinez is our gardening coordinator — ask her about tools, seeds and planting sessions.",
-  },
-  craft: {
-    id: "craft", name: "Craft Circle", privacy: "Private group", color: "#b04a7a",
-    members: ["me", "nora", "elena"], admins: ["nora"],
-    description: "Sewing, knitting and craft workshops. Nora arranges our workshops.",
-  },
-  museum: {
-    id: "museum", name: "Museum Friends", privacy: "Private group", color: "#3b6f8f",
-    members: ["me", "daniel", "maya"], admins: ["daniel"],
-    description: "Museum visits and tours. Daniel arranges our visits.",
+  buy_sell: {
+    id: "buy_sell", name: "Oak Street Buy and Sell", privacy: "Public group", color: "#8a5a2b",
+    members: ["tom", "grace", "luis"], admins: ["tom"],
+    description: "Buy and sell secondhand items with neighbors.",
+    rules: [
+      { title: "Include a price", text: "Every listing must show a price." },
+      { title: "Be respectful", text: "No spam." },
+    ],
   },
 };
 
-// ---------- Documents (opened in the in-app PDF viewer) ----------
-export const documents = {
-  nov_reading: {
-    id: "nov_reading", filename: "November reading list — final.pdf",
-    url: "https://lanternreaders.example/lists/november-reading-list-final.pdf",
-    pages: [["Lantern Readers Book Club", "November reading list — FINAL", "", "Book: The Lantern House", "Read: chapters 1–4", "", "Discussion questions will be shared at the meeting.", "Members may share this list with friends."]],
-  },
-  oct_reading: {
-    id: "oct_reading", filename: "October reading list.pdf",
-    url: "https://lanternreaders.example/lists/october-reading-list.pdf",
-    pages: [["Lantern Readers Book Club", "October reading list", "", "Book: The Quiet Orchard", "Read: chapters 5–9"]],
-  },
-  rota_nov_draft: {
-    id: "rota_nov_draft", filename: "Nov08_rota_DRAFT.pdf", private: true,
-    pages: [["Volunteer rota — November 8", "DRAFT — not final", "", "Alex: packing, 10 a.m.–noon", "Luis: welcome desk, noon–2 p.m.", "Priya: coordinator, all day"]],
-  },
-  rota_nov_final: {
-    id: "rota_nov_final", filename: "Nov08_rota_FINAL.pdf", private: true,
-    pages: [["Volunteer rota — November 8", "FINAL", "", "Alex: welcome desk, 10 a.m.–noon", "Luis: packing, noon–2 p.m.", "Priya: coordinator, all day"]],
-  },
-  rota_oct_final: {
-    id: "rota_oct_final", filename: "Oct25_rota_FINAL.pdf", private: true,
-    pages: [["Volunteer rota — October 25", "FINAL", "", "Alex: packing, 9–11 a.m.", "Luis: welcome desk, 11 a.m.–1 p.m."]],
-  },
-  museum_pickup: {
-    id: "museum_pickup", filename: "Museum pickup instructions.pdf",
-    url: "https://cityartmuseum.example/visit/museum-pickup-instructions.pdf",
-    pages: [["City Art Museum", "Pickup instructions", "", "Drivers collecting visitors should use the south pickup bay on South Lane.", "Please wait in the marked pickup bay on South Lane.", "Do not stop at the front entrance on Main Street."]],
-  },
-};
-
-// ---------- Map places (opened in the in-app map viewer) ----------
+// ---------- Documents and places (in-app viewers) ----------
+export const documents = {};
 export const places = {
   river_cafe: { id: "river_cafe", name: "River Café", address: "18 River Road", image: P("map-river-cafe"), url: "https://maps.example/place/river-cafe-18-river-road" },
   river_park: { id: "river_park", name: "River Park", address: "Park Avenue", image: P("map-river-park"), url: "https://maps.example/place/river-park" },
-  museum_south: { id: "museum_south", name: "Museum south pickup bay", address: "South Lane", image: P("map-museum-south-pickup"), url: "https://maps.example/place/museum-south-pickup-bay-south-lane" },
-  museum_front: { id: "museum_front", name: "Museum front entrance — visitor map", address: "Main Street", image: P("map-museum-front-entrance"), url: "https://maps.example/place/museum-front-entrance" },
 };
 
 const photo = (id, src, alt, extra = {}) => ({ id, src, alt, ...extra });
 
 // ---------- Posts ----------
-// audience: "public" | "friends" | group id (via `group`)
-// Comments: { id, author, text, time, image?, replies: [...], reactions? }
+// audience: "public" | "friends"; group posts use `group`. inFeed = order in the home feed.
 export const posts = [
-  // ----- Home feed / profile posts -----
-  {
-    id: "anna_noah", author: "anna", audience: "friends", time: "Today · 9:14 AM", inFeed: 1,
-    text: "Noah celebrating with the class today!",
-    photos: [photo("photo_noah_100_days", "/assets/feed/noah-kindergarten-100-days.webp", "Noah and his classmates wearing decorated paper crowns in their classroom", { width: 1200, height: 800 })],
-    reactions: { susan: "love", adam: "love", maria: "like", lee: "like", grace: "love" },
+  // ----- Home feed (ordinary content) -----
+  { id: "feed_lee_garden", author: "lee", audience: "friends", time: "Today · 8:05 AM", inFeed: 1,
+    text: "The garden after last night’s rain.", photos: [photo("ph_lee_garden", P("lee-garden-after-rain"), "A garden with pink and yellow flowers after rain")],
+    reactions: { grace: "love", sam: "like", pat: "like" }, comments: [{ id: "c_lg1", author: "grace", time: "1h", text: "So green!", replies: [] }] },
+  { id: "feed_pat_oak", author: "pat", group: "oak", time: "Yesterday at 6:12 PM", inFeed: 2,
+    text: "Reminder: recycling pickup moves to Thursday next week.", reactions: { lee: "like", tom: "like" }, comments: [] },
+  { id: "feed_grace", author: "grace", audience: "friends", time: "Yesterday at 2:40 PM", inFeed: 3,
+    text: "Finished my first quilt square! Only 29 more to go 😄", reactions: { susan: "love" }, comments: [] },
+  { id: "feed_sam", author: "sam", audience: "friends", time: "October 29", inFeed: 4,
+    text: "Tomatoes are finally done for the year. Thanks to everyone who took some!", photos: [photo("ph_sam_flowers", P("gallery-garden-flowers"), "Flowers in Sam’s garden")],
+    reactions: { lee: "like", adam: "like" }, comments: [] },
+  { id: "feed_rosa", author: "rosa", audience: "public", time: "October 28", inFeed: 5,
+    text: "Seed swap at the Community Garden on November 9, 10 a.m. Bring seeds in labeled envelopes.", reactions: { grace: "like" }, comments: [] },
+
+  // ----- T01-S: Mina Shah (art) and Mina Shah (travel) -----
+  { id: "mina_art_session", author: "mina_art", audience: "public", time: "October 30",
+    text: "Free art session this Saturday! Beginners welcome. We supply paper and paints. Saturday, 2 p.m., Maple Community Center.",
+    photos: [photo("ph_mina_art", P("mina-art-session"), "Paper, paints and brushes on a table")],
+    reactions: { grace: "like", kim: "love" }, comments: [{ id: "c_ma1", author: "kim", time: "2d", text: "Had so much fun last time!", replies: [] }] },
+  { id: "mina_art_old", author: "mina_art", audience: "public", time: "October 18",
+    text: "Thank you to everyone who came to last week’s session. Look at these colors!",
+    photos: [photo("ph_mina_old", P("mina-art-last-week"), "Four colorful paintings on a wall")], reactions: { kim: "like" }, comments: [] },
+  { id: "mina_travel_1", author: "mina_travel", audience: "public", time: "October 25",
+    text: "Morning light over the harbor. New prints in my online shop soon.", photos: [photo("ph_mt1", P("mina-travel-harbor"), "A harbor with boats")], reactions: {}, comments: [] },
+  { id: "mina_travel_2", author: "mina_travel", audience: "public", time: "October 2",
+    text: "Mountain trail at sunrise.", photos: [photo("ph_mt2", P("mina-travel-mountains"), "Snowy mountains")], reactions: {}, comments: [] },
+
+  // ----- T02-S: Ben Ortiz public post -----
+  { id: "ben_pottery", author: "ben_ortiz", audience: "public", time: "October 26",
+    text: "Great turnout at the Oak Street Pottery Club workshop today. Thanks, everyone!", reactions: {}, comments: [] },
+  { id: "bea_run", author: "bea_ortega", audience: "public", time: "October 20",
+    text: "Maple Running Club 5K this Sunday. All paces welcome!", reactions: {}, comments: [] },
+
+  // ----- T03-S: Alex's plant post (Friends) with Rosa's reply -----
+  { id: "my_plants", author: "me", audience: "friends", time: "Yesterday at 9:30 AM",
+    text: "One of these is wilting—any suggestions?",
+    photos: [photo("ph_plants", P("balcony-plants"), "Two plants on a balcony: basil in a blue pot labeled BASIL and mint in a white pot labeled MINT")],
+    reactions: { lee: "like", susan: "care" },
     comments: [
-      { id: "c_noah_q", author: "adam", time: "1h", text: "What’s the celebration for?", replies: [
-        { id: "c_noah_a", author: "anna", time: "52m", text: "They’ve reached their hundredth day of school! Everyone made a crown with 100 decorations." },
-      ] },
-      { id: "c_noah_susan", author: "susan", time: "40m", text: "Look at those crowns! So sweet." },
-    ],
-  },
-  {
-    id: "lee_garden", author: "lee", audience: "friends", time: "Yesterday · 3:40 PM", inFeed: 2,
-    text: "The neighborhood garden is looking wonderful after the rain.",
-    photos: [photo("photo_lee_garden", P("lee-garden-after-rain"), "Flowers in the Oak Street garden", { width: 800, height: 600 })],
-    reactions: { grace: "like", pat: "love", tom: "like" }, comments: [],
-  },
-  {
-    id: "maria_bread", author: "maria", audience: "friends", time: "Yesterday · 11:02 AM", inFeed: 4,
-    text: "First attempt at sourdough — not bad! Anyone have tips for a crispier crust?",
-    reactions: { susan: "like", anna: "like" },
-    comments: [{ id: "c_bread_1", author: "susan", time: "20h", text: "Bake it in a covered pot for the first 20 minutes!" }],
-  },
-  {
-    id: "elena_bookclub_old", author: "elena", audience: "friends", time: "Monday · 8:20 AM", inFeed: 6,
-    text: "Lovely sunrise on this morning’s walk by the river.", reactions: { omar: "like" }, comments: [],
-  },
+      { id: "c_pl_lee", author: "lee", time: "1d", text: "Your balcony looks lovely!", replies: [] },
+      { id: "c_pl_rosa", author: "rosa", time: "2h", text: "The one in the blue pot needs more water. Keep the other one as it is.", replies: [] },
+    ] },
 
-  // ----- Sam's profile -----
-  {
-    id: "sam_seedswap", author: "sam", audience: "public", time: "Today · 8:05 AM",
-    text: "Seed swap, November 16, 2 p.m., Community Garden. Bring any seeds you’d like to share — everyone is welcome, please pass it on!",
-    photos: [photo("photo_seed_swap", P("flyer-seed-swap"), "Seed swap flyer: Saturday, November 16, 2 p.m., Community Garden", { width: 800, height: 1200 })],
-    reactions: { lee: "like", rosa: "love" }, comments: [],
-  },
-  {
-    id: "sam_bike", author: "sam", audience: "public", time: "Tuesday · 6:40 PM",
-    text: "Finally fixed up my old bike. Ready for some weekend rides!", reactions: { lee: "like" }, comments: [],
-  },
-  {
-    id: "sam_flyer", author: "sam", audience: "public", time: "Monday · 11:05 AM",
-    text: "Please join us for the Oak Street community lunch. Everyone is welcome!",
-    photos: [photo("photo_lunch_flyer", "/assets/feed/community-lunch-flyer.webp", "Flyer for the Oak Street Community Lunch, Saturday 12:00–2:00 PM at Oak Street Community Center", { width: 800, height: 1200 })],
-    reactions: { lee: "like", pat: "like", grace: "love", maria: "like" },
-    comments: [{ id: "c_flyer_1", author: "maria", time: "2d", text: "Count me in!" }],
-  },
-  {
-    id: "sam_coffee", author: "sam", audience: "public", time: "Last week",
-    text: "Thanks to everyone who came to the garden meeting. Notes coming soon.", reactions: { rosa: "like" }, comments: [],
-  },
+  // ----- T04-S: Garden Volunteers -----
+  { id: "gv_photos_note", author: "elena", group: "garden_vol", time: "Today at 10:15 AM",
+    text: "Sharing our cleanup photos 📷\nPlease share the finished flower bed. Keep the sign-in sheet private because it contains phone numbers.",
+    reactions: { rosa: "like", grace: "like" }, comments: [] },
+  { id: "gv_thanks", author: "elena", group: "garden_vol", time: "Yesterday at 4:00 PM",
+    text: "Thank you, everyone! We filled 14 bags at the cleanup.", photos: [photo("ph_bags", P("cleanup-bags"), "Garden waste bags on the grass")],
+    reactions: { lee: "love", rosa: "like" }, comments: [] },
+  { id: "gv_event", author: "elena", group: "garden_vol", time: "October 24",
+    text: "Garden cleanup this Saturday, 9 a.m. at Maple Park. Gloves and tools provided.", reactions: { grace: "like" }, comments: [] },
+  { id: "gv_rosa", author: "rosa", group: "garden_vol", time: "October 22",
+    text: "Does anyone have a spare watering can for the shared beds?", reactions: {}, comments: [{ id: "c_gvr", author: "lee", time: "Oct 22", text: "I have one, I’ll bring it.", replies: [] }] },
 
-  // ----- Maya / Nora public posts -----
-  {
-    id: "maya_books", author: "maya", audience: "public", time: "Wednesday · 10:12 AM",
-    text: "I am collecting books for the community shelf. Message me if you have some to donate. — Maya",
-    reactions: { sam: "like", daniel: "love" }, comments: [],
-  },
-  {
-    id: "nora_craftfair", author: "nora", audience: "public", time: "Today · 7:30 AM", inFeed: 3,
-    text: "Community craft fair, November 22, 10 a.m.–2 p.m., Town Hall. This is open to anyone — please invite friends and family!",
-    photos: [photo("photo_craft_fair", P("flyer-craft-fair"), "Community craft fair flyer: November 22, 10 a.m.–2 p.m., Town Hall", { width: 800, height: 1200 })],
-    reactions: { elena: "love", ben: "like" }, comments: [],
-  },
+  // ----- T06-S: recipe creators -----
+  { id: "ek_mushroom", author: "everyday_kitchen", audience: "public", time: "October 20",
+    text: "15-minute mushroom soup — creamy, simple and ready before you know it.", photos: [photo("ph_ek_m", P("recipe-mushroom-soup"), "A bowl of creamy mushroom soup")], reactions: { susan: "love" }, comments: [] },
+  { id: "ek_pasta", author: "everyday_kitchen", audience: "public", time: "October 12",
+    text: "Weeknight tomato pasta with five ingredients.", photos: [photo("ph_ek_p", P("recipe-pasta"), "Tomato pasta in a bowl")], reactions: {}, comments: [] },
+  { id: "ek_tomato", author: "everyday_kitchen", audience: "public", time: "October 3",
+    text: "Roasted tomato soup — one tray, no fuss.", photos: [photo("ph_ek_t", P("recipe-tomato-soup"), "Tomato soup")], reactions: {}, comments: [] },
+  { id: "hb_bread", author: "home_baking", audience: "public", time: "October 18",
+    text: "Crusty no-knead bread. Start it tonight, bake it tomorrow.", photos: [photo("ph_hb", P("recipe-bread"), "A loaf of crusty bread")], reactions: {}, comments: [] },
+  { id: "gt_salad", author: "garden_table", audience: "public", time: "October 16",
+    text: "Autumn garden salad with apples and walnuts.", photos: [photo("ph_gt", P("recipe-salad"), "A colorful salad")], reactions: {}, comments: [] },
+  { id: "cook_tip", author: "grace", group: "cooking", time: "October 27",
+    text: "Tip: freeze leftover herbs in olive oil in an ice-cube tray.", reactions: { susan: "like" }, comments: [] },
+  { id: "cook_kim", author: "kim", group: "cooking", time: "October 21",
+    text: "Does anyone know a good account for slow-cooker meals?", reactions: {}, comments: [] },
 
-  // ----- Recipe creator posts (shared in Susan's chat) -----
-  {
-    id: "recipe_tomato", author: "tomato_thyme", audience: "public", time: "October 2",
-    text: "ROASTED TOMATO SOUP — tomatoes, red pepper, onion, garlic, vegetable broth, basil, salt and pepper. Roast, blend, and simmer for 10 minutes.",
-    photos: [photo("photo_recipe_tomato", P("recipe-tomato-soup"), "Bowl of roasted tomato soup", { width: 800, height: 600 })],
-    reactions: {}, comments: [],
-  },
-  {
-    id: "recipe_mushroom", author: "everyday_kitchen", audience: "public", time: "October 5",
-    text: "CREAMY MUSHROOM SOUP — mushrooms, onion, garlic, butter, milk, vegetable broth, thyme, salt and pepper. Cook until creamy. Ready in 25 minutes!",
-    photos: [photo("photo_recipe_mushroom", P("recipe-mushroom-soup"), "Bowl of creamy mushroom soup", { width: 800, height: 600 })],
-    reactions: {}, comments: [],
-  },
-  {
-    id: "recipe_lentil", author: "lentil_lane", audience: "public", time: "October 4",
-    text: "HEARTY LENTIL SOUP — lentils, onion, carrots, celery, vegetable broth, garlic, cumin, salt and pepper. Simmer for 30 minutes.",
-    photos: [photo("photo_recipe_lentil", P("recipe-lentil-soup"), "Bowl of lentil soup", { width: 800, height: 600 })],
-    reactions: {}, comments: [],
-  },
-  {
-    id: "ek_salad", author: "everyday_kitchen", audience: "public", time: "September 28",
-    text: "10-minute chickpea salad — chickpeas, cucumber, tomato, red onion, lemon and olive oil.", reactions: {}, comments: [],
-  },
+  // ----- T07-S: public groups -----
+  { id: "fx_boxes", author: "tom", group: "free_exchange", time: "October 29",
+    text: "Does anyone need moving boxes? I have about ten.", reactions: { grace: "like" }, comments: [{ id: "c_fx1", author: "kim", time: "Oct 29", text: "Yes please! I’ll message you.", replies: [] }] },
+  { id: "fx_thanks", author: "grace", group: "free_exchange", time: "October 25",
+    text: "Thank you to the neighbor who took my old bookshelf!", reactions: { lee: "love" }, comments: [] },
+  { id: "bs_bike", author: "luis", group: "buy_sell", time: "October 28",
+    text: "Selling: kids’ bike, good condition, $40.", reactions: {}, comments: [] },
 
-  // ----- Oak Street Neighbors -----
-  {
-    id: "oak_shared_lunch", author: "me", group: "oak", time: "Monday · 4:02 PM", inFeed: 5,
-    text: "Sam asked me to share this here — hope lots of us can make it!",
-    sharedPostId: "sam_flyer",
-    reactions: { lee: "like", pat: "like", grace: "like" },
-    comments: [
-      { id: "c_oak_join", author: "grace", time: "Mon", text: "I’ll join! 👍" },
-      { id: "c_oak_entrance_q", author: "lee", time: "Mon", text: "I’m bringing my father, who uses a walker. There’s an entrance on Oak Street and another beside the parking lot. Which would be easier for us?", replies: [
-        { id: "c_oak_entrance_a", author: "pat", time: "Mon", text: "The second one has a ramp and a step-free path to the lunch room. I’d use that one." },
-      ] },
-      { id: "c_oak_nice", author: "tom", time: "Mon", text: "Nice, thanks for sharing 👌" },
-      { id: "c_oak_attendance", author: "pat", time: "Tue", text: "Who’s planning to come to the lunch? Please let us know if you’re bringing anyone.", replies: [] },
-    ],
-  },
-  {
-    id: "oak_ladder", author: "pat", group: "oak", time: "Today · 10:20 AM",
-    text: "Does anyone have a step ladder I could borrow?", reactions: {},
-    comments: [{ id: "c_ladder_1", author: "tom", time: "1h", text: "Mine is broken, sorry Pat!" }],
-  },
-  {
-    id: "oak_repair_nov", author: "pat", group: "oak", time: "Yesterday · 9:00 AM",
-    text: "#RepairCafe November 9: Town Hall, open 10 a.m.–1 p.m. Bring broken lamps, toasters, bikes and clothes — our volunteers will help fix them.",
+  // ----- T08-S: Maple Library -----
+  { id: "lib_hours_new", author: "maple_library", audience: "public", time: "October 27",
+    text: "#LibraryHours New opening hours from November 1: weekdays 10 a.m.–6 p.m.; Saturday 10 a.m.–2 p.m.; Sunday closed.",
+    photos: [photo("ph_lib_new", P("library-hours"), "Maple Library new opening hours from November 1")], reactions: { grace: "like", lee: "like" },
+    comments: [{ id: "c_lib1", author: "grace", time: "4d", text: "Thanks for letting us know!", replies: [] }] },
+  { id: "lib_hours_old", author: "maple_library", audience: "public", time: "June 2",
+    text: "#LibraryHours Summer opening hours: weekdays 9 a.m.–7 p.m.; Saturday 10 a.m.–4 p.m.; Sunday noon–4 p.m.",
+    photos: [photo("ph_lib_old", P("library-summer-hours"), "Maple Library summer hours")], reactions: { tom: "like" }, comments: [] },
+  { id: "lib_story", author: "maple_library", audience: "public", time: "October 15",
+    text: "Story time for children every Wednesday at 10 a.m.", reactions: {}, comments: [] },
+  { id: "resident_lib", author: "tom", audience: "public", time: "October 29",
+    text: "Spent a lovely afternoon in the library garden. #LibraryHours well spent!", reactions: {}, comments: [] },
+
+  // ----- T11-S: Alex's public book-sale post -----
+  { id: "my_booksale", author: "me", audience: "public", time: "October 26",
+    text: "Book sale, November 23, 10 a.m.–4 p.m., Maple Hall.",
     reactions: { lee: "like", grace: "like" },
     comments: [
-      { id: "c_repair_q", author: "lee", time: "20h", text: "Should I take my broken lamp to Town Hall or the library annex?", replies: [
-        { id: "c_repair_a", author: "pat", time: "19h", text: "The library annex is only for collecting repaired items. Bring things that still need fixing to Town Hall." },
-      ] },
-    ],
-  },
-  {
-    id: "oak_toolswap", author: "lee", group: "oak", time: "Sunday · 2:15 PM",
-    text: "#ToolSwap this Sunday on my driveway — bring tools you don’t use and swap for ones you need.", reactions: { tom: "like" }, comments: [],
-  },
-  {
-    id: "oak_repair_oct", author: "lee", group: "oak", time: "October 1",
-    text: "#RepairCafe October update: thanks to everyone who came on October 12 — we fixed 23 items! Next date to be announced.", reactions: { pat: "love" }, comments: [],
-  },
-
-  // ----- Book Club -----
-  {
-    id: "book_reading_list", author: "nora", group: "book", time: "Wednesday · 6:00 PM",
-    text: "Here is the final November reading list. Members are welcome to send it to friends.",
-    links: [{ kind: "pdf", docId: "nov_reading" }],
-    reactions: { ben: "like" }, comments: [],
-  },
-  {
-    id: "book_poll", author: "nora", group: "book", time: "Today · 8:00 AM",
-    text: "Time to choose our December book!",
-    poll: { question: "December book choice", multiple: false, options: [
-      { id: "river", text: "The River Path", votes: ["ben"] },
-      { id: "winter", text: "Winter Letters", votes: ["nora"] },
-      { id: "garden", text: "A Small Garden", votes: [] },
+      { id: "c_bs_lee", author: "lee", time: "Oct 26", text: "I’ll bring a bag of paperbacks!", replies: [] },
+      { id: "c_bs_maya", author: "maya", time: "Oct 30", text: "Small correction: we close at 2 p.m., not 4. The start time and place are unchanged.", replies: [] },
     ] },
-    reactions: {}, comments: [],
-  },
-  {
-    id: "book_planning", author: "nora", group: "book", time: "Yesterday · 5:10 PM",
-    text: "Planning our November meeting — I’ve posted two options as separate comments. Please reply to the one that works for you.",
-    reactions: { ben: "like" },
+  { id: "my_sunset", author: "me", audience: "public", time: "October 14",
+    text: "Lovely sunset walk by the river this evening.", reactions: { sam: "love" }, comments: [] },
+  { id: "my_soup", author: "me", audience: "friends", time: "October 5",
+    text: "First soup of the season!", reactions: { susan: "love" }, comments: [] },
+
+  // ----- T12-S: Community Volunteers -----
+  { id: "cv_training", author: "priya", group: "community_vol", time: "Yesterday at 11:00 AM",
+    text: "We need to choose a date for volunteer training. Please suggest times in the comments. Alex, after reading the discussion, could you create a poll in the group?",
+    reactions: { luis: "like", kim: "like" },
     comments: [
-      { id: "c_book_library", author: "nora", time: "1d", text: "Library meeting, November 6 at 2 p.m.", replies: [
-        { id: "c_book_library_r", author: "nora", time: "1d", text: "The library has a quiet room we can use." },
-      ] },
-      { id: "c_book_cafe", author: "nora", time: "1d", text: "Café meeting, November 13 at 2 p.m.", replies: [
-        { id: "c_book_cafe_ben", author: "ben", time: "20h", text: "I cannot make this one." },
-      ] },
-    ],
-  },
-  {
-    id: "book_oct_list", author: "nora", group: "book", time: "September 30",
-    text: "October reading list is here.", links: [{ kind: "pdf", docId: "oct_reading" }], reactions: { ben: "like" }, comments: [],
-  },
-
-  // ----- Walking Group -----
-  {
-    id: "walk_booking", author: "elena", group: "walk", time: "Today · 9:45 AM",
-    text: "I have booked our table at River Café for 11 a.m.", reactions: { omar: "like" }, comments: [],
-  },
-  {
-    id: "walk_announcement", author: "elena", group: "walk", time: "Today · 7:50 AM",
-    text: "Saturday’s outdoor walk is cancelled because of rain. We are still meeting inside River Café at 11 a.m.",
-    reactions: { omar: "sad" }, comments: [{ id: "c_walk_ann_1", author: "omar", time: "2h", text: "Shame about the walk, see you at the café!" }],
-  },
-  {
-    id: "walk_rain", author: "omar", group: "walk", time: "Yesterday · 8:30 PM",
-    text: "The forecast says heavy rain all Saturday morning ☔", reactions: { elena: "like" }, comments: [],
-  },
-  {
-    id: "walk_meeting", author: "elena", group: "walk", time: "Yesterday · 6:00 PM",
-    text: "Saturday meeting places — tap a link to open it in maps.",
-    links: [{ kind: "map", placeId: "river_cafe" }, { kind: "map", placeId: "river_park" }],
-    reactions: {}, comments: [],
-  },
-  {
-    id: "walk_plan", author: "elena", group: "walk", time: "Monday · 9:00 AM",
-    text: "Saturday plan: outdoor walk along the river at 9 a.m., then we’ll warm up inside River Café at 11 a.m.", reactions: { omar: "like" }, comments: [],
-  },
-  {
-    id: "walk_riverside_map", author: "elena", group: "walk", time: "September 21",
-    text: "Riverside Walk map — Start: Boat House; Finish: Stone Bridge.",
-    photos: [photo("photo_riverside_map", P("map-riverside-walk"), "Riverside Walk map. Start: Boat House. Finish: Stone Bridge.", { width: 800, height: 600 })],
-    reactions: { omar: "like" }, comments: [],
-  },
-  {
-    id: "walk_hill_map", author: "omar", group: "walk", time: "September 14",
-    text: "Hill Trail map for anyone wanting a harder walk.",
-    photos: [photo("photo_hill_map", P("map-hill-trail"), "Hill Trail map. Start: Car Park. Finish: Hilltop.", { width: 800, height: 600 })],
-    reactions: {}, comments: [],
-  },
-  {
-    id: "walk_cafe_menu", author: "omar", group: "walk", time: "September 10",
-    text: "River Café menu, in case anyone wants to plan ahead.",
-    photos: [photo("photo_cafe_menu", P("river-cafe-menu"), "River Café menu", { width: 800, height: 1000 })],
-    reactions: {}, comments: [],
-  },
-
-  // ----- Volunteer Team -----
-  {
-    id: "vol_equipment", author: "priya", group: "volunteer", time: "Today · 8:30 AM",
-    text: "Equipment for November 8 — let me know what you can bring.",
-    reactions: {},
-    comments: [
-      { id: "c_vol_tablecloth", author: "luis", time: "3h", text: "I can bring the tablecloths." },
-      { id: "c_vol_chairs", author: "priya", time: "2h", text: "@Alex, can you bring two folding chairs on November 8?", replies: [] },
-    ],
-  },
-  {
-    id: "vol_supplies", author: "priya", group: "volunteer", time: "Yesterday · 4:00 PM",
-    text: "Here are the supplies we have spare. Happy for you to share these photos with anyone collecting them.",
-    photos: [
-      photo("photo_supply_notebooks", P("supply-notebooks"), "Notebooks", { caption: "Notebooks", width: 800, height: 600 }),
-      photo("photo_supply_pens", P("supply-pens"), "Pens", { caption: "Pens", width: 800, height: 600 }),
-      photo("photo_supply_spray", P("supply-cleaning-spray"), "Cleaning spray", { caption: "Cleaning spray", width: 800, height: 600 }),
-      photo("photo_supply_gloves", P("supply-gloves"), "Gloves", { caption: "Gloves", width: 800, height: 600 }),
-    ],
-    reactions: { luis: "like" }, comments: [],
-  },
-  {
-    id: "vol_rota_final", author: "priya", group: "volunteer", time: "Monday · 3:00 PM",
-    text: "Final rota for November 8.", files: ["rota_nov_final"],
-    reactions: { luis: "like" },
-    comments: [
-      { id: "c_rota_swap", author: "luis", time: "Mon", text: "@Alex would you swap with me? I’d take your welcome desk shift and you’d take my packing shift.", replies: [
-        { id: "c_rota_swap_ok", author: "priya", time: "Tue", text: "@Alex Swap approved. You will take Luis’s packing shift, noon to 2; Luis will cover your welcome desk shift." },
-      ] },
-    ],
-  },
-  {
-    id: "vol_rota_draft", author: "priya", group: "volunteer", time: "Last week",
-    text: "Draft rota for November 8 — comments welcome.", files: ["rota_nov_draft"], reactions: {}, comments: [],
-  },
-  {
-    id: "vol_rota_oct", author: "priya", group: "volunteer", time: "October 20",
-    text: "Final rota for October 25.", files: ["rota_oct_final"], reactions: {}, comments: [],
-  },
-
-  // ----- Family group -----
-  {
-    id: "family_music", author: "anna", group: "family", time: "Yesterday · 6:15 PM",
-    text: "Noah loved his first music lesson!",
-    photos: [photo("photo_music_lesson", P("noah-music-lesson"), "Piano at Noah's music lesson", { width: 800, height: 600 })],
-    reactions: { adam: "love" }, comments: [],
-  },
-  {
-    id: "family_dinner", author: "adam", group: "family", time: "Sunday · 7:00 PM",
-    text: "Great family dinner tonight — thanks Anna!", reactions: { anna: "love" }, comments: [],
-  },
-
-  // ----- Garden Club -----
-  {
-    id: "garden_rosa_contact", author: "rosa", group: "garden", time: "Today · 9:05 AM",
-    text: "@Alex You can send Sam my contact so he can ask me about joining.", reactions: {}, comments: [],
-  },
-  {
-    id: "garden_poll", author: "rosa", group: "garden", time: "Yesterday · 10:00 AM",
-    text: "Planning our autumn planting!",
-    poll: { question: "Which planting sessions can you attend?", multiple: true, options: [
-      { id: "tue", text: "Tuesday morning", votes: ["ben"] },
-      { id: "thu", text: "Thursday afternoon", votes: [] },
-      { id: "sat", text: "Saturday morning", votes: ["ben", "rosa"] },
+      { id: "c_cv_luis", author: "luis", time: "1d", text: "Tuesday morning works for me.", replies: [] },
+      { id: "c_cv_kim", author: "kim", time: "1d", text: "Thursday afternoon would be better for me.", replies: [] },
+      { id: "c_cv_grace", author: "grace", time: "20h", text: "What about Saturday morning?", replies: [] },
+      { id: "c_cv_priya", author: "priya", time: "3h", text: "Saturday is no longer available. Please offer the two weekday options and let people choose every option they can attend.", replies: [] },
     ] },
-    reactions: {}, comments: [],
-  },
-  {
-    id: "garden_planters", author: "rosa", group: "garden", time: "Tuesday · 2:00 PM",
-    text: "Comparing two planters for balconies — pictures in the comments.",
-    reactions: { ben: "like" },
-    comments: [
-      { id: "c_planter_deep", author: "rosa", time: "Tue", text: "Deep wooden planter", image: photo("photo_planter_deep", P("planter-deep-wooden"), "Deep wooden planter"), replies: [
-        { id: "c_planter_reco", author: "rosa", time: "Wed", text: "This one gives the roots more room. I would choose it for the balcony." },
-      ] },
-      { id: "c_planter_tray", author: "rosa", time: "Tue", text: "Shallow green tray", image: photo("photo_planter_tray", P("planter-shallow-tray"), "Shallow green tray"), replies: [] },
-    ],
-  },
-  {
-    id: "garden_seeds", author: "ben", group: "garden", time: "Monday · 5:00 PM",
-    text: "Seed starting instructions: soak seeds overnight, plant 1 cm deep, keep the soil moist and warm.", reactions: { rosa: "like" }, comments: [],
-  },
-  {
-    id: "garden_tools", author: "rosa", group: "garden", time: "September 28",
-    text: "Borrowing tools: collect from the shed between 9 and 10 a.m.; return by 4 p.m.", reactions: { ben: "like" }, comments: [],
-  },
+  { id: "cv_supplies", author: "priya", group: "community_vol", time: "October 28",
+    text: "Supplies list for the food drive: boxes, tape and markers. Please comment if you can bring something.", reactions: {},
+    comments: [{ id: "c_cvs", author: "luis", time: "Oct 28", text: "I can bring tape.", replies: [] }] },
+  { id: "cv_supplies2", author: "kim", group: "community_vol", time: "October 24",
+    text: "The supply cupboard key is at the front desk now.", reactions: { priya: "like" }, comments: [] },
 
-  // ----- Craft Circle -----
-  {
-    id: "craft_welcome", author: "nora", group: "craft", time: "Monday · 12:00 PM",
-    text: "Sewing workshop details are in our group chat. See you there!", reactions: { elena: "like" }, comments: [],
-  },
-
-  // ----- Museum Friends -----
-  {
-    id: "museum_visit", author: "daniel", group: "museum", time: "Monday · 10:00 AM",
-    text: "Our next visit is booked!",
-    event: { title: "Guided tour", date: "November 15", month: "NOV", day: "15", time: "2:30 p.m.", place: "City Art Museum" },
-    photos: [photo("photo_museum", P("museum-visit"), "City Art Museum", { width: 800, height: 600 })],
-    reactions: { maya: "like" },
-    comments: [
-      { id: "c_museum_meet", author: "daniel", time: "Mon", text: "Please meet by the ticket desk 20 minutes before the tour starts." },
-      { id: "c_museum_lockers", author: "me", time: "Tue", text: "Are there lockers at the museum?", replies: [
-        { id: "c_museum_lockers_a", author: "daniel", time: "1h", text: "Yes, free lockers are beside the ticket desk." },
-      ] },
-    ],
-  },
-  {
-    id: "museum_poll", author: "daniel", group: "museum", time: "Yesterday · 1:00 PM",
-    text: "Which visit time works best?",
-    poll: { question: "Preferred museum visit", multiple: true, options: [
-      { id: "am", text: "Morning, 10 a.m.", votes: ["maya"] },
-      { id: "pm", text: "Afternoon, 2:30 p.m.", votes: ["daniel"] },
-    ] },
-    reactions: {}, comments: [],
-  },
-  {
-    id: "museum_pickup", author: "daniel", group: "museum", time: "Today · 11:00 AM",
-    text: "Pickup information for after the visit. Drivers should use the south pickup bay, not the front entrance.",
-    links: [{ kind: "map", placeId: "museum_south" }, { kind: "pdf", docId: "museum_pickup" }, { kind: "map", placeId: "museum_front" }],
-    reactions: { maya: "like" }, comments: [],
-  },
+  // ----- T13-S: Maple Music -----
+  { id: "mm_2026", author: "maple_music", audience: "public", time: "October 30",
+    text: "Summer concert, June 20, 2026, 6 p.m., Riverside Stage. Save the date!",
+    photos: [photo("ph_mm26", P("concert-2026"), "Summer concert 2026 flyer: June 20, 2026, 6 p.m., Riverside Stage")], reactions: { lee: "love" }, comments: [] },
+  { id: "mm_2025", author: "maple_music", audience: "public", time: "May 2, 2025",
+    text: "Summer concert, June 12, 2025, 6 p.m., Riverside Stage.",
+    photos: [photo("ph_mm25", P("concert-2025"), "Summer concert 2025 flyer: June 12, 2025, 6 p.m., Riverside Stage")], reactions: { tom: "like" }, comments: [] },
 ];
 
-// Saved items (by post id), newest first
-export const saved = ["walk_cafe_menu", "walk_riverside_map", "walk_hill_map"];
+export const saved = [];
+
+// ---------- Stories (T05-S, T10-S). Items never expire during a session. ----------
+export const stories = [
+  { id: "st_elena", author: "elena", time: "1h", audience: "public", items: [
+    { id: "st_elena_1", kind: "text", text: "Rain today—meeting indoors instead. Same time, 11 a.m.", bg: "#41658a" },
+    { id: "st_elena_2", kind: "text", text: "River Café, 18 River Road", bg: "#2e8b57", icon: "pin" },
+  ] },
+  { id: "st_sam", author: "sam", time: "3h", audience: "friends", items: [
+    { id: "st_sam_1", kind: "photo", src: P("gallery-garden-flowers"), alt: "Flowers", text: "Last flowers of the year 🌼" },
+  ] },
+  { id: "st_lee", author: "lee", time: "5h", audience: "friends", items: [
+    { id: "st_lee_1", kind: "text", text: "Coffee and the crossword ☕", bg: "#8a5a2b" },
+  ] },
+  { id: "st_library", author: "maple_library", time: "8h", audience: "public", items: [
+    { id: "st_lib_1", kind: "text", text: "New large-print books have arrived!", bg: "#20364d" },
+  ] },
+];
+
+// ---------- Events (T09-S) ----------
+export const events = {
+  ev_museum: {
+    id: "ev_museum", title: "Maple Museum afternoon visit", host: "daniel",
+    month: "NOV", day: "16", dateLabel: "Sunday, November 16", time: "2 p.m.", place: "Maple Museum",
+    cover: P("museum-visit"), privacy: "Private · Guests can invite friends", guestsCanInvite: true,
+    description: "Join us for an afternoon at Maple Museum. Meet at the main entrance at 2 p.m.",
+    updates: [{ id: "evu_1", author: "daniel", time: "Yesterday", text: "Please use the south entrance instead. Meet 15 minutes earlier so we can enter together." }],
+    invitedYou: true, myRsvp: null,
+    going: ["maya", "lee"], maybe: ["grace"], invited: ["sam", "susan"],
+  },
+  ev_seed: {
+    id: "ev_seed", title: "Seed swap", host: "rosa", month: "NOV", day: "9", dateLabel: "Sunday, November 9", time: "10 a.m.",
+    place: "Community Garden", cover: P("gallery-garden-flowers"), privacy: "Public", guestsCanInvite: true,
+    description: "Bring seeds in labeled envelopes.", updates: [], invitedYou: false, myRsvp: "going", going: ["grace", "lee"], maybe: [], invited: [],
+  },
+  ev_potluck: {
+    id: "ev_potluck", title: "Oak Street potluck", host: "pat", month: "NOV", day: "30", dateLabel: "Sunday, November 30", time: "Noon",
+    place: "Oak Street Park pavilion", cover: P("lee-garden-after-rain"), privacy: "Private", guestsCanInvite: false,
+    description: "Bring a dish to share.", updates: [], invitedYou: true, myRsvp: "maybe", going: ["tom"], maybe: [], invited: [],
+  },
+};
+
+// ---------- Friend requests (T02-S) ----------
+export const friendRequests = [
+  { id: "fr_ben", from: "ben_ortiz", time: "2d", mutual: 1 },
+  { id: "fr_bea", from: "bea_ortega", time: "5d", mutual: 0 },
+];
 
 // ---------- Notifications ----------
+// route: where the notification opens.
 export const notifications = [
-  { id: "n_priya", actor: "priya", text: "mentioned you in a comment in Volunteer Team: “@Alex, can you bring two folding chairs on November 8?”", time: "2h", postId: "vol_equipment", commentId: "c_vol_chairs", unread: true },
-  { id: "n_daniel", actor: "daniel", text: "replied to your comment in Museum Friends: “Yes, free lockers are beside the ticket desk.”", time: "1h", postId: "museum_visit", commentId: "c_museum_lockers_a", unread: true },
-  { id: "n_lee", actor: "lee", text: "reacted to your post in Oak Street Neighbors.", time: "3h", postId: "oak_shared_lunch", unread: true },
-  { id: "n_anna", actor: "anna", text: "added a new photo.", time: "5h", postId: "anna_noah" },
-  { id: "n_nora", actor: "nora", text: "posted in Book Club: “Time to choose our December book!”", time: "6h", postId: "book_poll" },
-  { id: "n_maria", actor: "maria", text: "has a birthday today. Wish her well!", time: "8h", profileId: "maria" },
-  { id: "n_elena", actor: "elena", text: "posted in Walking Group.", time: "1d", postId: "walk_rain" },
+  { id: "n_rosa", actor: "rosa", text: "replied to your post: “The one in the blue pot needs more water…”", time: "2h", unread: true,
+    route: { name: "post", postId: "my_plants", focusCommentId: "c_pl_rosa" } },
+  { id: "n_ben", actor: "ben_ortiz", text: "sent you a friend request.", time: "2d", unread: true, route: { name: "friends" } },
+  { id: "n_daniel", actor: "daniel", text: "invited you to his event: Maple Museum afternoon visit.", time: "2d", unread: true, route: { name: "event", eventId: "ev_museum" } },
+  { id: "n_lee", actor: "lee", text: "commented on your post: “Your balcony looks lovely!”", time: "1d", unread: false, route: { name: "post", postId: "my_plants", focusCommentId: "c_pl_lee" } },
+  { id: "n_maya", actor: "maya", text: "commented on your post: “Small correction…”", time: "Oct 30", unread: false, route: { name: "post", postId: "my_booksale", focusCommentId: "c_bs_maya" } },
+  { id: "n_pat", actor: "pat", text: "posted in Oak Street Neighbors.", time: "Yesterday", unread: false, route: { name: "group", groupId: "oak" } },
+  { id: "n_bea", actor: "bea_ortega", text: "sent you a friend request.", time: "5d", unread: false, route: { name: "friends" } },
 ];
 
-// ---------- Device photo gallery ----------
+// ---------- Study phone photo gallery ----------
 export const gallery = [
-  { id: "g_cake", title: "Noah birthday cake", src: P("gallery-noah-birthday-cake") },
-  { id: "g_flowers", title: "Garden flowers", src: P("gallery-garden-flowers") },
-  { id: "g_receipt", title: "Shopping receipt", src: P("gallery-shopping-receipt") },
+  { id: "g_bowl", title: "Finished bowl.jpg", src: P("finished-bowl") },
+  { id: "g_flowerbed", title: "Finished flower bed.jpg", src: P("finished-flower-bed") },
+  { id: "g_signin", title: "Volunteer sign-in sheet.jpg", src: P("volunteer-signin-sheet") },
+  { id: "g_lamp", title: "Desk lamp.jpg", src: P("desk-lamp") },
+  { id: "g_kettle", title: "Kettle.jpg", src: P("household-kettle") },
+  { id: "g_chair", title: "Garden chair.jpg", src: P("household-chair") },
+  { id: "g_shelf", title: "Bookshelf.jpg", src: P("household-bookshelf") },
+  { id: "g_craft_final", title: "Craft session FINAL.jpg", src: P("craft-session-final") },
+  { id: "g_flowers", title: "Garden flowers.jpg", src: P("gallery-garden-flowers") },
+  { id: "g_cake", title: "Birthday cake.jpg", src: P("gallery-noah-birthday-cake") },
 ];
 
-// ---------- Messenger conversations ----------
-// Message: { id, from, text?, day, time, photos?, sharedPostId?, audio?, replyTo?, profileId?, edited? }
+// ---------- Private conversations ----------
 let n = 0;
 const m = (from, day, time, body) => ({ id: `m${++n}`, from, day, time, ...(typeof body === "string" ? { text: body } : body) });
 
-const susanMessages = [
-  m("susan", "October 3", "9:10 AM", "October 12 coffee: Maple Café, 24 Maple Street"),
-  m("me", "October 3", "9:14 AM", "Perfect, see you there!"),
-  m("susan", "October 4", "4:30 PM", "Heads up: Pine Avenue will be closed for repaving on October 20, 8 a.m.–noon."),
-  m("susan", "October 9", "7:05 PM", "I have some books to give away. Let me know if you hear of anyone collecting them."),
-  m("me", "October 9", "7:20 PM", "Will do!"),
-  m("susan", "October 14", "11:00 AM", "October 26 coffee: River Café, 18 River Road"),
-  m("me", "October 14", "11:06 AM", "Great, that one is closer for me."),
-  m("susan", "Today", "8:02 AM", "Found some soup recipes for when it gets cold!"),
-  { ...m("susan", "Today", "8:03 AM", { sharedPostId: "recipe_tomato" }), id: "susan_tomato" },
-  { ...m("susan", "Today", "8:03 AM", { sharedPostId: "recipe_mushroom" }), id: "susan_mushroom" },
-  { ...m("susan", "Today", "8:04 AM", { sharedPostId: "recipe_lentil" }), id: "susan_lentil" },
-  m("me", "Today", "8:20 AM", "These look great, thank you!"),
-  m("susan", "Today", "8:22 AM", "How was your weekend?"),
-  m("me", "Today", "8:25 AM", "Busy! We went to the farmers market on Saturday."),
-  m("susan", "Today", "8:26 AM", "Lucky you. It rained all day here."),
-  m("susan", "Today", "8:27 AM", "Did you get those apples you wanted?"),
-  m("me", "Today", "8:31 AM", "Yes, a whole bag. I might make a crumble."),
-  m("susan", "Today", "8:33 AM", "Save me a piece 😄"),
-  m("me", "Today", "8:35 AM", "Of course!"),
-  m("susan", "Today", "8:40 AM", "Is Noah enjoying kindergarten?"),
-  m("me", "Today", "8:42 AM", "He loves it. Anna says he talks about his teacher all the time."),
-  m("susan", "Today", "8:45 AM", "That’s lovely to hear."),
-  m("me", "Today", "8:47 AM", "Are you still coming over tonight?"),
-  m("susan", "Today", "8:48 AM", "Yes! Around 6."),
-  { ...m("susan", "Today", "8:52 AM", { text: "This creator shares lots of quick, healthy recipes. You might like their other posts too.", replyTo: "susan_mushroom" }), id: "susan_reco" },
+const susanMsgs = [
+  m("susan", "Oct 28", "6:02 PM", "I’ve been finding some great recipes lately. Have a look!"),
+  m("susan", "Oct 28", "6:03 PM", { id: "su_mushroom", sharedPostId: "ek_mushroom" }),
+  m("susan", "Oct 28", "6:03 PM", { id: "su_bread", sharedPostId: "hb_bread" }),
+  m("susan", "Oct 28", "6:04 PM", { id: "su_salad", sharedPostId: "gt_salad" }),
+  m("me", "Oct 28", "7:15 PM", "These all look delicious!"),
+  m("susan", "Oct 28", "7:20 PM", { id: "su_reco", replyTo: "su_mushroom", text: "This creator has lots of quick, simple recipes. You might like their other posts." }),
+  m("susan", "Yesterday", "9:10 AM", "Are you going to the craft session next month?"),
+  m("me", "Yesterday", "9:30 AM", "I think so! I’ll let you know."),
 ];
-
-const mayaMessages = [
-  m("maya", "October 10", "6:00 PM", "My mum is visiting this weekend, so I’ll be a bit slow to reply."),
-  m("me", "October 10", "6:10 PM", "Have a lovely time with her!"),
-  { ...m("maya", "October 15", "9:30 AM", "Oak Street closure, October 18: closed between Pine Avenue and River Road, 1–6 p.m."), id: "maya_notice" },
-  m("me", "October 15", "9:41 AM", "Thanks for letting me know."),
-  m("maya", "October 15", "12:15 PM", "My brother just had his second baby — a girl! 🎉"),
-  m("me", "October 15", "12:20 PM", "Congratulations to him! What’s her name?"),
-  m("maya", "October 15", "12:22 PM", "Lily. Mum is over the moon."),
-  { ...m("maya", "October 16", "8:05 AM", { text: "Update from the road crew: reopening is now 5 p.m., not 6 p.m. The closure still starts at 1.", replyTo: "maya_notice" }), id: "maya_correction" },
-  m("maya", "October 16", "8:30 AM", "Off to help my sister move house today. Wish me luck!"),
-  m("me", "October 16", "8:45 AM", "Good luck — don’t lift anything too heavy!"),
-  m("maya", "October 17", "7:15 PM", "The kids loved the pumpkin patch."),
-  { ...m("maya", "Today", "10:30 AM", "I am collecting books for the community shelf. Do you have any books to donate? If so, what can you bring, and when?"), id: "maya_books_q" },
+const adamMsgs = [
+  m("adam", "Oct 26", "3:10 PM", "Any plans for next summer? 😄"),
+  m("me", "Oct 26", "3:40 PM", { id: "ad_concert", sharedPostId: "mm_2025" }),
+  m("me", "Oct 26", "3:40 PM", "Shall we go to this together?"),
+  m("adam", "Oct 26", "5:02 PM", "Count me in!"),
+  m("adam", "Today", "8:15 AM", "Are we still on for Elena’s walk today?"),
+  m("me", "Today", "8:30 AM", "Yes! I’ll check her story for any changes."),
 ];
-
-const familyMessages = [
-  m("anna", "Monday", "3:10 PM", "Look what Noah made at school this week!"),
-  { ...m("anna", "Monday", "3:11 PM", { photos: [photo("art_kite", P("art-red-kite"), "Photo")] }) },
-  { ...m("anna", "Monday", "3:11 PM", { photos: [photo("art_tree", P("art-green-tree"), "Photo")] }) },
-  m("adam", "Monday", "3:20 PM", "Wonderful! 🎨"),
-  { ...m("anna", "Monday", "3:25 PM", { photos: [photo("art_boat", P("art-blue-boat"), "Photo")] }) },
-  { ...m("anna", "Monday", "3:26 PM", { photos: [photo("art_sun", P("art-yellow-sun"), "Photo")] }) },
-  m("me", "Monday", "3:40 PM", "He’s a real artist!"),
-  { ...m("anna", "Tuesday", "5:02 PM", { photos: [photo("art_fish", P("art-orange-fish"), "Photo")] }) },
-  { ...m("anna", "Tuesday", "5:02 PM", { photos: [photo("art_flower", P("art-purple-flower"), "Photo")] }) },
-  m("adam", "Tuesday", "5:30 PM", "We need a bigger fridge for all of these 😄"),
-  m("anna", "Today", "9:00 AM", "Plans for this afternoon:"),
-  m("anna", "Today", "9:01 AM", "Adam will pick Noah up. I will meet them at home."),
-  { ...m("adam", "Today", "9:05 AM", "Should I bring his coat?"), id: "family_coat_q" },
-  { ...m("anna", "Today", "9:07 AM", { text: "Yes, please. Noah left it at your house. He will need it for the playground afterward.", replyTo: "family_coat_q" }) },
+const elenaMsgs = [
+  m("elena", "Oct 20", "10:00 AM", "Thanks for coming on Saturday’s walk!"),
+  m("me", "Oct 20", "10:30 AM", "It was lovely, thank you."),
+  m("elena", "Today", "9:05 AM", { id: "el_map", text: "Here is the River Café map for today: https://maps.example/place/river-cafe-18-river-road" }),
 ];
-
-const noraMessages = [
-  m("nora", "October 2", "10:00 AM", "Thanks for coming to the craft evening!"),
-  m("nora", "October 2", "10:05 AM", "The lamp I mentioned is the clip-on one from the hardware store — great for evening sewing."),
-  { ...m("nora", "October 3", "2:15 PM", "For the workshop I recommend the StitchMate 200."), id: "nora_stitchmate" },
-  m("me", "October 3", "2:30 PM", "Thanks, I’ll look it up."),
-  m("nora", "October 6", "5:00 PM", "I found some lovely cotton fabric at the market — I’ll bring extra."),
-  m("me", "October 6", "5:20 PM", "Can’t wait to see it!"),
-  { ...m("nora", "Today", "11:15 AM", "Will you bring scissors to the sewing workshop?"), id: "nora_scissors_q" },
+const noraMsgs = [
+  m("nora", "Oct 22", "2:00 PM", "Thanks for helping with the craft session! Here’s a first draft of the flyer."),
+  m("nora", "Oct 22", "2:01 PM", { id: "no_draft", photos: [photo("ph_craft_draft", P("craft-session-draft"), "Craft session flyer marked DRAFT: November 22, 3 p.m., Community Center studio", { caption: "Craft session DRAFT.jpg" })] }),
+  m("me", "Oct 22", "4:30 PM", "Looks great!"),
+  m("nora", "Yesterday", "11:20 AM", "Small change — the studio is booked until 4, so we’re starting an hour later. Here is the final flyer."),
+  m("nora", "Yesterday", "11:21 AM", { id: "no_final", photos: [photo("ph_craft_final", P("craft-session-final"), "Craft session flyer marked FINAL: November 22, 4 p.m., Community Center studio", { caption: "Craft session FINAL.jpg" })] }),
+];
+const samMsgs = [
+  m("sam", "Oct 29", "5:00 PM", "Thanks for taking some tomatoes!"),
+  m("me", "Oct 29", "5:20 PM", "Thank you! They were delicious."),
+  m("sam", "Oct 30", "8:00 AM", "How are your balcony plants doing? Mine are looking a bit sad."),
+];
+const priyaMsgs = [
+  m("priya", "Oct 27", "1:00 PM", "Thanks for helping at the food drive!"),
 ];
 
 export const conversations = [
-  { id: "c_susan", kind: "dm", with: "susan", messages: susanMessages },
-  { id: "c_maya", kind: "dm", with: "maya", messages: mayaMessages },
-  { id: "c_adam", kind: "dm", with: "adam", messages: [
-    m("adam", "Today", "7:45 AM", "Morning! Oak Street is closed this afternoon, by the way."),
-    m("me", "Today", "7:50 AM", "Thanks, I’ll go another way."),
-    { id: "adam_leave", from: "me", day: "Today", time: "", text: "I will leave at 4 p.m.", sentAtOffsetMin: -2 },
-  ] },
-  { id: "c_sam", kind: "dm", with: "sam", messages: [
-    m("sam", "October 12", "1:00 PM", "It was good seeing you at the garden meeting."),
-    m("me", "October 12", "1:10 PM", "You too!"),
-    { ...m("sam", "Today", "9:30 AM", "Passing on Maya’s announcement."), id: "sam_passing" },
-    { ...m("sam", "Today", "9:30 AM", { sharedPostId: "maya_books" }), id: "sam_maya_post" },
-  ] },
-  { id: "c_family", kind: "group", title: "Family", members: ["me", "anna", "adam"], messages: familyMessages },
-  { id: "c_craft", kind: "group", title: "Craft Circle", members: ["me", "nora", "elena"], messages: [
-    m("elena", "Yesterday", "6:00 PM", "Excited for the sewing workshop!"),
-    { ...m("nora", "Today", "10:00 AM", { audio: { id: "audio_nora_workshop", duration: 12, src: "/assets/audio/nora-workshop-update.mp3",
-      transcript: "For the sewing workshop, bring your scissors and a pencil. I will provide the fabric and thread, so you do not need to buy those." } }), id: "craft_audio" },
-    m("elena", "Today", "10:20 AM", "Thanks Nora!"),
-  ] },
-  { id: "c_nora", kind: "dm", with: "nora", archived: true, messages: noraMessages },
-  { id: "c_daniel", kind: "dm", with: "daniel", messages: [
-    { ...m("daniel", "September 30", "5:00 PM", "Oak Street closure, October 4: closed between Elm Street and Pine Avenue, 9 a.m.–noon."), id: "daniel_notice" },
-    m("me", "September 30", "5:15 PM", "Thanks Daniel."),
-    m("daniel", "October 9", "3:00 PM", "Looking forward to the museum trip!"),
-  ] },
-  { id: "c_maria", kind: "dm", with: "maria", messages: [
-    m("maria", "October 18", "2:03 PM", "How is your afternoon going?"),
-    m("me", "October 18", "2:10 PM", "Lovely, just back from a walk."),
-  ] },
-  { id: "c_lee", kind: "dm", with: "lee", messages: [
-    m("lee", "October 11", "9:00 AM", "Thanks for helping in the garden yesterday!"),
-  ] },
+  { id: "c_adam", kind: "dm", with: "adam", messages: adamMsgs },
+  { id: "c_elena", kind: "dm", with: "elena", messages: elenaMsgs },
+  { id: "c_nora", kind: "dm", with: "nora", messages: noraMsgs },
+  { id: "c_susan", kind: "dm", with: "susan", messages: susanMsgs },
+  { id: "c_sam", kind: "dm", with: "sam", messages: samMsgs },
+  { id: "c_priya", kind: "dm", with: "priya", messages: priyaMsgs },
 ];

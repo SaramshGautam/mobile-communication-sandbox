@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import {
-  Send, Users, Link2, Share2, ChevronLeft, X, Download, Image as ImageIcon, Lock, Globe, Check, Search, ChevronRight, MessageCircle,
+  Send, Users, Link2, Share2, ChevronLeft, X, Download, Image as ImageIcon, Lock, Globe, Check, Search, ChevronRight, MessageCircle, BarChart3,
 } from "lucide-react";
 import { useSocial, Sheet, SheetItem, PersonAvatar, GroupIcon, copyText } from "../ui.jsx";
 import { person, postUrl, profileUrl, uid, findDM, convTitle } from "../store.js";
@@ -35,7 +35,7 @@ function recipientsFor(world) {
     else list.push({ key: c.id, convId: c.id });
   }
   for (const p of Object.values(world.people)) {
-    if (p.id === ME || p.isPage || seen.has(p.id)) continue;
+    if (p.id === ME || p.isPage || seen.has(p.id) || p.relationship !== "friend") continue;
     list.push({ key: p.id, personId: p.id });
   }
   return list;
@@ -105,12 +105,13 @@ export function SendList({ req, onDone, onBack }) {
   );
 }
 
-function GroupShare({ postId, onDone, onBack }) {
+function GroupShare({ postId, personId, onDone, onBack }) {
   const { world, dispatch, log, toast } = useSocial();
   const [groupId, setGroupId] = useState(null);
   const [text, setText] = useState("");
   const mine = Object.values(world.groups).filter((g) => g.members.includes(ME));
-  const p = world.posts[postId];
+  const p = postId ? world.posts[postId] : null;
+  const prof = personId ? person(world, personId) : null;
   if (!groupId)
     return (
       <div>
@@ -121,9 +122,9 @@ function GroupShare({ postId, onDone, onBack }) {
         </div>
         <div className="send-rows">
           {mine.map((g) => (
-            <button className="sheet-item" key={g.id} onClick={() => { setGroupId(g.id); log("share_group_selected", { objectId: postId, groupId: g.id }); }}>
+            <button className="sheet-item" key={g.id} onClick={() => { setGroupId(g.id); log("share_group_selected", { objectId: postId ?? personId, groupId: g.id }); }}>
               <GroupIcon group={g} size={38} />
-              <span><strong>{g.name}</strong><small><Lock size={11} /> {g.privacy} · {g.members.length} members</small></span>
+              <span><strong>{g.name}</strong><small>{g.privacy === "Public group" ? <Globe size={11} /> : <Lock size={11} />} {g.privacy} · {g.members.length} members</small></span>
               <ChevronRight size={18} />
             </button>
           ))}
@@ -133,8 +134,8 @@ function GroupShare({ postId, onDone, onBack }) {
   const g = world.groups[groupId];
   const publish = () => {
     const id = uid("post");
-    dispatch({ type: "createPost", id, group: groupId, text: text.trim(), sharedPostId: postId });
-    log("shared_to_group", { objectId: postId, groupId, newPostId: id, text: text.trim() || null });
+    dispatch({ type: "createPost", id, group: groupId, text: text.trim(), sharedPostId: postId, sharedProfileId: personId });
+    log("shared_to_group", { kind: postId ? "post" : "profile", objectId: postId ?? personId, groupId, newPostId: id, text: text.trim() || null, sharedPostText: p?.text ?? null });
     toast(`Shared to ${g.name}`);
     onDone();
   };
@@ -145,9 +146,10 @@ function GroupShare({ postId, onDone, onBack }) {
         <strong>Share to group</strong>
         <button className="primary-small" onClick={publish}>Post</button>
       </div>
-      <div className="share-audience"><GroupIcon group={g} size={34} /><span><strong>{g.name}</strong><small><Lock size={11} /> Only members will see this</small></span></div>
+      <div className="share-audience"><GroupIcon group={g} size={34} /><span><strong>{g.name}</strong><small>{g.privacy === "Public group" ? <><Globe size={11} /> Anyone can see this</> : <><Lock size={11} /> Only members will see this</>}</small></span></div>
       <textarea className="sheet-textarea" value={text} onChange={(e) => setText(e.target.value)} placeholder="Say something about this…" aria-label="Say something about this" />
-      <div className="share-preview"><strong>{person(world, p.author).name}</strong><span>{p.text}</span></div>
+      {p && <div className="share-preview"><strong>{person(world, p.author).name}</strong><span>{p.text}</span></div>}
+      {prof && <div className="share-preview"><strong>{prof.name}</strong><span>{prof.bio} · Profile on Connect</span></div>}
     </div>
   );
 }
@@ -172,13 +174,16 @@ export function ShareSheet({ req, onClose }) {
   return (
     <Sheet onClose={onClose} className="share-sheet">
       {step === "send" && <SendList req={req} onDone={onClose} onBack={req.type === "forward" || req.direct ? null : () => setStep("menu")} />}
-      {step === "group" && <GroupShare postId={req.postId} onDone={onClose} onBack={() => setStep("menu")} />}
+      {step === "group" && <GroupShare postId={req.postId} personId={req.type === "profile" ? req.personId : undefined} onDone={onClose} onBack={() => setStep("menu")} />}
       {step === "menu" && (
         <>
           <div className="sheet-head"><strong>{req.type === "profile" ? "Share profile" : req.type === "photo" ? "Photo" : "Share"}</strong>
             <button className="icon-button" onClick={onClose} aria-label="Close"><X size={20} /></button></div>
           {privateGroup && <p className="sheet-note"><Lock size={13} /> Posts in {group.name} can only be seen by its members.</p>}
           <SheetItem icon={MessageCircle} label="Send in Messenger" sub="Send privately to a person or chat" onClick={() => { setStep("send"); log("share_option", { option: "messenger", kind: req.type }); }} />
+          {req.type === "profile" && (
+            <SheetItem icon={Users} label="Share to a group" sub="Post this profile in one of your groups" onClick={() => { setStep("group"); log("share_option", { option: "group", kind: "profile", objectId: req.personId }); }} />
+          )}
           {req.type === "post" && !privateGroup && (
             <>
               <SheetItem icon={Users} label="Share to a group" sub="Post in one of your groups" onClick={() => { setStep("group"); log("share_option", { option: "group", objectId: req.postId }); }} />
@@ -254,7 +259,7 @@ export function GalleryPicker({ onPick, onClose, multiple = true }) {
           const n = sel.indexOf(g.id);
           return (
             <button key={g.id} className={n >= 0 ? "gallery-cell selected" : "gallery-cell"} onClick={() => toggle(g)} aria-pressed={n >= 0} aria-label={g.title}>
-              <img src={g.src} alt={g.title} />
+              <img src={g.src} alt={g.title} /><span className="gallery-name">{g.title}</span>
               <span className="gallery-check">{n >= 0 ? n + 1 : ""}</span>
             </button>
           );
@@ -264,33 +269,72 @@ export function GalleryPicker({ onPick, onClose, multiple = true }) {
   );
 }
 
-// ---------------- Create post ----------------
-export function PostComposer({ groupId, onClose }) {
+// ---------------- Create / edit post ----------------
+// Personal posts start with the Public audience selected (participants must
+// choose Friends deliberately). Group posts can include a poll.
+export function PostComposer({ groupId, editPostId, onClose }) {
   const { world, dispatch, log, toast } = useSocial();
-  const [text, setText] = useState("");
+  const editing = editPostId ? world.posts[editPostId] : null;
+  const gid = editing ? editing.group : groupId;
+  const g = gid ? world.groups[gid] : null;
+  const [text, setText] = useState(editing?.text ?? "");
   const [photos, setPhotos] = useState([]);
   const [picking, setPicking] = useState(false);
-  const g = groupId ? world.groups[groupId] : null;
+  const [audience, setAudience] = useState(editing?.audience ?? "public");
+  const [audSheet, setAudSheet] = useState(false);
+  const [poll, setPoll] = useState(null); // { question, options: [..], multiple }
+
+  const pollOk = !poll || (poll.question.trim() && poll.options.filter((o) => o.trim()).length >= 2);
+  const canPost = editing ? text.trim() && text !== editing.text : (text.trim() || photos.length || poll) && pollOk;
+
   const publish = () => {
+    if (editing) {
+      dispatch({ type: "editPost", postId: editing.id, text: text.trim() });
+      log("post_edited", { objectId: editing.id, previousText: editing.text, text: text.trim(), audience: editing.audience ?? null, groupId: editing.group ?? null });
+      toast("Post updated");
+      onClose();
+      return;
+    }
     const id = uid("post");
-    dispatch({ type: "createPost", id, group: groupId, text: text.trim(), photos });
-    log("post_created", { objectId: id, groupId: groupId ?? null, audience: groupId ?? "public", text: text.trim(), photos: photos.map((p) => p.alt), galleryIds: photos.map((p) => p.galleryId) });
+    const pollData = poll ? {
+      question: poll.question.trim(), multiple: poll.multiple,
+      options: poll.options.map((o) => o.trim()).filter(Boolean).map((t, i) => ({ id: `o${i + 1}`, text: t, votes: [] })),
+    } : undefined;
+    dispatch({ type: "createPost", id, group: gid, text: text.trim(), photos, audience: gid ? undefined : audience, poll: pollData });
+    log("post_created", {
+      objectId: id, groupId: gid ?? null, audience: gid ? `group:${gid}` : audience, text: text.trim(),
+      photos: photos.map((p) => p.alt), galleryIds: photos.map((p) => p.galleryId),
+      poll: pollData ? { question: pollData.question, options: pollData.options.map((o) => o.text), multiple: pollData.multiple } : null,
+    });
     toast(g ? `Posted in ${g.name}` : "Posted");
     onClose();
   };
+
+  const setOpt = (i, v) => setPoll((p) => ({ ...p, options: p.options.map((o, k) => (k === i ? v : o)) }));
+
   return (
-    <div className="fullscreen-modal" role="dialog" aria-label="Create post">
+    <div className="fullscreen-modal" role="dialog" aria-label={editing ? "Edit post" : "Create post"}>
       <div className="modal-head">
         <button className="icon-button" onClick={onClose} aria-label="Cancel"><X size={22} /></button>
-        <strong>Create post</strong>
-        <button className="primary-small" disabled={!text.trim() && !photos.length} onClick={publish}>Post</button>
+        <strong>{editing ? "Edit post" : "Create post"}</strong>
+        <button className="primary-small" disabled={!canPost} onClick={publish}>{editing ? "Save" : "Post"}</button>
       </div>
       <div className="composer-who">
         <PersonAvatar id={ME} />
         <span><strong>{person(world, ME).name}</strong>
-          <small className="audience-chip">{g ? <><Lock size={11} /> {g.name}</> : <><Globe size={11} /> Public</>}</small></span>
+          {g ? (
+            <small className="audience-chip">{g.privacy === "Public group" ? <Globe size={11} /> : <Lock size={11} />} {g.name}</small>
+          ) : editing ? (
+            <small className="audience-chip">{audience === "friends" ? <Users size={11} /> : <Globe size={11} />} {audience === "friends" ? "Friends" : "Public"}</small>
+          ) : (
+            <button className="audience-chip button" onClick={() => { setAudSheet(true); log("audience_picker_opened", { current: audience }); }}>
+              {audience === "friends" ? <Users size={11} /> : <Globe size={11} />} {audience === "friends" ? "Friends" : "Public"} ▾
+            </button>
+          )}
+        </span>
       </div>
-      <textarea className="composer-text" autoFocus value={text} onChange={(e) => setText(e.target.value)} placeholder={g ? "Write something…" : `What’s on your mind, ${person(world, ME).firstName}?`} aria-label="Post text" />
+      <textarea className="composer-text" autoFocus value={text} onChange={(e) => setText(e.target.value)} placeholder={poll ? "Say something about your poll (optional)" : g ? "Write something…" : `What’s on your mind, ${person(world, ME).firstName}?`} aria-label="Post text" />
+      {editing?.photos && <div className="composer-photos">{editing.photos.map((p) => <span key={p.id}><img src={p.src} alt={p.alt} /></span>)}</div>}
       {photos.length > 0 && (
         <div className="composer-photos">
           {photos.map((p) => (
@@ -298,8 +342,41 @@ export function PostComposer({ groupId, onClose }) {
           ))}
         </div>
       )}
-      <button className="composer-add" onClick={() => setPicking(true)}><ImageIcon size={22} color="#45bd62" /> Photo/video</button>
+      {poll && (
+        <div className="poll-editor" aria-label="Poll">
+          <div className="poll-editor-head"><strong>Poll</strong><button className="icon-button" aria-label="Remove poll" onClick={() => { setPoll(null); log("poll_removed"); }}><X size={18} /></button></div>
+          <input className="sheet-input" value={poll.question} onChange={(e) => setPoll((p) => ({ ...p, question: e.target.value }))} placeholder="Ask a question…" aria-label="Poll question" />
+          {poll.options.map((o, i) => (
+            <div className="poll-editor-opt" key={i}>
+              <input className="sheet-input" value={o} onChange={(e) => setOpt(i, e.target.value)} placeholder={`Option ${i + 1}`} aria-label={`Option ${i + 1}`} />
+              {poll.options.length > 2 && <button className="icon-button" aria-label={`Remove option ${i + 1}`} onClick={() => setPoll((p) => ({ ...p, options: p.options.filter((_, k) => k !== i) }))}><X size={16} /></button>}
+            </div>
+          ))}
+          <button className="link-button" onClick={() => setPoll((p) => ({ ...p, options: [...p.options, ""] }))}>+ Add option</button>
+          <label className="toggle-row">
+            <span><strong>Allow multiple answers</strong><small>People can choose more than one option</small></span>
+            <input type="checkbox" role="switch" checked={poll.multiple} onChange={(e) => { setPoll((p) => ({ ...p, multiple: e.target.checked })); log("poll_multiple_toggled", { on: e.target.checked }); }} />
+          </label>
+        </div>
+      )}
+      {!editing && (
+        <div className="composer-tools">
+          <button className="composer-add" onClick={() => setPicking(true)}><ImageIcon size={22} color="#45bd62" /> Photo/video</button>
+          {g && !poll && <button className="composer-add" onClick={() => { setPoll({ question: "", options: ["", ""], multiple: false }); log("poll_editor_opened", { groupId: gid }); }}><BarChart3 size={22} color="#f2b01e" /> Poll</button>}
+        </div>
+      )}
       {picking && <GalleryPicker onClose={() => setPicking(false)} onPick={(p) => { setPhotos((x) => [...x, ...p]); setPicking(false); }} />}
+      {audSheet && (
+        <Sheet title="Post audience" onClose={() => setAudSheet(false)}>
+          <p className="sheet-note">Who can see your post?</p>
+          {[{ id: "public", icon: Globe, label: "Public", sub: "Anyone on or off Connect" }, { id: "friends", icon: Users, label: "Friends", sub: "Your friends on Connect" }].map(({ id, icon: Icon, label, sub }) => (
+            <button key={id} className="radio-row" role="radio" aria-checked={audience === id} onClick={() => { setAudience(id); log("audience_set", { audience: id }); setAudSheet(false); }}>
+              <span className="sheet-item-icon"><Icon size={20} /></span><span><strong>{label}</strong><small>{sub}</small></span>
+              <span className={audience === id ? "radio on" : "radio"} />
+            </button>
+          ))}
+        </Sheet>
+      )}
     </div>
   );
 }

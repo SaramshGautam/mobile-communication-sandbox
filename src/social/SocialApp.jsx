@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { Home, Users, MessageCircle, Bell, Menu, Search, ChevronUp, ChevronDown } from "lucide-react";
+import { Home, Users, MessageCircle, Bell, Menu, Search } from "lucide-react";
 import { SocialContext } from "./ui.jsx";
 import "./social.css";
 import { createWorld, reducer, resolveUrl } from "./store.js";
-import { START_STATES, DEFAULT_START } from "./tasks.js";
+import { START_STATES, DEFAULT_START } from "./scenarios.js";
 import {
   HomeFeed, GroupsList, GroupPage, PostDetail, ProfilePage, SearchPage, NotificationsPage, MenuPage, SavedPage, PdfViewer, MapViewer,
 } from "./components/Pages.jsx";
+import { FriendsPage, EventsPage, EventPage } from "./components/Extras.jsx";
+import { StoryViewer, StoryCreator } from "./components/Stories.jsx";
 import { ChatsList, ChatView, ChatInfo } from "./components/Chats.jsx";
 import { ShareSheet, PhotoViewer, PostComposer } from "./components/Sheets.jsx";
 
@@ -21,27 +23,28 @@ const TABS = [
 const ROUTES = {
   group: GroupPage, post: PostDetail, profile: ProfilePage, search: SearchPage, saved: SavedPage,
   pdf: PdfViewer, map: MapViewer, chats: ChatsList, chat: ChatView, chatInfo: ChatInfo,
+  friends: FriendsPage, events: EventsPage, event: EventPage,
 };
 const ROOTS = { home: HomeFeed, groups: GroupsList, messages: ChatsList, notifications: NotificationsPage, menu: MenuPage };
 
-export default function SocialApp({ task, logEvent, openTasks }) {
-  const start = START_STATES[task?.id] ?? DEFAULT_START;
+export default function SocialApp({ scenario, logEvent, openTasks }) {
+  const start = START_STATES[scenario?.id] ?? DEFAULT_START;
   const [world, dispatch] = useReducer(reducer, null, () => createWorld(start.setup));
   const [tab, setTab] = useState(start.tab);
   const [stack, setStack] = useState(() => start.stack.map((r) => ({ ...r, quiet: true })));
   const [sheet, setSheet] = useState(null);
   const [viewer, setViewer] = useState(null);
-  const [composer, setComposer] = useState(undefined);
+  const [composer, setComposer] = useState(null); // { groupId?, editPostId? }
+  const [story, setStory] = useState(null); // { storyId }
+  const [storyCreator, setStoryCreator] = useState(false);
   const [toastMsg, setToastMsg] = useState(null);
-  const [ribbonOpen, setRibbonOpen] = useState(true);
   const scrollRef = useRef(null);
   const scrollMemo = useRef([]);
   const toastTimer = useRef(null);
 
   const route = stack[stack.length - 1] ?? { name: tab };
   const routeKey = `${tab}:${stack.length}:${JSON.stringify(route)}`;
-
-  const log = useCallback((type, props = {}) => logEvent(type, { screen: route.name, ...props }), [logEvent, route.name]);
+  const log = useCallback((type, props = {}) => logEvent(type, { app: "social", screen: route.name, ...props }), [logEvent, route.name]);
 
   const toast = useCallback((msg) => {
     clearTimeout(toastTimer.current);
@@ -53,16 +56,16 @@ export default function SocialApp({ task, logEvent, openTasks }) {
     push: (r) => {
       scrollMemo.current[stack.length] = scrollRef.current?.scrollTop ?? 0;
       setStack((s) => [...s, r]);
-      logEvent("navigate", { to: r.name, ...r });
+      logEvent("navigate", { app: "social", to: r.name, ...r });
     },
     replace: (r) => setStack((s) => [...s.slice(0, -1), r]),
     back: () => {
       setStack((s) => s.slice(0, -1));
-      logEvent("navigate_back", { from: route.name });
+      logEvent("navigate_back", { app: "social", from: route.name });
     },
     tab: (t) => {
       setTab(t); setStack([]); scrollMemo.current = [];
-      logEvent("tab", { to: t });
+      logEvent("tab", { app: "social", to: t });
     },
     openUrl: (url) => {
       const r = resolveUrl(world, url);
@@ -71,11 +74,10 @@ export default function SocialApp({ task, logEvent, openTasks }) {
         : r.type === "post" ? { name: "post", postId: r.postId } : { name: "profile", personId: r.personId };
       scrollMemo.current[stack.length] = scrollRef.current?.scrollTop ?? 0;
       setStack((s) => [...s, next]);
-      logEvent("navigate", { to: next.name, url });
+      logEvent("navigate", { app: "social", to: next.name, url });
     },
   }), [stack.length, world, route.name, logEvent, toast]);
 
-  // Restore scroll on back, reset on forward (focus targets handle their own scrolling).
   const depth = stack.length;
   const prevDepth = useRef(depth);
   useEffect(() => {
@@ -86,13 +88,15 @@ export default function SocialApp({ task, logEvent, openTasks }) {
     prevDepth.current = depth;
   }, [routeKey]); // eslint-disable-line
 
-  useEffect(() => { logEvent("task_start_state", { tab: start.tab, stack: start.stack }); }, []); // eslint-disable-line
+  useEffect(() => { logEvent("start_state", { app: "social", tab: start.tab, stack: start.stack }); }, []); // eslint-disable-line
 
   const ctx = {
     world, dispatch, nav, log, toast, now: () => Date.now(),
     openSheet: (req) => setSheet(req),
-    openViewer: (photos, index, context) => { setViewer({ photos, index, context }); logEvent("photo_viewer_opened", { objectId: photos[index]?.id, ...context }); },
-    openComposer: (groupId) => setComposer(groupId ?? null),
+    openViewer: (photos, index, context) => { setViewer({ photos, index, context }); logEvent("photo_viewer_opened", { app: "social", objectId: photos[index]?.id, ...context }); },
+    openComposer: (opts) => setComposer(opts ?? {}),
+    openStory: (storyId) => { setStory({ storyId }); logEvent("story_opened", { app: "social", storyId }); },
+    openStoryCreator: () => { setStoryCreator(true); logEvent("story_creator_opened", { app: "social" }); },
     openTasks,
   };
 
@@ -104,14 +108,6 @@ export default function SocialApp({ task, logEvent, openTasks }) {
   return (
     <SocialContext.Provider value={ctx}>
       <div className="social-app">
-        {task && (
-          <div className={ribbonOpen ? "task-strip" : "task-strip collapsed"}>
-            <button onClick={() => setRibbonOpen((v) => !v)} aria-expanded={ribbonOpen}>
-              <strong>Task {task.id}</strong>{ribbonOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-            </button>
-            {ribbonOpen && <p>{task.instruction}</p>}
-          </div>
-        )}
         {isRoot && (
           <header className="social-top">
             <span className="logo">connect</span>
@@ -134,9 +130,11 @@ export default function SocialApp({ task, logEvent, openTasks }) {
             ))}
           </nav>
         )}
-        {composer !== undefined && <PostComposer groupId={composer} onClose={() => setComposer(undefined)} />}
+        {composer && <PostComposer {...composer} onClose={() => setComposer(null)} />}
         {viewer && <PhotoViewer {...viewer} onClose={() => setViewer(null)} />}
         {sheet && <ShareSheet key={JSON.stringify(sheet)} req={sheet} onClose={() => setSheet(null)} />}
+        {story && <StoryViewer storyId={story.storyId} onClose={() => setStory(null)} />}
+        {storyCreator && <StoryCreator onClose={() => setStoryCreator(false)} />}
         {toastMsg && <div className="toast" role="status">{toastMsg}</div>}
       </div>
     </SocialContext.Provider>

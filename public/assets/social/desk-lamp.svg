@@ -1,0 +1,5 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600' width='800' height='600'><rect width='800' height='600' fill='#f1ece3'/>
+  <rect y='440' width='800' height='160' fill='#c9a77c'/>
+  <ellipse cx='400' cy='450' rx='120' ry='22' fill='#2b2b2b'/>
+  <path d='M400 440 L330 260 L470 150' stroke='#2b2b2b' stroke-width='16' fill='none' stroke-linejoin='round'/>
+  <path d='M430 120 L560 120 L600 220 L470 220 Z' fill='#2f8f6f' transform='rotate(25 515 170)'/></svg>

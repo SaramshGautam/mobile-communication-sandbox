@@ -1,11 +1,12 @@
 import { useMemo, useState } from "react";
 import {
   ChevronLeft, Search, Lock, Image as ImageIcon, MessageCircle, MoreHorizontal, Link2, Share2, UserCheck,
-  Bookmark, Users, FileText, MapPin, Navigation, Settings, ClipboardList, Bell, Star, Check, Plus,
+  Bookmark, Users, FileText, MapPin, Navigation, Settings, ClipboardList, Bell, Star, Check, Plus, Globe, UserPlus, CalendarDays, Rss,
 } from "lucide-react";
 import { useSocial, PersonAvatar, GroupIcon, Sheet, SheetItem, copyText, useFlashScroll } from "../ui.jsx";
 import PostCard from "./Post.jsx";
 import { person, canSee, countComments, profileUrl, findDM, uid } from "../store.js";
+import { RequestButtons } from "./Extras.jsx";
 import { ME } from "../world.js";
 
 export function PageHeader({ title, sub, right, onBack }) {
@@ -21,32 +22,53 @@ export function PageHeader({ title, sub, right, onBack }) {
 
 function ComposerPrompt({ groupId, placeholder }) {
   const { openComposer, log } = useSocial();
+  const open = () => { openComposer({ groupId }); log("composer_opened", { groupId: groupId ?? null }); };
   return (
     <div className="composer-prompt">
       <PersonAvatar id={ME} />
-      <button onClick={() => { openComposer(groupId); log("composer_opened", { groupId: groupId ?? null }); }}>{placeholder}</button>
-      <button className="icon-button" aria-label="Add photo" onClick={() => openComposer(groupId)}><ImageIcon size={22} color="#45bd62" /></button>
+      <button onClick={open}>{placeholder}</button>
+      <button className="icon-button" aria-label="Add photo" onClick={open}><ImageIcon size={22} color="#45bd62" /></button>
+    </div>
+  );
+}
+
+// Story tray: "Create story" first, then people with active stories.
+function StoryTray() {
+  const { world, openStory, openStoryCreator } = useSocial();
+  const stories = world.stories.filter((s) => s.author !== ME || s.mine);
+  return (
+    <div className="stories" aria-label="Stories">
+      <button className="story-tile create" onClick={openStoryCreator} aria-label="Create story">
+        <span className="story-tile-img"><PersonAvatar id={ME} size="story" /></span>
+        <span className="story-plus"><Plus size={18} /></span>
+        <strong>Create story</strong>
+      </button>
+      {stories.map((s) => {
+        const first = s.items[0];
+        return (
+          <button key={s.id} className={s.viewed ? "story-tile viewed" : "story-tile"} onClick={() => openStory(s.id)} aria-label={`${s.author === ME ? "Your story" : person(world, s.author).name + "’s story"}`}>
+            <span className="story-tile-img" style={first.kind === "text" ? { background: first.bg } : undefined}>
+              {first.kind === "photo" ? <img src={first.src} alt="" /> : <span className="story-tile-text">{first.text}</span>}
+            </span>
+            <span className="story-ring"><PersonAvatar id={s.author} size="xs" /></span>
+            <strong>{s.author === ME ? "Your story" : person(world, s.author).name}</strong>
+          </button>
+        );
+      })}
     </div>
   );
 }
 
 // ---------------- Home ----------------
 export function HomeFeed({ route }) {
-  const { world, nav } = useSocial();
+  const { world } = useSocial();
   const feed = world.postOrder.map((id) => world.posts[id]).filter((p) => p.inFeed != null && canSee(world, p))
     .sort((a, b) => a.inFeed - b.inFeed);
-  const people = ["anna", "adam", "susan", "sam", "lee", "pat", "maya", "nora", "elena", "rosa"];
   useFlashScroll(route.focusPostId, [], { flash: !route.quiet, block: "start" });
   return (
     <div className="feed">
       <ComposerPrompt placeholder={`What’s on your mind, ${person(world, ME).firstName}?`} />
-      <div className="stories" aria-label="People">
-        {people.map((id) => (
-          <button key={id} className="story" onClick={() => nav.push({ name: "profile", personId: id })}>
-            <PersonAvatar id={id} size="story" /><span>{person(world, id).firstName}</span>
-          </button>
-        ))}
-      </div>
+      <StoryTray />
       {feed.map((p) => <PostCard key={p.id} post={p} />)}
       <p className="end-note">You’re all caught up.</p>
     </div>
@@ -75,7 +97,7 @@ export function GroupsList() {
 const GROUP_TABS = ["Discussion", "Featured", "Files", "Members", "About"];
 
 export function GroupPage({ route }) {
-  const { world, nav, log } = useSocial();
+  const { world, nav, log, dispatch, toast } = useSocial();
   const g = world.groups[route.groupId];
   const [tab, setTab] = useState(route.tab ?? "Discussion");
   const [searching, setSearching] = useState(false);
@@ -91,8 +113,14 @@ export function GroupPage({ route }) {
     ? groupPosts.filter((p) => [p.text, ...(p.comments ?? []).flatMap((c) => [c.text, ...(c.replies ?? []).map((r) => r.text)])].join(" ").toLowerCase().includes(q.toLowerCase()))
     : [];
   useFlashScroll(route.focusPostId, [tab], { flash: !route.quiet, block: "start" });
+  const isPublic = g.privacy === "Public group";
+  const join = () => {
+    dispatch({ type: "joinGroup", groupId: g.id });
+    log("group_joined", { groupId: g.id });
+    toast(`You joined ${g.name}`);
+  };
 
-  if (!member)
+  if (!member && !isPublic)
     return (
       <div>
         <PageHeader title={g.name} />
@@ -114,9 +142,15 @@ export function GroupPage({ route }) {
         <>
           <div className="group-cover" style={{ background: `linear-gradient(135deg, ${g.color}, ${g.color}bb)` }}>
             <h2>{g.name}</h2>
-            <small><Lock size={12} /> {g.privacy} · {g.members.length} members</small>
+            <small>{isPublic ? <Globe size={12} /> : <Lock size={12} />} {g.privacy} · {g.members.length} members</small>
             <div className="member-stack">{g.members.slice(0, 5).map((id) => <PersonAvatar key={id} id={id} size="xs" />)}</div>
-            <div className="group-buttons"><span className="joined"><UserCheck size={15} /> Joined</span><span className="joined ghost"><Plus size={15} /> Invite</span></div>
+            <div className="group-buttons">
+              {member ? (
+                <><span className="joined"><UserCheck size={15} /> Joined</span><span className="joined ghost"><Plus size={15} /> Invite</span></>
+              ) : (
+                <button className="btn primary join-btn" onClick={join}><Users size={16} /> Join group</button>
+              )}
+            </div>
           </div>
           <div className="tabs" role="tablist">
             {GROUP_TABS.map((t) => (
@@ -125,7 +159,14 @@ export function GroupPage({ route }) {
           </div>
           {tab === "Discussion" && (
             <>
-              <ComposerPrompt groupId={g.id} placeholder="Write something…" />
+              {!member && (
+                <div className="about-card compact">
+                  <p>{g.description}</p>
+                  {g.rules && <button className="link-button" onClick={() => { setTab("About"); log("group_rules_opened", { groupId: g.id }); }}>Read the group rules</button>}
+                  <p className="muted">Join the group to post.</p>
+                </div>
+              )}
+              {member && <ComposerPrompt groupId={g.id} placeholder="Write something…" />}
               {featured.length > 0 && (
                 <button className="featured-teaser" onClick={() => setTab("Featured")}><Star size={16} /> Featured · {featured.length} post{featured.length > 1 ? "s" : ""} from admins</button>
               )}
@@ -165,7 +206,16 @@ export function GroupPage({ route }) {
             <div className="about-card">
               <h3>About this group</h3>
               <p>{g.description}</p>
-              <p className="muted"><Lock size={13} /> {g.privacy} — only members can see who’s in the group and what they post.</p>
+              <p className="muted">{isPublic ? <><Globe size={13} /> Public group — anyone can see who’s in the group and what they post.</> : <><Lock size={13} /> {g.privacy} — only members can see who’s in the group and what they post.</>}</p>
+              {g.rules && (
+                <>
+                  <h3>Group rules from the admins</h3>
+                  <ol className="rules">
+                    {g.rules.map((r, i) => <li key={i}><strong>{r.title}</strong><span>{r.text}</span></li>)}
+                  </ol>
+                </>
+              )}
+              {!member && <button className="btn primary join-btn wide" onClick={join}><Users size={16} /> Join group</button>}
               <h3>Admins</h3>
               {g.admins.map((id) => (
                 <button key={id} className="list-row" onClick={() => nav.push({ name: "profile", personId: id })}>
@@ -197,17 +247,24 @@ export function PostDetail({ route }) {
 
 // ---------------- Profile ----------------
 export function ProfilePage({ route }) {
-  const { world, nav, log, openSheet, toast } = useSocial();
+  const { world, nav, log, openSheet, toast, dispatch, openStoryCreator } = useSocial();
   const p = person(world, route.personId);
   const [menu, setMenu] = useState(false);
-  const [following, setFollowing] = useState(false);
   const isMe = p.id === ME;
-  const posts = world.postOrder.map((id) => world.posts[id]).filter((x) => x.author === p.id && !x.group && (isMe || x.audience));
+  const following = p.followedByMe || p.relationship === "following";
+  const request = world.friendRequests.find((r) => r.from === p.id && !r.status);
+  const posts = world.postOrder.map((id) => world.posts[id]).filter((x) => x.author === p.id && !x.group && canSee(world, x));
   const message = () => {
     const dm = findDM(world, p.id);
     log("profile_message", { objectId: p.id });
     nav.push({ name: "chat", convId: dm?.id, personId: p.id });
   };
+  const toggleFollow = () => {
+    dispatch({ type: "follow", personId: p.id, on: !following });
+    log(following ? "unfollowed" : "followed", { objectId: p.id, name: p.name, bio: p.bio });
+    toast(following ? `Unfollowed ${p.name}` : `Following ${p.name}`);
+  };
+  const relLabel = p.isPage ? "Page" : p.relationship === "friend" ? "Friends" : null;
   return (
     <div className="profile-page">
       <PageHeader title={p.name} right={<button className="icon-button" aria-label="Search" onClick={() => nav.push({ name: "search" })}><Search size={21} /></button>} />
@@ -215,18 +272,31 @@ export function ProfilePage({ route }) {
       <div className="profile-id">
         <PersonAvatar id={p.id} size="xl" />
         <h2>{p.name}</h2>
-        {p.bio && <p>{p.bio}</p>}
+        {p.bio && <p className="profile-bio">{p.bio}</p>}
+        <p className="profile-meta">
+          {p.isPage && <span>Page</span>}
+          {p.followers && <span>{p.followers}</span>}
+          {p.lives && <span>{p.lives}</span>}
+          {relLabel === "Friends" && <span><UserCheck size={13} /> Friends on Connect</span>}
+        </p>
         {!isMe && (
           <div className="profile-buttons">
-            {p.isPage ? (
-              <button className={following ? "btn secondary" : "btn primary"} onClick={() => { setFollowing((v) => !v); log(following ? "unfollowed" : "followed", { objectId: p.id }); }}>
-                {following ? <><Check size={16} /> Following</> : "Follow"}
-              </button>
-            ) : (
+            {request ? (
+              <RequestButtons request={request} />
+            ) : p.relationship === "friend" ? (
               <button className="btn secondary"><UserCheck size={16} /> Friends</button>
+            ) : (
+              <button className={following ? "btn secondary" : "btn primary"} onClick={toggleFollow} aria-pressed={following}>
+                {following ? <><Check size={16} /> Following</> : <><Rss size={16} /> Follow</>}
+              </button>
             )}
-            <button className="btn primary" onClick={message}><MessageCircle size={16} /> Message</button>
+            <button className={request || p.relationship === "friend" || following ? "btn primary" : "btn secondary"} onClick={message}><MessageCircle size={16} /> Message</button>
             <button className="btn secondary icon-only" aria-label="More profile options" onClick={() => { setMenu(true); log("profile_menu_opened", { objectId: p.id }); }}><MoreHorizontal size={18} /></button>
+          </div>
+        )}
+        {isMe && (
+          <div className="profile-buttons">
+            <button className="btn primary" onClick={openStoryCreator}><Plus size={16} /> Add to story</button>
           </div>
         )}
       </div>
@@ -235,8 +305,8 @@ export function ProfilePage({ route }) {
       {posts.map((x) => <PostCard key={x.id} post={x} />)}
       {menu && (
         <Sheet onClose={() => setMenu(false)}>
+          <SheetItem icon={Share2} label="Share profile" sub="Send in Messenger or share to a group" onClick={() => { setMenu(false); openSheet({ type: "profile", personId: p.id }); log("profile_share_opened", { objectId: p.id }); }} />
           <SheetItem icon={Link2} label="Copy link to profile" onClick={async () => { await copyText(profileUrl(p.id)); log("profile_link_copied", { objectId: p.id, url: profileUrl(p.id) }); toast("Link copied"); setMenu(false); }} />
-          <SheetItem icon={Share2} label="Share profile" sub="Send this profile in Messenger" onClick={() => { setMenu(false); openSheet({ type: "profile", personId: p.id }); log("profile_share_opened", { objectId: p.id }); }} />
         </Sheet>
       )}
     </div>
@@ -252,8 +322,8 @@ export function SearchPage({ route }) {
     if (!term) return null;
     const t = term.replace(/^#/, "");
     return {
-      people: Object.values(world.people).filter((p) => p.id !== ME && p.name.toLowerCase().includes(t)),
-      groups: Object.values(world.groups).filter((g) => g.members.includes(ME) && g.name.toLowerCase().includes(t)),
+      people: Object.values(world.people).filter((p) => p.id !== ME && (p.name.toLowerCase().includes(t) || (p.isPage && (p.bio ?? "").toLowerCase().includes(t)))),
+      groups: Object.values(world.groups).filter((g) => (g.members.includes(ME) || g.privacy === "Public group") && g.name.toLowerCase().includes(t)),
       posts: world.postOrder.map((id) => world.posts[id]).filter((p) => canSee(world, p) && (p.text ?? "").toLowerCase().includes(term)),
     };
   }, [term, world]);
@@ -272,13 +342,13 @@ export function SearchPage({ route }) {
           {res.people.length > 0 && <h3 className="section-label">People</h3>}
           {res.people.map((p) => (
             <button key={p.id} className="list-row card-row" onClick={() => { log("search_result_opened", { q, kind: "person", objectId: p.id }); nav.push({ name: "profile", personId: p.id }); }}>
-              <PersonAvatar id={p.id} /><span><strong>{p.name}</strong><small>{p.isPage ? "Page" : p.relationship === "friend" || p.relationship === "neighbor" ? "Friend" : p.relationship}</small></span>
+              <PersonAvatar id={p.id} /><span><strong>{p.name}</strong><small>{[p.isPage ? "Page" : p.relationship === "friend" ? "Friend" : p.followedByMe || p.relationship === "following" ? "Following" : null, p.bio].filter(Boolean).join(" · ")}</small></span>
             </button>
           ))}
           {res.groups.length > 0 && <h3 className="section-label">Groups</h3>}
           {res.groups.map((g) => (
             <button key={g.id} className="list-row card-row" onClick={() => { log("search_result_opened", { q, kind: "group", objectId: g.id }); nav.push({ name: "group", groupId: g.id }); }}>
-              <GroupIcon group={g} /><span><strong>{g.name}</strong><small><Lock size={11} /> {g.privacy}</small></span>
+              <GroupIcon group={g} /><span><strong>{g.name}</strong><small>{g.privacy === "Public group" ? <Globe size={11} /> : <Lock size={11} />} {g.privacy} · {g.members.length} members{g.members.includes(ME) ? " · Joined" : ""}</small><small className="result-desc">{g.description}</small></span>
             </button>
           ))}
           {res.posts.length > 0 && <h3 className="section-label">Posts</h3>}
@@ -300,9 +370,8 @@ export function NotificationsPage() {
         {world.notifications.map((n) => (
           <button key={n.id} className={n.unread ? "notif unread" : "notif"} onClick={() => {
             dispatch({ type: "readNotification", id: n.id });
-            log("notification_opened", { objectId: n.id, postId: n.postId, commentId: n.commentId });
-            if (n.postId) nav.push({ name: "post", postId: n.postId, focusCommentId: n.commentId });
-            else if (n.profileId) nav.push({ name: "profile", personId: n.profileId });
+            log("notification_opened", { objectId: n.id, route: n.route });
+            if (n.route) nav.push(n.route);
           }}>
             <PersonAvatar id={n.actor} />
             <span><span><strong>{person(world, n.actor).name}</strong> {n.text}</span><small>{n.time}</small></span>
@@ -317,6 +386,7 @@ export function NotificationsPage() {
 // ---------------- Menu & saved ----------------
 export function MenuPage() {
   const { world, nav, openTasks } = useSocial();
+  const pending = world.friendRequests.filter((r) => !r.status).length;
   return (
     <div className="page-pad">
       <h2 className="page-h2">Menu</h2>
@@ -324,6 +394,8 @@ export function MenuPage() {
         <PersonAvatar id={ME} /><span><strong>{person(world, ME).name}</strong><small>See your profile</small></span>
       </button>
       <div className="menu-grid">
+        <button onClick={() => nav.push({ name: "friends" })}><UserPlus color="#1b74e4" /><strong>Friends</strong>{pending > 0 && <small className="menu-badge">{pending} request{pending > 1 ? "s" : ""}</small>}</button>
+        <button onClick={() => nav.push({ name: "events" })}><CalendarDays color="#e8364f" /><strong>Events</strong></button>
         <button onClick={() => nav.push({ name: "saved" })}><Bookmark color="#8b4fc7" /><strong>Saved</strong></button>
         <button onClick={() => nav.tab("groups")}><Users color="#1b74e4" /><strong>Groups</strong></button>
         <button onClick={() => nav.tab("messages")}><MessageCircle color="#1b74e4" /><strong>Messages</strong></button>
@@ -352,7 +424,7 @@ export function SavedPage() {
             return (
               <button key={id} className="saved-row" onClick={() => { log("saved_item_opened", { objectId: id }); nav.push({ name: "post", postId: id }); }}>
                 {thumb ? <img src={thumb.src} alt="" /> : <span className="saved-thumb"><Bookmark /></span>}
-                <span><strong>{p.text.split(/[.—]/)[0]}</strong>
+                <span><strong>{(p.text || "Post").split(/[.—]/)[0]}</strong>
                   <small>Saved from {person(world, p.author).name}’s post{p.group ? ` in ${world.groups[p.group].name}` : ""}</small></span>
               </button>
             );

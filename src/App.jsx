@@ -1,60 +1,126 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import SocialApp from "./social/SocialApp.jsx";
-import LegacyApp from "./components/LegacyApp.jsx";
+import MessengerApp from "./messenger/MessengerApp.jsx";
 import TaskPanel from "./components/TaskPanel.jsx";
+import TaskStrip from "./components/TaskStrip.jsx";
 import InstallPrompt from "./components/InstallPrompt.jsx";
-import generatedTasks from "./data/generatedTasks.json";
+import data from "./data/scenarios.json";
 
-const initialTaskId = () => {
+// URL: ?s=T01-S&step=2  (or ?app=messenger for free exploration)
+const fromUrl = () => {
   try {
-    return new URLSearchParams(window.location.search).get("task");
+    const q = new URLSearchParams(window.location.search);
+    return { s: q.get("s"), step: Number(q.get("step")) || 1, app: q.get("app") };
   } catch {
-    return null;
+    return {};
   }
 };
 
 export default function App() {
-  const tasks = generatedTasks.tasks ?? [];
-  const [activeTaskId, setActiveTaskId] = useState(() => {
-    const id = initialTaskId();
-    return tasks.some((t) => t.id === id) ? id : null;
-  });
+  const scenarios = data.scenarios ?? [];
+  const init = fromUrl();
+  const [scenarioId, setScenarioId] = useState(() => (scenarios.some((s) => s.id === init.s) ? init.s : null));
+  const [stepIndex, setStepIndex] = useState(() => Math.min(3, Math.max(0, (init.step ?? 1) - 1)));
+  const [freeApp, setFreeApp] = useState(init.app === "messenger" ? "messenger" : "social");
   const [session, setSession] = useState(0);
   const [showTasks, setShowTasks] = useState(false);
   const [eventLog, setEventLog] = useState([]);
-  const taskRef = useRef(activeTaskId);
-  taskRef.current = activeTaskId;
-  const activeTask = useMemo(() => tasks.find((t) => t.id === activeTaskId) ?? null, [activeTaskId, tasks]);
+  const [fire, setFire] = useState(null); // researcher-fired trigger { id, n }
+
+  const scenario = useMemo(() => scenarios.find((s) => s.id === scenarioId) ?? null, [scenarioId, scenarios]);
+  const step = scenario?.steps[stepIndex] ?? null;
+  const ctxRef = useRef({});
+  ctxRef.current = { scenarioId, step: step?.n ?? null, intent: step?.intent ?? null };
 
   const logEvent = useCallback((type, properties = {}) => {
+    const c = ctxRef.current;
     setEventLog((current) => [
       ...current,
-      { id: crypto.randomUUID?.() ?? String(Date.now() + Math.random()), timestamp: new Date().toISOString(), taskId: taskRef.current, type, ...properties },
+      {
+        id: crypto.randomUUID?.() ?? String(Date.now() + Math.random()),
+        timestamp: new Date().toISOString(),
+        scenarioId: c.scenarioId, step: c.step, intent: c.intent,
+        type, ...properties,
+      },
     ]);
   }, []);
 
-  const startTask = (id) => {
-    taskRef.current = id;
-    setActiveTaskId(id);
-    setSession((n) => n + 1);
-    setShowTasks(false);
-    logEvent("task_started", { selectedTaskId: id });
+  const syncUrl = (id, idx, app) => {
     try {
       const url = new URL(window.location.href);
-      if (id) url.searchParams.set("task", id); else url.searchParams.delete("task");
+      url.searchParams.delete("task");
+      if (id) { url.searchParams.set("s", id); url.searchParams.set("step", String(idx + 1)); url.searchParams.delete("app"); }
+      else { url.searchParams.delete("s"); url.searchParams.delete("step"); url.searchParams.set("app", app); }
       window.history.replaceState(null, "", url);
     } catch { /* ignore */ }
   };
 
-  const openTasks = () => setShowTasks(true);
-  const Shell = activeTask?.platform === "messaging" ? LegacyApp : SocialApp;
+  // TASK START: fresh world for the scenario, starting at step 1.
+  const startScenario = (id, idx = 0) => {
+    ctxRef.current = { scenarioId: id, step: idx + 1, intent: scenarios.find((s) => s.id === id)?.steps[idx]?.intent };
+    setScenarioId(id);
+    setStepIndex(idx);
+    setSession((n) => n + 1);
+    setShowTasks(false);
+    logEvent("scenario_started", { selectedScenarioId: id, startStep: idx + 1 });
+    syncUrl(id, idx, freeApp);
+  };
+
+  // CONTINUE: keep the participant's screen and changes; only the instruction changes.
+  const goToStep = (idx) => {
+    if (!scenario || idx < 0 || idx > scenario.steps.length - 1 || idx === stepIndex) return;
+    const from = stepIndex + 1;
+    ctxRef.current = { scenarioId, step: idx + 1, intent: scenario.steps[idx].intent };
+    setStepIndex(idx);
+    logEvent("step_changed", { fromStep: from, toStep: idx + 1 });
+    syncUrl(scenarioId, idx, freeApp);
+  };
+
+  const freeExplore = (app) => {
+    ctxRef.current = { scenarioId: null, step: null, intent: null };
+    setScenarioId(null);
+    setFreeApp(app);
+    setSession((n) => n + 1);
+    setShowTasks(false);
+    logEvent("free_explore_started", { app });
+    syncUrl(null, 0, app);
+  };
+
+  // Exposed for automated checks and for recovering a log if the download fails.
+  useEffect(() => { window.__sandboxLog = eventLog; }, [eventLog]);
+
+  const appName = scenario?.app ?? freeApp;
+  const Shell = appName === "messenger" ? MessengerApp : SocialApp;
 
   return (
     <div className="app-shell">
-      <Shell key={`${activeTaskId}-${session}`} task={activeTask} logEvent={logEvent} openTasks={openTasks} />
-      {showTasks && (
-        <TaskPanel tasks={tasks} activeTaskId={activeTaskId} onSelectTask={startTask} eventLog={eventLog} onClose={() => setShowTasks(false)} />
+      {scenario && (
+        <TaskStrip scenario={scenario} stepIndex={stepIndex} onStep={goToStep} onOpenTasks={() => setShowTasks(true)} />
       )}
+      <div className="app-body">
+        <Shell
+          key={`${scenarioId ?? appName}-${session}`}
+          scenario={scenario}
+          step={step?.n ?? 0}
+          logEvent={logEvent}
+          openTasks={() => setShowTasks(true)}
+          fire={fire}
+        />
+        {showTasks && (
+          <TaskPanel
+            scenarios={scenarios}
+            scenario={scenario}
+            stepIndex={stepIndex}
+            appName={appName}
+            onStart={startScenario}
+            onStep={goToStep}
+            onFree={freeExplore}
+            onFire={(id) => { setFire((f) => ({ id, n: (f?.n ?? 0) + 1 })); setShowTasks(false); logEvent("trigger_fired_by_researcher", { triggerId: id }); }}
+            eventLog={eventLog}
+            onClose={() => setShowTasks(false)}
+          />
+        )}
+      </div>
       <InstallPrompt />
     </div>
   );

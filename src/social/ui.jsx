@@ -47,7 +47,8 @@ export function GroupIcon({ group, size = 40 }) {
 }
 
 export function AudienceIcon({ post }) {
-  if (post.group) return <Lock size={11} aria-label="Private group" />;
+  const { world } = useSocial();
+  if (post.group) return world.groups[post.group]?.privacy === "Public group" ? <Globe size={11} aria-label="Public group" /> : <Lock size={11} aria-label="Private group" />;
   if (post.audience === "public") return <Globe size={11} aria-label="Public" />;
   return <Users size={11} aria-label="Friends" />;
 }
