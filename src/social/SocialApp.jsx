@@ -110,7 +110,7 @@ export default function SocialApp({ scenario, logEvent, openTasks }) {
       <div className="social-app">
         {isRoot && (
           <header className="social-top">
-            <span className="logo">connect</span>
+            <span className="logo">social media prototype</span>
             <div className="social-top-actions">
               <button className="round-btn" aria-label="Search" onClick={() => nav.push({ name: "search" })}><Search size={20} /></button>
               <button className="round-btn" aria-label="Messages" onClick={() => nav.tab("messages")}><MessageCircle size={20} /></button>

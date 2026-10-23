@@ -11,5 +11,5 @@ export default function InstallPrompt() {
   }, [])
   if (!installEvent || dismissed) return null
   const install = async () => { await installEvent.prompt(); await installEvent.userChoice; setInstallEvent(null) }
-  return <aside className="install-card"><Download /><div><strong>Install Connect</strong><span>Add this sandbox to your home screen.</span></div><button onClick={install}>Install</button><button className="close" onClick={() => setDismissed(true)}><X size={16} /></button></aside>
+  return <aside className="install-card"><Download /><div><strong>Install Social Media Prototype</strong><span>Add this sandbox to your home screen.</span></div><button onClick={install}>Install</button><button className="close" onClick={() => setDismissed(true)}><X size={16} /></button></aside>
 }

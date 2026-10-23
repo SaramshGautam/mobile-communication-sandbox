@@ -320,7 +320,7 @@ function SharedEmbed({ postId }) {
 // Profile shared into a post (via Share profile, or a pasted profile link).
 function profileIdFor(post) {
   if (post.sharedProfileId) return post.sharedProfileId;
-  const m = (post.text ?? "").match(/https:\/\/connect\.example\/profile\/([\w-]+)/);
+  const m = (post.text ?? "").match(/https:\/\/socialmedia-prototype\.example\/profile\/([\w-]+)/);
   return m?.[1] ?? null;
 }
 

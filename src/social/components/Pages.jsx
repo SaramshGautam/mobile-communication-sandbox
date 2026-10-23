@@ -277,7 +277,7 @@ export function ProfilePage({ route }) {
           {p.isPage && <span>Page</span>}
           {p.followers && <span>{p.followers}</span>}
           {p.lives && <span>{p.lives}</span>}
-          {relLabel === "Friends" && <span><UserCheck size={13} /> Friends on Connect</span>}
+          {relLabel === "Friends" && <span><UserCheck size={13} /> Friends on the Social Media Prototype</span>}
         </p>
         {!isMe && (
           <div className="profile-buttons">
@@ -332,7 +332,7 @@ export function SearchPage({ route }) {
       <div className="page-head search-head">
         <button className="icon-button" onClick={nav.back} aria-label="Back"><ChevronLeft size={24} /></button>
         <label className="search-field grow"><Search size={16} />
-          <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search Connect" aria-label="Search Connect"
+          <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search Social Media Prototype" aria-label="Search Social Media Prototype"
             onKeyDown={(e) => e.key === "Enter" && log("search", { q })} onBlur={() => q && log("search", { q })} />
         </label>
       </div>

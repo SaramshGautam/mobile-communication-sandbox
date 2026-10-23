@@ -179,8 +179,8 @@ export function StoryCreator({ onClose }) {
         <Sheet title="Story audience" onClose={() => setSheet(null)}>
           <p className="sheet-note">Who can see your story?</p>
           {[
-            { id: "public", icon: Globe, label: "Public", sub: "Anyone on or off Connect" },
-            { id: "friends", icon: Users, label: "Friends", sub: "Your friends on Connect" },
+            { id: "public", icon: Globe, label: "Public", sub: "Anyone on or off the Social Media Prototype" },
+            { id: "friends", icon: Users, label: "Friends", sub: "Your friends on the Social Media Prototype" },
             { id: "custom", icon: Settings2, label: "Custom", sub: custom.length ? custom.map((x) => person(world, x).firstName).join(", ") : "Choose specific friends" },
           ].map(({ id, icon: Icon, label: l, sub }) => (
             <button key={id} className="radio-row" role="radio" aria-checked={audience === id} onClick={() => {

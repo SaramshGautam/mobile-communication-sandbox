@@ -149,7 +149,7 @@ function GroupShare({ postId, personId, onDone, onBack }) {
       <div className="share-audience"><GroupIcon group={g} size={34} /><span><strong>{g.name}</strong><small>{g.privacy === "Public group" ? <><Globe size={11} /> Anyone can see this</> : <><Lock size={11} /> Only members will see this</>}</small></span></div>
       <textarea className="sheet-textarea" value={text} onChange={(e) => setText(e.target.value)} placeholder="Say something about this…" aria-label="Say something about this" />
       {p && <div className="share-preview"><strong>{person(world, p.author).name}</strong><span>{p.text}</span></div>}
-      {prof && <div className="share-preview"><strong>{prof.name}</strong><span>{prof.bio} · Profile on Connect</span></div>}
+      {prof && <div className="share-preview"><strong>{prof.name}</strong><span>{prof.bio} · Profile on the Social Media Prototype</span></div>}
     </div>
   );
 }
@@ -369,7 +369,7 @@ export function PostComposer({ groupId, editPostId, onClose }) {
       {audSheet && (
         <Sheet title="Post audience" onClose={() => setAudSheet(false)}>
           <p className="sheet-note">Who can see your post?</p>
-          {[{ id: "public", icon: Globe, label: "Public", sub: "Anyone on or off Connect" }, { id: "friends", icon: Users, label: "Friends", sub: "Your friends on Connect" }].map(({ id, icon: Icon, label, sub }) => (
+          {[{ id: "public", icon: Globe, label: "Public", sub: "Anyone on or off the Social Media Prototype" }, { id: "friends", icon: Users, label: "Friends", sub: "Your friends on the Social Media Prototype" }].map(({ id, icon: Icon, label, sub }) => (
             <button key={id} className="radio-row" role="radio" aria-checked={audience === id} onClick={() => { setAudience(id); log("audience_set", { audience: id }); setAudSheet(false); }}>
               <span className="sheet-item-icon"><Icon size={20} /></span><span><strong>{label}</strong><small>{sub}</small></span>
               <span className={audience === id ? "radio on" : "radio"} />

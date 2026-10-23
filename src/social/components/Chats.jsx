@@ -127,8 +127,8 @@ function LinkPreview({ url }) {
   let icon, title, sub;
   if (r.type === "pdf") { const d = world.documents[r.docId]; icon = <FileText size={20} />; title = d.filename; sub = `PDF · ${new URL(url).hostname}`; }
   if (r.type === "map") { const p = world.places[r.placeId]; icon = <MapPin size={20} />; title = p.name; sub = `${p.address} · Maps`; }
-  if (r.type === "profile") { const p = person(world, r.personId); icon = <User size={20} />; title = p.name; sub = "Connect profile"; }
-  if (r.type === "post") { const p = world.posts[r.postId]; icon = <ExternalLink size={20} />; title = `${person(world, p.author).name}’s post`; sub = "connect.example"; }
+  if (r.type === "profile") { const p = person(world, r.personId); icon = <User size={20} />; title = p.name; sub = "Social Media Prototype profile"; }
+  if (r.type === "post") { const p = world.posts[r.postId]; icon = <ExternalLink size={20} />; title = `${person(world, p.author).name}’s post`; sub = "socialmedia-prototype.example"; }
   return (
     <button className="msg-link-preview" onClick={(e) => { e.stopPropagation(); log("chat_link_opened", { url }); nav.openUrl(url); }}>
       <span className={`link-icon ${r.type}`}>{icon}</span><span className="link-copy"><strong>{title}</strong><small>{sub}</small></span>
@@ -159,7 +159,7 @@ function ProfileMsg({ personId }) {
   const p = person(world, personId);
   return (
     <button className="msg-post profile" onClick={(e) => { e.stopPropagation(); nav.push({ name: "profile", personId }); }}>
-      <span className="msg-post-body"><span className="msg-post-author"><PersonAvatar id={personId} size="sm" /> <strong>{p.name}</strong></span><small>View profile on Connect</small></span>
+      <span className="msg-post-body"><span className="msg-post-author"><PersonAvatar id={personId} size="sm" /> <strong>{p.name}</strong></span><small>View profile on the Social Media Prototype</small></span>
     </button>
   );
 }
@@ -460,7 +460,7 @@ export function ChatView({ route }) {
       {conv.archived && <div className="chat-banner"><Archive size={14} /> This chat is archived. Sending a message will unarchive it.</div>}
       <div className="thread" ref={scroller}>
         {conv.messages.length === 0 && (
-          <div className="chat-intro"><ConvAvatar conv={conv} size="xl" /><strong>{title}</strong><small>You’re friends on Connect</small></div>
+          <div className="chat-intro"><ConvAvatar conv={conv} size="xl" /><strong>{title}</strong><small>You’re friends on the Social Media Prototype</small></div>
         )}
         {conv.messages.filter((m) => !m.hiddenForMe).map((m) => {
           const sep = m.day !== lastDay ? <div className="day-sep" key={`d-${m.id}`}>{m.day}</div> : null;

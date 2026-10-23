@@ -12,7 +12,7 @@ export const REACTIONS = [
 export const reactionById = Object.fromEntries(REACTIONS.map((r) => [r.id, r]));
 export const MSG_REACTIONS = ["❤️", "👍", "😆", "😮", "😢", "🙏"];
 
-export const APP_ORIGIN = "https://connect.example";
+export const APP_ORIGIN = "https://socialmedia-prototype.example";
 export const postUrl = (id) => `${APP_ORIGIN}/post/${id}`;
 export const profileUrl = (id) => `${APP_ORIGIN}/profile/${id}`;
 
@@ -71,9 +71,9 @@ export function resolveUrl(w, url) {
   const clean = url.trim().replace(/[).,]+$/, "");
   for (const d of Object.values(w.documents)) if (d.url && d.url === clean) return { type: "pdf", docId: d.id, url: clean };
   for (const p of Object.values(w.places)) if (p.url === clean) return { type: "map", placeId: p.id, url: clean };
-  let m = clean.match(/^https:\/\/connect\.example\/post\/([\w-]+)/);
+  let m = clean.match(/^https:\/\/socialmedia-prototype\.example\/post\/([\w-]+)/);
   if (m && w.posts[m[1]]) return { type: "post", postId: m[1], url: clean };
-  m = clean.match(/^https:\/\/connect\.example\/profile\/([\w-]+)/);
+  m = clean.match(/^https:\/\/socialmedia-prototype\.example\/profile\/([\w-]+)/);
   if (m && w.people[m[1]]) return { type: "profile", personId: m[1], url: clean };
   return { type: "external", url: clean };
 }

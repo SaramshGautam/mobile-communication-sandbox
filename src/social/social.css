@@ -14,7 +14,7 @@
 
 /* top bar & nav */
 .social-top { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; background: var(--card); border-bottom: 1px solid var(--line); }
-.logo { font-size: 28px; font-weight: 800; color: var(--fb-blue); letter-spacing: -.04em; }
+.logo { font-size: 20px; font-weight: 800; color: var(--fb-blue); letter-spacing: -.02em; white-space: nowrap; }
 .social-top-actions { display: flex; gap: 8px; }
 .round-btn { width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--chip); display: grid; place-items: center; }
 .social-nav { flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); background: var(--card); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }

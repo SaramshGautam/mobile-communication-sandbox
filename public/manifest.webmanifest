@@ -1,6 +1,6 @@
 {
-  "name": "Connect Communication Sandbox",
-  "short_name": "Connect",
+  "name": "Social Media Prototype",
+  "short_name": "SM Prototype",
   "description": "A mobile research sandbox for digital communication tasks.",
   "start_url": "/",
   "display": "standalone",
