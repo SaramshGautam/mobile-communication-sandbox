@@ -1,4 +1,4 @@
-const CACHE = 'connect-sandbox-v1'
+const CACHE = 'sm-prototype-v1'
 const SHELL = ['/', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png']
 self.addEventListener('install', (event) => event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL))))
 self.addEventListener('activate', (event) => event.waitUntil(self.clients.claim()))
