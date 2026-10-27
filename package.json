@@ -8,15 +8,20 @@
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
     "convert:tasks": "node scripts/convertTaskBank.mjs",
-    "assets": "python3 scripts/makeAssetsV2.py"
+    "assets": "python3 scripts/makeAssetsV2.py",
+    "logs:export": "node scripts/exportLogs.mjs",
+    "emulators": "firebase emulators:start --project demo-sandbox"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
+    "firebase": "13.1.0",
+    "lucide-react": "latest",
+    "papaparse": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "lucide-react": "latest",
-    "papaparse": "latest"
+    "vite": "latest"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "firebase-admin": "14.5.0"
+  }
 }

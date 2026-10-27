@@ -9,3 +9,8 @@ npm-debug.log*
 SELF_*
 # Full-size generated originals (resized copies live in src/assets/photos/)
 assets-source/
+
+# Exported study logs (participant data) and Firebase keys
+logs-export/
+*service-account*.json
+.firebase/
