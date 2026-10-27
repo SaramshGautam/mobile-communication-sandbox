@@ -85,10 +85,30 @@ export function savedSession() {
   try { return JSON.parse(sessionStorage.getItem(KEY) ?? "null"); } catch { return null; }
 }
 export function resumeSession(saved) {
-  session = { id: saved.id, participantId: saved.participantId, practice: saved.practice };
+  session = { id: saved.id, participantId: saved.participantId, practice: saved.practice, remote: saved.remote };
   seq = saved.seq ?? 0;
-  if (remoteEnabled && !session.practice) init()?.catch(() => {});
+  if (remoteEnabled && !session.practice) createSessionDoc().catch(() => {});
   return session;
+}
+
+// Create the session document once per session (remembered in sessionStorage).
+async function createSessionDoc(extra = {}) {
+  if (!session || session.practice || session.remote) return;
+  await init();
+  const s = session;
+  setDoc(doc(db, "sessions", s.id), {
+    participantId: s.participantId,
+    researcher: extra.researcher ?? "", note: extra.note ?? "",
+    ownerUid: auth.currentUser?.uid ?? null,
+    appVersion: APP_VERSION,
+    device: deviceInfo(),
+    startedAt: serverTimestamp(),
+    startedAtClient: new Date().toISOString(),
+    endedAt: null,
+    eventCount: 0,
+  }).catch((e) => { console.error("Remote logging: could not create session", e); setStatus("error"); });
+  s.remote = true;
+  save();
 }
 
 const newId = () => `${new Date().toISOString().slice(0, 10)}_${Math.random().toString(36).slice(2, 8)}`;
@@ -102,18 +122,7 @@ export async function startSession({ participantId, researcher = "", note = "", 
   save();
   if (!remoteEnabled || practice) return session;
   try {
-    await init();
-    // Not awaited: with no connection the write waits in the offline cache and is sent later.
-    setDoc(doc(db, "sessions", session.id), {
-      participantId, researcher, note,
-      ownerUid: auth.currentUser?.uid ?? null,
-      appVersion: APP_VERSION,
-      device: deviceInfo(),
-      startedAt: serverTimestamp(),
-      startedAtClient: new Date().toISOString(),
-      endedAt: null,
-      eventCount: 0,
-    }).catch((e) => { console.error("Remote logging: could not create session", e); setStatus("error"); });
+    await createSessionDoc({ researcher, note });
   } catch (e) {
     console.error("Remote logging: could not create session", e);
     setStatus("error");
@@ -156,11 +165,13 @@ export async function flush() {
   const sid = session.id;
   try {
     await init();
+    if (!session.remote) await createSessionDoc();
+    const uid = auth.currentUser?.uid ?? null;
     const batch = writeBatch(db);
     const events = collection(db, "sessions", sid, "events");
-    for (const e of items) batch.set(doc(events, `${String(e.seq).padStart(6, "0")}_${e.id ?? ""}`.slice(0, 120)), { ...e, serverTime: serverTimestamp() });
-    batch.update(doc(db, "sessions", sid), { eventCount: seq, lastEventAt: serverTimestamp() });
+    for (const e of items) batch.set(doc(events, `${String(e.seq).padStart(6, "0")}_${e.id ?? ""}`.slice(0, 120)), { ...e, uid, serverTime: serverTimestamp() });
     await batch.commit();
+    updateDoc(doc(db, "sessions", sid), { eventCount: seq, lastEventAt: serverTimestamp() }).catch(() => {}); // counter only
     if (status !== "ok") setStatus("ok");
   } catch (e) {
     console.error("Remote logging: write failed, will retry", e);

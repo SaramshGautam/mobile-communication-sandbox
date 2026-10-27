@@ -16,7 +16,8 @@ service cloud.firestore {
 
       match /events/{eventId} {
         allow create: if request.auth != null
-          && get(/databases/$(database)/documents/sessions/$(sessionId)).data.ownerUid == request.auth.uid;
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.sessionId == sessionId;
         allow read, update, delete: if false;
       }
     }
