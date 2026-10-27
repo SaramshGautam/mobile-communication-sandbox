@@ -329,3 +329,8 @@
 @keyframes pulse { 50% { transform: scale(1.08); } }
 .wa-call-mini { position: absolute; top: 0; left: 0; right: 0; z-index: 66; border: 0; background: #1fa855; color: #fff !important; padding: 8px; font-weight: 700; display: flex; gap: 6px; justify-content: center; align-items: center; }
 .wa-list { display: grid; }
+
+/* keep long previews inside the row */
+.wa-conv-bottom small { flex: 1; min-width: 0; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wa-conv-bottom, .wa-conv-top { min-width: 0; }
+.wa-conv-top strong { min-width: 0; }
