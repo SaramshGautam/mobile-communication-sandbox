@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-02T18:24:18.742Z",
+  "generatedAt": "2026-11-02T18:30:01.208Z",
   "scenarios": [
     {
       "id": "T01-M",
       "app": "messenger",
       "number": 1,
-      "background": "Last week, a maintenance technician named Alex Turner repaired your kitchen faucet.\nHe told you to message him on this app if the problem returned. You have saved his phone number as Alex Turner.\nHe also gave you his business card. A photo of it is saved on this device.\nToday, you notice that the faucet is dripping again.\nYour neighbor David also needs a repair for today, and you already gave him Alex Turner’s number yesterday.\nNora is also one of your neighbors.",
+      "background": "Last week, a repair technician named Alex Turner fixed your kitchen faucet.\nHe said to message him on this app if it starts leaking again. His number is saved in your phone as Alex Turner.\nHe also gave you his business card. A photo of the card is on this phone.\nToday, the faucet is dripping again.\nYour neighbor David also needs a repair today. You gave him Alex’s number yesterday.\nNora is another neighbor.",
       "steps": [
         {
           "n": 1,
           "intent": "Find",
-          "goal": "You want to contact Alex about the problem. Find Alex Turner on this app.",
+          "goal": "You want to tell Alex about the problem. Find Alex Turner on this app.",
           "objective": "Locate a saved contact to initiate communication.",
           "demands": "1. Open search or the contact list.\n2. Search for Alex Turner.\n3. Select the correct contact.",
           "setup": "Start at the main chat list. Alex is a saved contact, but no previous conversation with him exists. Other contacts are included.",
@@ -21,7 +21,7 @@
         {
           "n": 2,
           "intent": "Understand",
-          "goal": "Early this morning, you messaged David to remind him that he needs to contact Alex before 10 a.m. to request a visit for today. It is 9:30 now and David hasn’t replied. Check whether he has read your reminder, and if so, at what time.",
+          "goal": "This morning, you sent David a reminder: he must contact Alex before 10 a.m. to get a visit today. It is now 9:30, and David has not replied. Check if David has read your reminder. If he has, at what time?",
           "objective": "Understand whether someone has read your message.",
           "demands": "1. Open David’s private conversation.\n2. Press and hold your reminder.\n3. Open ⋮ → Info.\n4. Report that it was read, at 7:52 a.m.",
           "setup": "Start at the main chat list. David’s conversation contains your outgoing message sent at 7:30 a.m.: “Just a reminder! If you want to request a visit from Alex today, you need to contact him before 10 a.m.” Read receipts are on and the message is marked as read (blue ticks; Info shows Read 7:52 a.m.). David has not replied.",
@@ -32,7 +32,7 @@
         {
           "n": 3,
           "intent": "Respond",
-          "goal": "Your neighbor Nora has sent you a message asking you to recommend a maintenance technician. You are busy and cannot look up the details right now, but you want to acknowledge her message. React to it with a thumbs-up (👍).",
+          "goal": "Nora sent you a message asking if you know a good repair technician. You are busy right now, but you want to show her you saw it. React to her message with a thumbs-up (👍).",
           "objective": "Acknowledge a specific message using an emoji reaction.",
           "demands": "1. Start in Nora’s conversation.\n2. Press and hold Nora’s message to open the reaction options.\n3. Choose the thumbs-up emoji.\n4. Verify that the reaction appears on her message.",
           "setup": "CONTINUE. Nora’s message: “Hi! Do you know a maintenance technician you would recommend?” No reaction is attached yet.",
@@ -43,7 +43,7 @@
         {
           "n": 4,
           "intent": "Share",
-          "goal": "Your neighbor Nora needs a maintenance technician and has asked you to recommend someone. Send her the business card of the technician who repaired your faucet.",
+          "goal": "Nora needs a repair technician. Send her the business card of the technician who fixed your faucet.",
           "objective": "Share a photo with the intended recipient.",
           "demands": "1. Start in Nora’s chat.\n2. Open the attachment options.\n3. Choose the photo from the gallery.\n4. Send the photo.",
           "setup": "CONTINUE. The gallery has two business cards with neutral names: IMG_4021.jpg (Alex Turner, Turner Home Repairs) and IMG_4022.jpg (Maria Garcia, Garcia Electric), plus other photos. The technician’s name is only in the background.",
@@ -57,12 +57,12 @@
       "id": "T02-M",
       "app": "messenger",
       "number": 2,
-      "background": "You live in Oak Court and belong to the Oak Court Notices group chat. Maya, the property manager, uses it to share building rules and announcements.\nYour neighbor Ben lives in the building but is not in the group.",
+      "background": "You live in Oak Court. You are in the Oak Court Notices group chat. Maya, the building manager, posts rules and news there.\nYour neighbor Ben lives in the building, but he is not in this group.",
       "steps": [
         {
           "n": 1,
           "intent": "Find",
-          "goal": "You want to message one of your neighbors named Helen Williams, but you do not have her phone number saved. You know she belongs to the Oak Court Notices group chat, but she has never posted anything. Find her in the group.",
+          "goal": "You want to message your neighbor Helen Williams, but you don’t have her number. She is in the Oak Court Notices group, but she has never posted. Find her in the group.",
           "objective": "Locate a person in a group’s member list.",
           "demands": "1. Open the group information.\n2. Scroll to the member list.\n3. Locate Helen Williams.",
           "setup": "TASK START in the Oak Court Notices group chat. Helen Williams is one of 10 members and has not posted.",
@@ -73,7 +73,7 @@
         {
           "n": 2,
           "intent": "Understand",
-          "goal": "Besides Oak Court Notices, the building has two other group chats: Oak Court Social for events and Oak Court Exchange for offering or requesting items. You cannot remember which of these other groups you have joined. How can you tell which groups you currently belong to?",
+          "goal": "The building has two other group chats: Oak Court Social (for events) and Oak Court Exchange (for giving away or asking for items). You don’t remember which ones you joined. Find out which of these groups you are in.",
           "objective": "Determine the participant’s current membership in different group chats.",
           "demands": "1. Open the Groups filter on the chat list.\n2. Review the groups displayed.\n3. Identify the Oak Court groups.\n4. Report which ones you belong to.",
           "setup": "CONTINUE. The chat list mixes private and group chats. The participant belongs to Oak Court Notices and Oak Court Social, but not Oak Court Exchange. Book Club and Walking Group are unrelated groups.",
@@ -84,7 +84,7 @@
         {
           "n": 3,
           "intent": "Respond",
-          "goal": "Maya has posted new rules for using the shared courtyard today. Since then, a neighbor has shared a poster about a community lunch. You want to know whether the courtyard’s closing time also applies on weekends. Reply directly to Maya’s rules message to ask your question.",
+          "goal": "Maya posted new rules for the shared courtyard today. After that, a neighbor posted a lunch poster. You want to know if the courtyard closing time also applies on weekends. Reply directly to Maya’s rules message with your question.",
           "objective": "Link a question to a specific group message.",
           "demands": "1. Locate Maya’s rules message.\n2. Select its Reply option.\n3. Type a question asking whether the closing time applies on weekends.\n4. Send the reply.",
           "setup": "CONTINUE in Oak Court Notices. Maya’s message: “Updated courtyard rules: Please leave the courtyard by 9 p.m. and take all personal belongings with you.” Below it, Lucy shares a community-lunch poster. No message answers the weekend question.",
@@ -95,7 +95,7 @@
         {
           "n": 4,
           "intent": "Share",
-          "goal": "One of your neighbors lives in the building but is not in this group chat. Forward Maya’s courtyard rules to that neighbor privately.",
+          "goal": "One of your neighbors lives in the building but is not in this group. Forward Maya’s courtyard rules to that neighbor in a private message.",
           "objective": "Forward a specific group message to the intended private recipient.",
           "demands": "1. Locate Maya’s courtyard-rules message.\n2. Select Forward.\n3. Find and select Ben.\n4. Check that only Ben is selected.\n5. Send.",
           "setup": "CONTINUE in Oak Court Notices. The neighbor is Ben Carter (named only in the background); he is a saved contact with a private chat and is not in the group.",
@@ -109,12 +109,12 @@
       "id": "T03-M",
       "app": "messenger",
       "number": 3,
-      "background": "You and several neighbors use the Maple Gardening group chat to discuss gardening and arrange activities together.\nYou are helping Emma organize a picnic.\nOliver is also in the chat and plans to attend.\nJacqueline is another neighbor who is interested in joining these activities.",
+      "background": "You and some neighbors use the Maple Gardening group chat to talk about gardening and plan activities.\nYou are helping Emma plan a picnic.\nOliver is also in the group. He plans to come.\nJacqueline is another neighbor who wants to join these activities.",
       "steps": [
         {
           "n": 1,
           "intent": "Find",
-          "goal": "Several weeks ago, Emma shared a photo of the area where a previous picnic was held. Many messages and photos have been exchanged since then, and you have not saved that photo to your device. Find that photo in the group chat.",
+          "goal": "A few weeks ago, Emma shared a photo of the place where an earlier picnic was held. Many messages and photos have been posted since then. Find that photo in the group chat.",
           "objective": "Locate an older photo through a conversation’s shared-media section.",
           "demands": "1. Open the group information.\n2. Open Media, links and docs.\n3. Browse the photos.\n4. Open the photo showing the blue gazebo.",
           "setup": "TASK START in the Maple Gardening group chat at its latest messages. Emma’s blue-gazebo photo (Sep 14, IMG_1802.jpg) is not visible without scrolling far back. Shared media has 8 photos, including Rosa’s white-gazebo photo (Sep 21) and two picnic posters.",
@@ -125,7 +125,7 @@
         {
           "n": 2,
           "intent": "Understand",
-          "goal": "You are unsure whether Jacqueline is already in the Maple Gardening group chat. Check whether she is a member.",
+          "goal": "You are not sure if Jacqueline is in the Maple Gardening group. Check if she is a member.",
           "objective": "Determine whether a specific person belongs to a group chat.",
           "demands": "1. Open the group information.\n2. Scroll to the member list.\n3. Look for Jacqueline.\n4. Report whether she is a member.",
           "setup": "CONTINUE. Jacqueline Moore is one of 8 members and has not posted in the chat.",
@@ -136,7 +136,7 @@
         {
           "n": 3,
           "intent": "Share",
-          "goal": "Emma shared a poster for this week’s community picnic, which you have saved to your phone’s photo gallery. Post the poster to your status so your contacts can see the invitation and join if they are interested.",
+          "goal": "Emma’s poster for this week’s picnic is saved in your phone’s photos. Post it to your status so your contacts can see it and join.",
           "objective": "Publish a status (story).",
           "demands": "1. Open the Updates tab.\n2. Add a status from the gallery.\n3. Select the picnic poster.\n4. Check the preview.\n5. Post it.\n6. Verify that it appears under My status.",
           "setup": "CONTINUE. The gallery contains the UPDATED picnic poster (Maple Gardens) with other photos. My status is empty.",
@@ -147,7 +147,7 @@
         {
           "n": 4,
           "intent": "Respond",
-          "goal": "Emma first shared a poster for the community picnic and sent an updated version this morning. Oliver has posted the older version in his status. Reply privately to his status to let him know there is an updated poster and ask him to post it instead.",
+          "goal": "Emma sent a poster for the picnic, then sent a new version this morning. Oliver posted the old version in his status. Reply to his status privately: tell him there is a new poster, and ask him to post it instead.",
           "objective": "Send a status (story) reply.",
           "demands": "1. Open Oliver’s status.\n2. Select the reply field.\n3. Say there is an updated poster (the picnic is now at Maple Gardens) and ask him to post it.\n4. Send the reply.",
           "setup": "CONTINUE. Oliver’s status shows the old poster with “Riverside Park”. Replies are enabled. Old poster: Maple Gardening Community Picnic, November 21, noon–3 p.m., Riverside Park. Updated poster: same, Maple Gardens, marked UPDATED LOCATION.",
@@ -161,12 +161,12 @@
       "id": "T04-M",
       "app": "messenger",
       "number": 4,
-      "background": "You belong to the Brookside Community Market group, where local residents share announcements about a monthly market. Hannah organizes the market.\nGrace is a friend.",
+      "background": "You are in the Brookside Community Market group. Neighbors share news about the monthly market there. Hannah runs the market.\nGrace is a friend.",
       "steps": [
         {
           "n": 1,
           "intent": "Find",
-          "goal": "You accidentally posted a blurry market poster to your status. Find the status you posted.",
+          "goal": "By mistake, you posted a blurry photo of the market poster to your status. Find the status you posted.",
           "objective": "Locate the deletion option for the participant’s own status.",
           "demands": "1. Open the Updates tab.\n2. Open My status.\n3. See the blurry poster.",
           "setup": "TASK START at the main chat list. My status contains the blurry poster (posted 8:40 a.m.).",
@@ -177,7 +177,7 @@
         {
           "n": 2,
           "intent": "Understand",
-          "goal": "A few hours ago, you asked in the Brookside Community Market group what time the market opens, but nobody has answered. Check whether the market organizer has read your question.",
+          "goal": "A few hours ago, you asked the Brookside Community Market group what time the market opens. No one has answered. Check if the market organizer has read your question.",
           "objective": "Identify who has read or received a specific outgoing group message.",
           "demands": "1. Locate your question about the opening time (not yesterday’s parking question).\n2. Press and hold it and open ⋮ → Info.\n3. Look for Hannah under Read by.\n4. Report that Hannah read it (7:20 a.m.).",
           "setup": "CONTINUE. Your message “Does anyone know what time the market opens?” (7:15 a.m.) has newer messages below it. Your older question “Is there parking near the market?” (yesterday) is also in the chat; Hannah has not read that one. Info shows Read by: Hannah Brooks, Mark Ellis, Kim Nguyen. Delivered to: Grace Hill, Lucy Chen, Tom Baker, +123456789.",
@@ -188,7 +188,7 @@
         {
           "n": 3,
           "intent": "Share",
-          "goal": "You are at the Brookside Community Market. Your friend Grace is coming to meet you and has asked where you are. Send your current location to Grace in your private conversation.",
+          "goal": "You are at the Brookside Community Market. Your friend Grace is coming to meet you and asked where you are. Send Grace your current location.",
           "objective": "Share the participant’s current location.",
           "demands": "1. Open Grace’s chat.\n2. Open the attachment options.\n3. Select Location.\n4. Send your current location.\n5. Verify that it appears in the chat.",
           "setup": "CONTINUE. Grace’s message: “I’d like to see you today at the market. Can you send me the location?” The simulated current location is Brookside Community Market. Both current-location and live-location options are shown.",
@@ -199,7 +199,7 @@
         {
           "n": 4,
           "intent": "Respond",
-          "goal": "A member of the market group you don’t know, shown as +123456789, keeps sending you unwanted promotional messages privately. Their number is not saved in your contacts. Block this person so you won’t receive unwanted messages from this number.",
+          "goal": "Someone in the market group you don’t know, shown as +123456789, keeps sending you ads in private messages. Their number is not saved in your phone. Block this number so they can’t message you.",
           "objective": "Prevent further private contact from a specific account.",
           "demands": "1. Open the +123456789 conversation.\n2. Open contact info or the chat menu.\n3. Select Block.\n4. Confirm.",
           "setup": "CONTINUE. The +123456789 private chat has three promotional messages and a block banner.",
@@ -213,12 +213,12 @@
       "id": "T01-S",
       "app": "social",
       "number": 1,
-      "background": "You are part of a local community group that organizes social activities and events for people in your neighborhood.\nRecently, during a conversation with another community member, Rachel Brady, you heard about a woman named Sarah Mitchell who organizes pottery classes for adults in your area.\nSarah Mitchell shares information about her classes on this app. You have never met her or seen what she looks like.\nYou are interested in joining one of her classes with your friend Linda on her birthday. Linda’s birthday is in two weeks, on November 21.",
+      "background": "You are in a local community group that plans social activities and events in your neighborhood.\nRecently, a group member named Rachel Brady told you about Sarah Mitchell. Sarah runs pottery classes for adults in your area.\nSarah shares her classes on this app. You have never met her and don’t know what she looks like.\nYou want to take one of her classes with your friend Linda on Linda’s birthday. Linda’s birthday is in two weeks, on November 21.",
       "steps": [
         {
           "n": 1,
           "intent": "Find",
-          "goal": "You want to look for Sarah Mitchell’s account on this app to learn more about her pottery classes.",
+          "goal": "You want to learn more about Sarah Mitchell’s pottery classes. Find her account on this app.",
           "objective": "Find someone’s profile on this app and identify the right account.",
           "demands": "1. Start at the home page.\n2. Go to search.\n3. Type the name.\n4. Find the correct account in the results.",
           "setup": "TASK START at the home feed. Searching “Sarah Mitchell” shows three accounts with different usernames: @Sarah_Mitchell (Pottery classes for adults in Maple), @SarahMitchell47 (runner, Chicago) and @Sarah_Mitchell2000 (nurse). Bios show in the results.",
@@ -229,7 +229,7 @@
         {
           "n": 2,
           "intent": "Understand",
-          "goal": "During your conversation, Rachel said she would send you a friend request on this app. Check whether Rachel has sent you a request.",
+          "goal": "Rachel said she would send you a friend request on this app. Check if she has sent it.",
           "objective": "Determine whether someone has sent a friend request.",
           "demands": "1. Open notifications or Friends.\n2. Open the friend requests list.\n3. Look for Rachel Brady.\n4. Report whether her request is there.",
           "setup": "CONTINUE. Pending friend requests from Rachel Brady, Kim Nguyen and Tom Baker.",
@@ -240,7 +240,7 @@
         {
           "n": 3,
           "intent": "Respond",
-          "goal": "You want to send a private message to Sarah Mitchell to ask if she has any workshop on November 21.",
+          "goal": "Send Sarah Mitchell a private message. Ask if she has a workshop on November 21.",
           "objective": "Ask Sarah Mitchell about her workshop privately.",
           "demands": "1. Open Sarah Mitchell’s profile.\n2. Tap Message.\n3. Type the question.\n4. Send.",
           "setup": "CONTINUE. Message is available on her profile. A story reply also counts.",
@@ -251,7 +251,7 @@
         {
           "n": 4,
           "intent": "Share",
-          "goal": "Sarah Mitchell has posted photos of her workshops in her stories. Send one of her stories to your friend Linda and ask if she’d like to go there for her birthday.",
+          "goal": "Sarah Mitchell has posted photos of her workshops in her story. Send one of her story photos to your friend Linda, and ask if she would like to go for her birthday.",
           "objective": "Share a story with a friend.",
           "demands": "1. Open Sarah Mitchell’s story.\n2. Tap Send.\n3. Add a message asking Linda if she wants to go.\n4. Send it to Linda.",
           "setup": "CONTINUE. Sarah has a story with three workshop photos. Linda Park is a friend.",
@@ -265,12 +265,12 @@
       "id": "T02-S",
       "app": "social",
       "number": 2,
-      "background": "You use this social media app to keep up with neighbors and local activities.\nYou have come across a post from Maple Community Center about an upcoming neighborhood lunch.\nYou are interested in attending with your neighbor Susan.",
+      "background": "You use this app to keep up with neighbors and local events.\nYou see a post from Maple Community Center about a neighborhood lunch.\nYou want to go with your neighbor Susan.",
       "steps": [
         {
           "n": 1,
           "intent": "Find",
-          "goal": "You have come across the community lunch post and want to know where the event will take place. Find the event’s location.",
+          "goal": "You see the community lunch post. Find out where the lunch will be held.",
           "objective": "Find the event location in the caption.",
           "demands": "1. Start at the post on the home feed.\n2. Read the text in the photo.\n3. Expand the caption (See more).\n4. Find the location.",
           "setup": "TASK START at the home feed with the post first. The photo says: “Maple Community Lunch · November 5th, noon–2 p.m. · Everyone is welcome! · See the caption for the location and more details.” The caption is collapsed: “Join us for lunch and conversation! We’ll meet in the Main Hall at Maple Community Center, 24 Oak Street. Admission is $10 per person, and lunch is included.”",
@@ -281,7 +281,7 @@
         {
           "n": 2,
           "intent": "Understand",
-          "goal": "You would like to keep up with future events at Maple Community Center, but you cannot remember whether you already follow its account. Check whether you are currently following it.",
+          "goal": "You want to hear about future events at Maple Community Center. Check if you already follow its page.",
           "objective": "Determine the participant’s current follow relationship with an account.",
           "demands": "1. Open Maple Community Center’s page.\n2. Inspect the follow button.\n3. Report whether you are following it.",
           "setup": "CONTINUE. You already follow the page; its button shows “Following”.",
@@ -292,7 +292,7 @@
         {
           "n": 3,
           "intent": "Respond",
-          "goal": "You and Susan are interested in attending, but you do not know whether vegetarian food will be available. Leave a comment asking whether there will be vegetarian options.",
+          "goal": "You and Susan want to go, but you don’t know if there will be vegetarian food. Leave a comment asking if there will be vegetarian options.",
           "objective": "Comment on the event post to ask a question.",
           "demands": "1. Open the comments on the post.\n2. Type the question.\n3. Post the comment.\n4. Check that it appears under the post.",
           "setup": "CONTINUE. Existing comments (“😍”, “Awesome!”, “See you there!”) do not answer the question.",
@@ -303,7 +303,7 @@
         {
           "n": 4,
           "intent": "Share",
-          "goal": "You want Susan to see the lunch details so you can decide whether to attend together. Send the post privately to Susan on this app and ask her if she wants to join.",
+          "goal": "You want Susan to see the lunch details. Send the post to Susan in a private message, and ask if she wants to go with you.",
           "objective": "Share a post with someone privately with a message.",
           "demands": "1. Tap Share on the post.\n2. Choose Send in Messenger.\n3. Write the question.\n4. Send to Susan only.",
           "setup": "CONTINUE. Susan Clark is a friend with an existing chat.",
@@ -317,12 +317,12 @@
       "id": "T03-S",
       "app": "social",
       "number": 3,
-      "background": "You use this social media app to keep up with friends and share everyday activities.\nYou shared a photo of the flowers in your garden as a story.\nYou would also like to publish a photo of your garden as a post on your profile. The photo is saved on this phone.",
+      "background": "You use this app to keep up with friends and share everyday moments.\nYou shared a photo of the flowers in your garden as a story.\nYou also want to share a photo of your garden as a post on your profile. The photo is saved on this phone.",
       "steps": [
         {
           "n": 1,
           "intent": "Find",
-          "goal": "You may want to delete your story later. Find the option you would use to delete your story. Do not delete it yet.",
+          "goal": "You may want to delete your story later. Find the option you would use to delete it. Don’t delete it yet.",
           "objective": "Locate the participant’s own active story and its delete option.",
           "demands": "1. Start at the home feed.\n2. Open your story.\n3. Open its options (⋯).\n4. Find Delete story.",
           "setup": "TASK START at the home feed. Your story has two photos: the garden photo and a blurry photo. Delete is in the ⋯ menu of your story.",
@@ -333,7 +333,7 @@
         {
           "n": 2,
           "intent": "Understand",
-          "goal": "You shared a photo of the flowers in your garden as a story, but you are unsure whether you accidentally included another photo as well. Check your story to see whether it contains only the garden photo.",
+          "goal": "You shared a photo of your garden flowers as a story. You think you may have added another photo by mistake. Check your story. Does it show only the garden photo?",
           "objective": "Verify what is currently published in the participant’s story.",
           "demands": "1. Open your story.\n2. Move to the next item.\n3. Report what is published.",
           "setup": "CONTINUE. Your story contains the garden photo followed by a blurry photo.",
@@ -344,7 +344,7 @@
         {
           "n": 3,
           "intent": "Respond",
-          "goal": "Your neighbor Jenna has replied to your story. Respond to her.",
+          "goal": "Your neighbor Jenna replied to your story. Reply to her.",
           "objective": "Reply to a message received as a story reply.",
           "demands": "1. Open Messages.\n2. Open Jenna’s chat.\n3. Read her reply.\n4. Type a response and send it.",
           "setup": "CONTINUE. Jenna’s chat is at the top of Messages with her story reply: “Beautiful! Send me a photo of them when they bloom.”",
@@ -355,7 +355,7 @@
         {
           "n": 4,
           "intent": "Share",
-          "goal": "Publish a photo of your garden as a post as well, with a short caption about your garden.",
+          "goal": "Also share a photo of your garden as a post, with a short caption.",
           "objective": "Publish an existing photo as a post.",
           "demands": "1. Open the post composer.\n2. Add the garden photo from the gallery.\n3. Write a caption.\n4. Post.\n5. Check your profile.",
           "setup": "CONTINUE. The gallery has the garden photo, the blurry photo and other photos.",
@@ -369,12 +369,12 @@
       "id": "T04-S",
       "app": "social",
       "number": 4,
-      "background": "You use this social media app to keep up with friends and share photos.\nDaniel organizes hikes for a local hiking group.\nThis week, you joined a hike with Daniel and your neighbors Pat and Michael.\nAfterward, you posted a photo from the hike on your profile.",
+      "background": "You use this app to keep up with friends and share photos.\nDaniel runs a local hiking group.\nThis week, you went on a hike with Daniel and your neighbors Pat and Michael.\nAfter the hike, you posted a photo of it on your profile.",
       "steps": [
         {
           "n": 1,
           "intent": "Find",
-          "goal": "Pat commented on the photo you posted from this week’s hike. Find his comment.",
+          "goal": "Pat commented on your hike photo. Find his comment.",
           "objective": "Find someone’s comment on your own post.",
           "demands": "1. Start at the home feed.\n2. Open the notification about Pat’s comment, or open your profile and the hike post.\n3. Open the comments.\n4. Read Pat’s comment.",
           "setup": "TASK START at the home feed. Pat’s comment: “Great photo! That last climb was worth it.” Reachable from notifications or your profile.",
@@ -385,7 +385,7 @@
         {
           "n": 2,
           "intent": "Understand",
-          "goal": "Earlier today, you posted a story saying, “We’re going hiking again next week! Reply if you’d like to join.” Check who has viewed your story.",
+          "goal": "Earlier today, you posted a story: “We’re going hiking again next week! Reply if you’d like to join.” Check who has seen your story.",
           "objective": "Identify who has viewed the participant’s story.",
           "demands": "1. Open your story.\n2. Open its viewer list.\n3. See who appears.",
           "setup": "CONTINUE. Your story has the hiking text; viewers: Michael, Daniel, Pat, Linda.",
@@ -396,7 +396,7 @@
         {
           "n": 3,
           "intent": "Respond",
-          "goal": "Michael shared this week’s hike in his story and asked a question about next week. Reply privately to say you enjoyed the hike, and answer his question.",
+          "goal": "Michael posted this week’s hike in his story and asked a question about next week. Reply to him privately: say you enjoyed the hike, and answer his question.",
           "objective": "Reply to someone’s story.",
           "demands": "1. Open Michael’s story.\n2. Move to the second item (his question).\n3. Type a reply: you enjoyed the hike, and Pat has two spare seats.\n4. Send.",
           "setup": "CONTINUE. Michael’s story has two items: a hike photo, then “Next week: I need a ride 🚗 Who has space?”. In step 1, Pat’s comment said he is driving next week with two spare seats; Daniel’s comment says he is driving but his car is full.",
@@ -407,7 +407,7 @@
         {
           "n": 4,
           "intent": "Share",
-          "goal": "Daniel has announced next week’s hike in a new post. You want everyone who follows you on this app to know about it. Share his announcement to your own story.",
+          "goal": "Daniel posted about next week’s hike. You want everyone who follows you to know about it. Share his post to your story.",
           "objective": "Share someone’s post to your own story.",
           "demands": "1. Open Daniel’s post.\n2. Tap Share.\n3. Choose Share to your story.\n4. Check the preview and share.",
           "setup": "CONTINUE. Daniel’s post is near the top of the home feed.",

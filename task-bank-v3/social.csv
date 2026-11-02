@@ -1,73 +1,73 @@
 Task ID,Intent Family,Background Information,Scenario,Task Goal,Task Demands,Sandbox setup and starting the state,Correct Outcome,Notes
-T-01S,Find,"You are part of a local community group that organizes social activities and events for people in your neighborhood.
-Recently, during a conversation with another community member, Rachel Brady, you heard about a woman named Sarah Mitchell who organizes pottery classes for adults in your area.
-Sarah Mitchell shares information about her classes on this app. You have never met her or seen what she looks like.
-You are interested in joining one of her classes with your friend Linda on her birthday. Linda’s birthday is in two weeks, on November 21.",You want to look for Sarah Mitchell’s account on this app to learn more about her pottery classes.,Find someone’s profile on this app and identify the right account.,"1. Start at the home page.
+T-01S,Find,"You are in a local community group that plans social activities and events in your neighborhood.
+Recently, a group member named Rachel Brady told you about Sarah Mitchell. Sarah runs pottery classes for adults in your area.
+Sarah shares her classes on this app. You have never met her and don’t know what she looks like.
+You want to take one of her classes with your friend Linda on Linda’s birthday. Linda’s birthday is in two weeks, on November 21.",You want to learn more about Sarah Mitchell’s pottery classes. Find her account on this app.,Find someone’s profile on this app and identify the right account.,"1. Start at the home page.
 2. Go to search.
 3. Type the name.
 4. Find the correct account in the results.","TASK START at the home feed. Searching “Sarah Mitchell” shows three accounts with different usernames: @Sarah_Mitchell (Pottery classes for adults in Maple), @SarahMitchell47 (runner, Chicago) and @Sarah_Mitchell2000 (nurse). Bios show in the results.",The participant opens @Sarah_Mitchell’s profile.,
-,Understand,,"During your conversation, Rachel said she would send you a friend request on this app. Check whether Rachel has sent you a request.",Determine whether someone has sent a friend request.,"1. Open notifications or Friends.
+,Understand,,Rachel said she would send you a friend request on this app. Check if she has sent it.,Determine whether someone has sent a friend request.,"1. Open notifications or Friends.
 2. Open the friend requests list.
 3. Look for Rachel Brady.
 4. Report whether her request is there.","CONTINUE. Pending friend requests from Rachel Brady, Kim Nguyen and Tom Baker.",The participant finds Rachel’s pending request and reports that she has sent one.,Changed “follow request” to “friend request” to match the Facebook-style app.
-,Respond,,You want to send a private message to Sarah Mitchell to ask if she has any workshop on November 21.,Ask Sarah Mitchell about her workshop privately.,"1. Open Sarah Mitchell’s profile.
+,Respond,,Send Sarah Mitchell a private message. Ask if she has a workshop on November 21.,Ask Sarah Mitchell about her workshop privately.,"1. Open Sarah Mitchell’s profile.
 2. Tap Message.
 3. Type the question.
 4. Send.",CONTINUE. Message is available on her profile. A story reply also counts.,The participant sends Sarah Mitchell a private message asking about a workshop on November 21.,
-,Share,,Sarah Mitchell has posted photos of her workshops in her stories. Send one of her stories to your friend Linda and ask if she’d like to go there for her birthday.,Share a story with a friend.,"1. Open Sarah Mitchell’s story.
+,Share,,"Sarah Mitchell has posted photos of her workshops in her story. Send one of her story photos to your friend Linda, and ask if she would like to go for her birthday.",Share a story with a friend.,"1. Open Sarah Mitchell’s story.
 2. Tap Send.
 3. Add a message asking Linda if she wants to go.
 4. Send it to Linda.",CONTINUE. Sarah has a story with three workshop photos. Linda Park is a friend.,Linda receives the story privately with a message.,
-T-02S,Find,"You use this social media app to keep up with neighbors and local activities.
-You have come across a post from Maple Community Center about an upcoming neighborhood lunch.
-You are interested in attending with your neighbor Susan.",You have come across the community lunch post and want to know where the event will take place. Find the event’s location.,Find the event location in the caption.,"1. Start at the post on the home feed.
+T-02S,Find,"You use this app to keep up with neighbors and local events.
+You see a post from Maple Community Center about a neighborhood lunch.
+You want to go with your neighbor Susan.",You see the community lunch post. Find out where the lunch will be held.,Find the event location in the caption.,"1. Start at the post on the home feed.
 2. Read the text in the photo.
 3. Expand the caption (See more).
 4. Find the location.","TASK START at the home feed with the post first. The photo says: “Maple Community Lunch · November 5th, noon–2 p.m. · Everyone is welcome! · See the caption for the location and more details.” The caption is collapsed: “Join us for lunch and conversation! We’ll meet in the Main Hall at Maple Community Center, 24 Oak Street. Admission is $10 per person, and lunch is included.”","The participant expands the caption and finds the Main Hall at Maple Community Center, 24 Oak Street.",
-,Understand,,"You would like to keep up with future events at Maple Community Center, but you cannot remember whether you already follow its account. Check whether you are currently following it.",Determine the participant’s current follow relationship with an account.,"1. Open Maple Community Center’s page.
+,Understand,,You want to hear about future events at Maple Community Center. Check if you already follow its page.,Determine the participant’s current follow relationship with an account.,"1. Open Maple Community Center’s page.
 2. Inspect the follow button.
 3. Report whether you are following it.",CONTINUE. You already follow the page; its button shows “Following”.,The participant correctly reports that they are following Maple Community Center.,
-,Respond,,"You and Susan are interested in attending, but you do not know whether vegetarian food will be available. Leave a comment asking whether there will be vegetarian options.",Comment on the event post to ask a question.,"1. Open the comments on the post.
+,Respond,,"You and Susan want to go, but you don’t know if there will be vegetarian food. Leave a comment asking if there will be vegetarian options.",Comment on the event post to ask a question.,"1. Open the comments on the post.
 2. Type the question.
 3. Post the comment.
 4. Check that it appears under the post.","CONTINUE. Existing comments (“😍”, “Awesome!”, “See you there!”) do not answer the question.",The participant comments asking about vegetarian options.,
-,Share,,You want Susan to see the lunch details so you can decide whether to attend together. Send the post privately to Susan on this app and ask her if she wants to join.,Share a post with someone privately with a message.,"1. Tap Share on the post.
+,Share,,"You want Susan to see the lunch details. Send the post to Susan in a private message, and ask if she wants to go with you.",Share a post with someone privately with a message.,"1. Tap Share on the post.
 2. Choose Send in Messenger.
 3. Write the question.
 4. Send to Susan only.",CONTINUE. Susan Clark is a friend with an existing chat.,Susan receives the post and the question.,
-T-03S,Find,"You use this social media app to keep up with friends and share everyday activities.
+T-03S,Find,"You use this app to keep up with friends and share everyday moments.
 You shared a photo of the flowers in your garden as a story.
-You would also like to publish a photo of your garden as a post on your profile. The photo is saved on this phone.",You may want to delete your story later. Find the option you would use to delete your story. Do not delete it yet.,Locate the participant’s own active story and its delete option.,"1. Start at the home feed.
+You also want to share a photo of your garden as a post on your profile. The photo is saved on this phone.",You may want to delete your story later. Find the option you would use to delete it. Don’t delete it yet.,Locate the participant’s own active story and its delete option.,"1. Start at the home feed.
 2. Open your story.
 3. Open its options (⋯).
 4. Find Delete story.",TASK START at the home feed. Your story has two photos: the garden photo and a blurry photo. Delete is in the ⋯ menu of your story.,The participant locates the delete option for their story.,Reworded the instruction (it was “You want to delete your story later.”).
-,Understand,,"You shared a photo of the flowers in your garden as a story, but you are unsure whether you accidentally included another photo as well. Check your story to see whether it contains only the garden photo.",Verify what is currently published in the participant’s story.,"1. Open your story.
+,Understand,,You shared a photo of your garden flowers as a story. You think you may have added another photo by mistake. Check your story. Does it show only the garden photo?,Verify what is currently published in the participant’s story.,"1. Open your story.
 2. Move to the next item.
 3. Report what is published.",CONTINUE. Your story contains the garden photo followed by a blurry photo.,The participant reports that two photos are published: the garden photo and a blurry photo.,
-,Respond,,Your neighbor Jenna has replied to your story. Respond to her.,Reply to a message received as a story reply.,"1. Open Messages.
+,Respond,,Your neighbor Jenna replied to your story. Reply to her.,Reply to a message received as a story reply.,"1. Open Messages.
 2. Open Jenna’s chat.
 3. Read her reply.
 4. Type a response and send it.",CONTINUE. Jenna’s chat is at the top of Messages with her story reply: “Beautiful! Send me a photo of them when they bloom.”,Jenna receives a response. Any wording is acceptable.,
-,Share,,"Publish a photo of your garden as a post as well, with a short caption about your garden.",Publish an existing photo as a post.,"1. Open the post composer.
+,Share,,"Also share a photo of your garden as a post, with a short caption.",Publish an existing photo as a post.,"1. Open the post composer.
 2. Add the garden photo from the gallery.
 3. Write a caption.
 4. Post.
 5. Check your profile.","CONTINUE. The gallery has the garden photo, the blurry photo and other photos.",A new post with the garden photo and a caption appears on the participant’s profile.,
-T-04S,Find,"You use this social media app to keep up with friends and share photos.
-Daniel organizes hikes for a local hiking group.
-This week, you joined a hike with Daniel and your neighbors Pat and Michael.
-Afterward, you posted a photo from the hike on your profile.",Pat commented on the photo you posted from this week’s hike. Find his comment.,Find someone’s comment on your own post.,"1. Start at the home feed.
+T-04S,Find,"You use this app to keep up with friends and share photos.
+Daniel runs a local hiking group.
+This week, you went on a hike with Daniel and your neighbors Pat and Michael.
+After the hike, you posted a photo of it on your profile.",Pat commented on your hike photo. Find his comment.,Find someone’s comment on your own post.,"1. Start at the home feed.
 2. Open the notification about Pat’s comment, or open your profile and the hike post.
 3. Open the comments.
 4. Read Pat’s comment.",TASK START at the home feed. Pat’s comment: “Great photo! That last climb was worth it.” Reachable from notifications or your profile.,The participant finds Pat’s comment under their post.,Two routes: code the shorter (notifications) and note the profile route.
-,Understand,,"Earlier today, you posted a story saying, “We’re going hiking again next week! Reply if you’d like to join.” Check who has viewed your story.",Identify who has viewed the participant’s story.,"1. Open your story.
+,Understand,,"Earlier today, you posted a story: “We’re going hiking again next week! Reply if you’d like to join.” Check who has seen your story.",Identify who has viewed the participant’s story.,"1. Open your story.
 2. Open its viewer list.
 3. See who appears.","CONTINUE. Your story has the hiking text; viewers: Michael, Daniel, Pat, Linda.",The participant opens the viewer list and reports the viewers.,
-,Respond,,"Michael shared this week’s hike in his story and asked a question about next week. Reply privately to say you enjoyed the hike, and answer his question.",Reply to someone’s story.,"1. Open Michael’s story.
+,Respond,,"Michael posted this week’s hike in his story and asked a question about next week. Reply to him privately: say you enjoyed the hike, and answer his question.",Reply to someone’s story.,"1. Open Michael’s story.
 2. Move to the second item (his question).
 3. Type a reply: you enjoyed the hike, and Pat has two spare seats.
 4. Send.","CONTINUE. Michael’s story has two items: a hike photo, then “Next week: I need a ride 🚗 Who has space?”. In step 1, Pat’s comment said he is driving next week with two spare seats; Daniel’s comment says he is driving but his car is full.",Michael receives a story reply saying the participant enjoyed the hike and that Pat has space (two spare seats). Naming Daniel is incorrect.,
-,Share,,Daniel has announced next week’s hike in a new post. You want everyone who follows you on this app to know about it. Share his announcement to your own story.,Share someone’s post to your own story.,"1. Open Daniel’s post.
+,Share,,Daniel posted about next week’s hike. You want everyone who follows you to know about it. Share his post to your story.,Share someone’s post to your own story.,"1. Open Daniel’s post.
 2. Tap Share.
 3. Choose Share to your story.
 4. Check the preview and share.",CONTINUE. Daniel’s post is near the top of the home feed.,Daniel’s post appears in the participant’s story.,
