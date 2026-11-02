@@ -63,9 +63,10 @@ Afterward, you posted a photo from the hike on your profile.",Pat commented on t
 ,Understand,,"Earlier today, you posted a story saying, “We’re going hiking again next week! Reply if you’d like to join.” Check who has viewed your story.",Identify who has viewed the participant’s story.,"1. Open your story.
 2. Open its viewer list.
 3. See who appears.","CONTINUE. Your story has the hiking text; viewers: Michael, Daniel, Pat, Linda.",The participant opens the viewer list and reports the viewers.,
-,Respond,,Michael shared a photo from this week’s hike in his story. Reply privately to say you enjoyed the hike and plan to join again next week.,Reply to someone’s story.,"1. Open Michael’s story.
-2. Type in the reply field.
-3. Send.",CONTINUE. Michael’s story shows a hike photo.,Michael receives a story reply covering both points.,
+,Respond,,Michael shared this week’s hike in his story and asked a question about next week. Reply privately to say you enjoyed the hike, and answer his question.,Reply to someone’s story.,"1. Open Michael’s story.
+2. Move to the second item (his question).
+3. Type a reply: you enjoyed the hike, and Pat has two spare seats.
+4. Send.",CONTINUE. Michael’s story has two items: a hike photo, then “Next week: I need a ride 🚗 Who has space?”. In step 1, Pat’s comment said he is driving next week with two spare seats; Daniel’s comment says he is driving but his car is full.,Michael receives a story reply saying the participant enjoyed the hike and that Pat has space (two spare seats). Naming Daniel is incorrect.,
 ,Share,,Daniel has announced next week’s hike in a new post. You want everyone who follows you on this app to know about it. Share his announcement to your own story.,Share someone’s post to your own story.,"1. Open Daniel’s post.
 2. Tap Share.
 3. Choose Share to your story.

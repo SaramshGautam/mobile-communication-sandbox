@@ -94,7 +94,8 @@ export const posts = [
     comments: [
       { id: "c_hk_dn", author: "daniel", time: "2d", text: "Thanks for coming along!", replies: [] },
       { id: "c_hk_mi", author: "michael", time: "2d", text: "Great day 🙌", replies: [] },
-      { id: "c_hk_pat", author: "pat", time: "5h", text: "Great photo! That last climb was worth it.", replies: [] },
+      { id: "c_hk_pat", author: "pat", time: "5h", text: "Great photo! That last climb was worth it. I’m driving next week and have two spare seats if anyone needs a ride.", replies: [] },
+      { id: "c_hk_dn2", author: "daniel", time: "3h", text: "I’m driving too, but my car is already full.", replies: [] },
     ] },
   { id: "my_soup", author: "me", audience: "friends", time: "October 5",
     text: "First soup of the season!", reactions: { susan: "love" }, comments: [] },
@@ -125,6 +126,7 @@ export const stories = [
   ] },
   { id: "st_michael", author: "michael", time: "2h", audience: "friends", items: [
     { id: "st_mi1", kind: "photo", src: P("mina-travel-harbor"), alt: "View from this week’s hike", text: "This week’s hike ⛰️" },
+    { id: "st_mi2", kind: "text", text: "Next week: I need a ride 🚗 Who has space?", bg: "#41658a" },
   ] },
   { id: "st_lee", author: "lee", time: "5h", audience: "friends", items: [
     { id: "st_lee_1", kind: "text", text: "Coffee and the crossword ☕", bg: "#8a5a2b" },

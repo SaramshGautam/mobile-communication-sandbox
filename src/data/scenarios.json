@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T06:27:24.693Z",
+  "generatedAt": "2026-11-02T17:32:32.896Z",
   "scenarios": [
     {
       "id": "T01-M",
@@ -396,12 +396,12 @@
         {
           "n": 3,
           "intent": "Respond",
-          "goal": "Michael shared a photo from this week’s hike in his story. Reply privately to say you enjoyed the hike and plan to join again next week.",
-          "objective": "Reply to someone’s story.",
-          "demands": "1. Open Michael’s story.\n2. Type in the reply field.\n3. Send.",
-          "setup": "CONTINUE. Michael’s story shows a hike photo.",
-          "outcome": "Michael receives a story reply covering both points.",
-          "notes": "",
+          "goal": "Michael shared this week’s hike in his story and asked a question about next week. Reply privately to say you enjoyed the hike",
+          "objective": "and answer his question.",
+          "demands": "Reply to someone’s story.",
+          "setup": "1. Open Michael’s story.\n2. Move to the second item (his question).\n3. Type a reply: you enjoyed the hike, and Pat has two spare seats.\n4. Send.",
+          "outcome": "CONTINUE. Michael’s story has two items: a hike photo",
+          "notes": "then “Next week: I need a ride 🚗 Who has space?”. In step 1",
           "sourceRow": 16
         },
         {
