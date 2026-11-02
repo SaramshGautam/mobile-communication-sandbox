@@ -272,6 +272,7 @@ export function ProfilePage({ route }) {
       <div className="profile-id">
         <PersonAvatar id={p.id} size="xl" />
         <h2>{p.name}</h2>
+        {p.username && <p className="profile-username">@{p.username}</p>}
         {p.bio && <p className="profile-bio">{p.bio}</p>}
         <p className="profile-meta">
           {p.isPage && <span>Page</span>}
@@ -342,7 +343,7 @@ export function SearchPage({ route }) {
           {res.people.length > 0 && <h3 className="section-label">People</h3>}
           {res.people.map((p) => (
             <button key={p.id} className="list-row card-row" onClick={() => { log("search_result_opened", { q, kind: "person", objectId: p.id }); nav.push({ name: "profile", personId: p.id }); }}>
-              <PersonAvatar id={p.id} /><span><strong>{p.name}</strong><small>{[p.isPage ? "Page" : p.relationship === "friend" ? "Friend" : p.followedByMe || p.relationship === "following" ? "Following" : null, p.bio].filter(Boolean).join(" · ")}</small></span>
+              <PersonAvatar id={p.id} /><span><strong>{p.name}</strong>{p.username && <small className="result-username">@{p.username}</small>}<small>{[p.isPage ? "Page" : p.relationship === "friend" ? "Friend" : p.followedByMe || p.relationship === "following" ? "Following" : null, p.bio].filter(Boolean).join(" · ")}</small></span>
             </button>
           ))}
           {res.groups.length > 0 && <h3 className="section-label">Groups</h3>}

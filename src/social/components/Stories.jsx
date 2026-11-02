@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { X, Send, MapPin, Globe, Users, Settings2, Check, ChevronRight, ChevronLeft, Eye } from "lucide-react";
-import { useSocial, PersonAvatar, Sheet } from "../ui.jsx";
+import { X, Send, MapPin, Globe, Users, Settings2, Check, ChevronRight, ChevronLeft, Eye, MoreHorizontal, Trash2 } from "lucide-react";
+import { useSocial, PersonAvatar, Sheet, SheetItem } from "../ui.jsx";
+import { SharedPostTile } from "./Sheets.jsx";
 import { person, friends, findDM, uid } from "../store.js";
 import { ME } from "../world.js";
 
@@ -8,6 +9,11 @@ const ITEM_MS = 7000;
 const STORY_REACTIONS = ["👍", "❤️", "😆", "😮", "😢", "😡"];
 
 export function StoryItem({ item }) {
+  const { world } = useSocial();
+  if (item.kind === "post") {
+    const p = world.posts[item.postId];
+    return <div className="story-item post">{p && <SharedPostTile post={p} />}</div>;
+  }
   if (item.kind === "photo")
     return (
       <div className="story-item photo">
@@ -26,8 +32,12 @@ export function StoryItem({ item }) {
 // Full-screen story viewer. Tap the right side for the next item, left for the
 // previous one. Items never expire; reopening a story replays it from the start.
 export function StoryViewer({ storyId, onClose }) {
-  const { world, dispatch, log, toast } = useSocial();
+  const { world, dispatch, log, toast, openSheet } = useSocial();
   const order = world.stories.map((s) => s.id);
+  const [menu, setMenu] = useState(false);
+  const [viewers, setViewers] = useState(false);
+  const [confirmDel, setConfirmDel] = useState(false);
+  const hold = menu || viewers || confirmDel;
   const [sid, setSid] = useState(storyId);
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -56,7 +66,7 @@ export function StoryViewer({ storyId, onClose }) {
   };
 
   useEffect(() => {
-    if (paused || !item) return;
+    if (paused || hold || !item) return;
     t0.current = Date.now();
     const t = setInterval(() => {
       const e = acc.current + Date.now() - t0.current;
@@ -64,9 +74,10 @@ export function StoryViewer({ storyId, onClose }) {
       if (e >= ITEM_MS) { clearInterval(t); go(1, "auto"); }
     }, 100);
     return () => { clearInterval(t); acc.current += Date.now() - t0.current; };
-  }, [paused, sid, i]); // eslint-disable-line
+  }, [paused, hold, sid, i]); // eslint-disable-line
+  useEffect(() => { if (story && !item && story.items.length) setI(story.items.length - 1); if (!story) onClose(); }); // eslint-disable-line
 
-  if (!story) return null;
+  if (!story || !item) return null;
   const author = person(world, story.author);
 
   const sendToAuthor = (msg, logType, extra) => {
@@ -99,6 +110,7 @@ export function StoryViewer({ storyId, onClose }) {
         <PersonAvatar id={story.author} size="sm" />
         <span><strong>{mine ? "Your story" : author.name}</strong><small>{story.time}{mine && story.audience ? ` · ${audienceLabel(world, story)}` : ""}</small></span>
         <button className="icon-button" onClick={() => setPaused((p) => !p)} aria-label={paused ? "Play" : "Pause"}>{paused ? "▶" : "❚❚"}</button>
+        {mine && <button className="icon-button" onClick={() => { setMenu(true); log("my_story_menu_opened", { storyId: sid, itemId: item.id }); }} aria-label="Story options"><MoreHorizontal size={24} /></button>}
         <button className="icon-button" onClick={() => { log("story_closed", { storyId: sid, itemId: item.id }); onClose(); }} aria-label="Close story"><X size={26} /></button>
       </div>
       <div className="story-stage">
@@ -107,15 +119,48 @@ export function StoryViewer({ storyId, onClose }) {
         <button className="story-tap next" aria-label="Next" onClick={() => go(1, "tap")}><ChevronRight size={30} /></button>
       </div>
       {mine ? (
-        <div className="story-bottom mine"><Eye size={18} /> Shared with: {audienceLabel(world, story)}</div>
+        <div className="story-bottom mine">
+          <button className="story-seen" onClick={() => { setViewers(true); log("story_viewers_opened", { storyId: sid, itemId: item.id, count: (item.viewers ?? []).length }); }} aria-label={`Seen by ${(item.viewers ?? []).length}`}>
+            <Eye size={18} /> Seen by {(item.viewers ?? []).length}
+          </button>
+          <small>Shared with: {audienceLabel(world, story)}</small>
+        </div>
       ) : (
         <div className="story-bottom">
+          <div className="story-reply-row">
           <form className="story-reply" onSubmit={submit}>
             <input value={reply} onFocus={() => setPaused(true)} onBlur={() => !reply && setPaused(false)} onChange={(e) => setReply(e.target.value)} placeholder={`Reply to ${author.firstName}…`} aria-label={`Reply to ${author.firstName}`} />
             {reply.trim() && <button type="submit" className="icon-button" aria-label="Send reply"><Send size={20} /></button>}
           </form>
+          <button className="icon-button story-send" onClick={() => { setPaused(true); log("story_send_opened", { storyId: sid, itemId: item.id, author: story.author }); openSheet({ type: "story", storyId: sid, itemId: item.id, direct: true }); }} aria-label="Send story to a friend"><Send size={22} /></button>
+          </div>
           <div className="story-reactions" aria-label="React to story">
             {STORY_REACTIONS.map((em) => <button key={em} onClick={() => react(em)} aria-label={`React ${em}`}>{em}</button>)}
+          </div>
+        </div>
+      )}
+      {menu && (
+        <Sheet onClose={() => setMenu(false)}>
+          <SheetItem icon={Trash2} label="Delete story" sub="Remove this photo from your story" onClick={() => { setMenu(false); log("my_story_delete_opened", { storyId: sid, itemId: item.id }); setConfirmDel(true); }} />
+          <SheetItem icon={Settings2} label="Edit story privacy" onClick={() => { setMenu(false); toast("Story privacy can’t be changed in this study"); }} />
+        </Sheet>
+      )}
+      {viewers && (
+        <Sheet title={`Seen by ${(item.viewers ?? []).length}`} onClose={() => setViewers(false)}>
+          {(item.viewers ?? []).map(([id, t]) => (
+            <div key={id} className="list-row"><PersonAvatar id={id} /><span><strong>{person(world, id).name}</strong><small>{t}</small></span></div>
+          ))}
+          {!(item.viewers ?? []).length && <p className="sheet-note">No one has seen this yet.</p>}
+        </Sheet>
+      )}
+      {confirmDel && (
+        <div className="dialog-backdrop" onClick={() => setConfirmDel(false)}>
+          <div className="dialog" role="alertdialog" aria-label="Delete story" onClick={(e) => e.stopPropagation()}>
+            <p><strong>Delete this story?</strong><br /><small>This photo will be removed from your story.</small></p>
+            <div className="dialog-buttons">
+              <button className="btn secondary" onClick={() => { log("my_story_delete_cancelled", { itemId: item.id }); setConfirmDel(false); }}>Cancel</button>
+              <button className="btn danger" onClick={() => { dispatch({ type: "deleteStoryItem", itemId: item.id }); log("my_story_deleted", { storyId: sid, itemId: item.id }); toast("Story deleted"); setConfirmDel(false); }}>Delete</button>
+            </div>
           </div>
         </div>
       )}

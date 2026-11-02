@@ -189,7 +189,16 @@ export function reducer(w, action) {
       return next;
     }
     case "createStory": {
-      next.stories.unshift({ id: action.id, author: ME, time: "Just now", audience: action.audience, customAudience: action.customAudience, items: action.items, mine: true });
+      const own = next.stories.find((x) => x.author === ME);
+      const items = action.items.map((it) => ({ time: "Just now", viewers: [], ...it }));
+      if (own) { own.items.push(...items); own.time = "Just now"; }
+      else next.stories.unshift({ id: action.id, author: ME, time: "Just now", audience: action.audience, customAudience: action.customAudience, items, mine: true });
+      return next;
+    }
+    case "deleteStoryItem": {
+      const own = next.stories.find((x) => x.author === ME);
+      if (own) own.items = own.items.filter((it) => it.id !== action.itemId);
+      next.stories = next.stories.filter((x) => x.author !== ME || x.items.length);
       return next;
     }
     case "send": {

@@ -25,7 +25,7 @@ function preview(world, conv) {
   const last = visible[visible.length - 1];
   if (!last) return "";
   const who = last.from === ME ? "You: " : conv.kind === "group" ? `${person(world, last.from).firstName}: ` : "";
-  const body = last.unsent ? (last.from === ME ? "You unsent a message" : "Unsent a message") : last.reaction && last.storyRef ? `Reacted ${last.reaction} to a story` : last.storyRef ? `Replied to a story: ${last.text}` : last.audio ? "Sent a voice message" : last.photos ? "Sent a photo" : last.sharedPostId ? "Sent a post" : last.profileId ? "Shared a profile" : last.text;
+  const body = last.unsent ? (last.from === ME ? "You unsent a message" : "Unsent a message") : last.reaction && last.storyRef ? `Reacted ${last.reaction} to a story` : last.storyRef ? (last.storyRef.shared ? "Sent a story" : `Replied to a story: ${last.text}`) : last.audio ? "Sent a voice message" : last.photos ? "Sent a photo" : last.sharedPostId ? "Sent a post" : last.profileId ? "Shared a profile" : last.text;
   return who + body;
 }
 
@@ -236,7 +236,9 @@ function StoryRef({ m }) {
   const { world } = useSocial();
   const r = m.storyRef;
   const mine = m.from === ME;
-  const label = m.reaction
+  const label = r.shared
+    ? (mine ? `You sent ${person(world, r.author).firstName}’s story` : `Sent ${person(world, r.author).firstName}’s story`)
+    : m.reaction
     ? (mine ? `You reacted to ${person(world, r.author).firstName}’s story` : "Reacted to your story")
     : (mine ? `You replied to ${person(world, r.author).firstName}’s story` : "Replied to your story");
   return (
@@ -460,7 +462,7 @@ export function ChatView({ route }) {
       {conv.archived && <div className="chat-banner"><Archive size={14} /> This chat is archived. Sending a message will unarchive it.</div>}
       <div className="thread" ref={scroller}>
         {conv.messages.length === 0 && (
-          <div className="chat-intro"><ConvAvatar conv={conv} size="xl" /><strong>{title}</strong><small>You’re friends on the Social Media Prototype</small></div>
+          <div className="chat-intro"><ConvAvatar conv={conv} size="xl" /><strong>{title}</strong><small>{conv.kind === "dm" && world.people[conv.with]?.relationship !== "friend" ? `You’re not friends with ${person(world, conv.with).firstName} on the Social Media Prototype. Your message will go to their message requests.` : "You’re friends on the Social Media Prototype"}</small></div>
         )}
         {conv.messages.filter((m) => !m.hiddenForMe).map((m) => {
           const sep = m.day !== lastDay ? <div className="day-sep" key={`d-${m.id}`}>{m.day}</div> : null;

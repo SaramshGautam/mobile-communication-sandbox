@@ -41,7 +41,7 @@ export function FriendsPage() {
                 <button className="avatar-btn" onClick={() => { log("friend_request_profile_opened", { requestId: r.id, objectId: p.id }); nav.push({ name: "profile", personId: p.id }); }}><PersonAvatar id={p.id} size="lg" /></button>
                 <div className="request-copy">
                   <button className="name-link" onClick={() => { log("friend_request_profile_opened", { requestId: r.id, objectId: p.id }); nav.push({ name: "profile", personId: p.id }); }}>{p.name}</button>
-                  <small>{p.bio}{r.mutual ? ` · ${r.mutual} mutual friend` : ""} · {r.time}</small>
+                  <small>{p.bio}{r.mutual ? ` · ${r.mutual} mutual friend${r.mutual > 1 ? "s" : ""}` : ""} · {r.time}</small>
                   <RequestButtons request={r} compact />
                 </div>
               </div>

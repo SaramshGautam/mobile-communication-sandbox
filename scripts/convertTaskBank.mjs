@@ -1,16 +1,17 @@
-// Converts the v2 task bank (one CSV per app, exported from task-bank-v2/TaskBank.xlsx)
+// Converts the v3 task bank (one CSV per app in task-bank-v3/)
 // into src/data/scenarios.json.
 //
 //   npm run convert:tasks
 //
 // Each scenario is 4 rows: the first row has the Task ID and background
-// (Find), followed by Understand, Reply and Share rows with an empty Task ID.
+// (Find), followed by three rows with an empty Task ID. "Scenario" is the text
+// shown to participants; "Task Goal" is the researcher-facing objective.
 import fs from "node:fs";
 import Papa from "papaparse";
 
 const SOURCES = [
-  { app: "messenger", suffix: "M", file: "task-bank-v2/messenger.csv" },
-  { app: "social", suffix: "S", file: "task-bank-v2/social.csv" },
+  { app: "messenger", suffix: "M", file: "task-bank-v3/messenger.csv" },
+  { app: "social", suffix: "S", file: "task-bank-v3/social.csv" },
 ];
 const OUT = process.argv[2] ?? "src/data/scenarios.json";
 const clean = (v) => String(v ?? "").replace(/\r/g, "").trim();
@@ -24,28 +25,30 @@ for (const src of SOURCES) {
   parsed.data.forEach((row, i) => {
     const rawId = clean(row["task id"]);
     if (rawId) {
-      const num = rawId.match(/T(\d+)/i)?.[1];
+      const num = rawId.match(/T-?(\d+)/i)?.[1];
       if (!num) throw new Error(`${src.file} row ${i + 2}: bad Task ID "${rawId}"`);
       current = {
         id: `T${num.padStart(2, "0")}-${src.suffix}`,
         app: src.app,
         number: Number(num),
-        background: clean(row["background & scenario"]),
+        background: clean(row["background information"] ?? row["background & scenario"]),
         steps: [],
       };
       scenarios.push(current);
     }
     if (!current) return;
-    const goal = clean(row["task goal"]);
+    const goal = clean(row["scenario"] ?? row["task goal"]);
     if (!goal) return;
     const setup = clean(row["sandbox setup and starting the state"]);
     current.steps.push({
       n: current.steps.length + 1,
       intent: clean(row["intent family"]) || ["Find", "Understand", "Reply", "Share"][current.steps.length],
       goal,
+      objective: row["scenario"] !== undefined ? clean(row["task goal"]) : "",
       demands: clean(row["task demands"]),
       setup,
       outcome: clean(row["correct outcome"]),
+      notes: clean(row["notes"]),
       sourceRow: i + 2,
     });
   });

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import {
-  Send, Users, Link2, Share2, ChevronLeft, X, Download, Image as ImageIcon, Lock, Globe, Check, Search, ChevronRight, MessageCircle, BarChart3,
+  Send, Users, Link2, Share2, ChevronLeft, X, Download, Image as ImageIcon, Lock, Globe, Check, Search, ChevronRight, MessageCircle, BarChart3, PlusCircle,
 } from "lucide-react";
 import { useSocial, Sheet, SheetItem, PersonAvatar, GroupIcon, copyText } from "../ui.jsx";
 import { person, postUrl, profileUrl, uid, findDM, convTitle } from "../store.js";
@@ -17,6 +17,11 @@ function payloadFor(world, req) {
     case "link": return { msg: { text: req.url }, label: "link", objectId: req.url };
     case "photo": return { msg: { photos: [req.photo] }, label: "photo", objectId: req.photo.id };
     case "profile": return { msg: { profileId: req.personId }, label: "profile", objectId: req.personId };
+    case "story": {
+      const st = world.stories.find((x) => x.id === req.storyId);
+      const it = st.items.find((x) => x.id === req.itemId) ?? st.items[0];
+      return { msg: { storyRef: { storyId: st.id, itemId: it.id, text: it.text, src: it.src, bg: it.bg, author: st.author, shared: true } }, label: "story", objectId: `${st.id}/${it.id}` };
+    }
     case "forward": {
       const m = world.conversations[req.convId].messages.find((x) => x.id === req.msgId);
       const { text, photos, sharedPostId, audio, profileId } = m;
@@ -75,7 +80,7 @@ export function SendList({ req, onDone, onBack }) {
     <div className="send-list">
       <div className="sheet-head">
         {onBack ? <button className="icon-button" onClick={onBack} aria-label="Back"><ChevronLeft size={20} /></button> : <span />}
-        <strong>{req.type === "forward" ? "Forward" : "Send in Messenger"}</strong>
+        <strong>{req.type === "forward" ? "Forward" : req.type === "story" ? "Send story" : "Send in Messenger"}</strong>
         <button className="icon-button" onClick={onDone} aria-label="Close"><X size={20} /></button>
       </div>
       {payload.privateGroup && (
@@ -174,6 +179,7 @@ export function ShareSheet({ req, onClose }) {
   return (
     <Sheet onClose={onClose} className="share-sheet">
       {step === "send" && <SendList req={req} onDone={onClose} onBack={req.type === "forward" || req.direct ? null : () => setStep("menu")} />}
+      {step === "story" && <StoryShare postId={req.postId} onDone={onClose} onBack={() => setStep("menu")} />}
       {step === "group" && <GroupShare postId={req.postId} personId={req.type === "profile" ? req.personId : undefined} onDone={onClose} onBack={() => setStep("menu")} />}
       {step === "menu" && (
         <>
@@ -187,6 +193,7 @@ export function ShareSheet({ req, onClose }) {
           {req.type === "post" && !privateGroup && (
             <>
               <SheetItem icon={Users} label="Share to a group" sub="Post in one of your groups" onClick={() => { setStep("group"); log("share_option", { option: "group", objectId: req.postId }); }} />
+              <SheetItem icon={PlusCircle} label="Share to your story" sub="Add this post to your story" onClick={() => { setStep("story"); log("share_option", { option: "story", objectId: req.postId }); }} />
               <SheetItem icon={Globe} label="Share now (Public)" sub="Post to your profile" onClick={() => {
                 const id = uid("post");
                 dispatch({ type: "createPost", id, sharedPostId: req.postId, text: "" });
@@ -202,6 +209,42 @@ export function ShareSheet({ req, onClose }) {
         </>
       )}
     </Sheet>
+  );
+}
+
+// Preview a post as a story item, then share it to your story.
+function StoryShare({ postId, onDone, onBack }) {
+  const { world, dispatch, log, toast } = useSocial();
+  const p = world.posts[postId];
+  const share = () => {
+    const id = uid("story");
+    dispatch({ type: "createStory", id, audience: "friends", items: [{ id: uid("si"), kind: "post", postId }] });
+    log("shared_to_story", { objectId: postId, storyId: id });
+    toast("Shared to your story");
+    onDone();
+  };
+  return (
+    <div className="send-list">
+      <div className="sheet-head">
+        <button className="icon-button" onClick={onBack} aria-label="Back"><ChevronLeft size={20} /></button>
+        <strong>Share to your story</strong>
+        <button className="icon-button" onClick={onDone} aria-label="Close"><X size={20} /></button>
+      </div>
+      <div className="story-share-preview"><SharedPostTile post={p} /></div>
+      <p className="sheet-note">Your friends will see this in your story.</p>
+      <button className="sheet-done primary" onClick={share}>Share to story</button>
+    </div>
+  );
+}
+
+export function SharedPostTile({ post }) {
+  const { world } = useSocial();
+  return (
+    <div className="shared-post-tile">
+      <span className="spt-head"><PersonAvatar id={post.author} size="sm" /><strong>{person(world, post.author).name}</strong></span>
+      {post.photos?.[0] && <img src={post.photos[0].src} alt={post.photos[0].alt} />}
+      {post.text && <p>{post.text.length > 140 ? post.text.slice(0, 140) + "…" : post.text}</p>}
+    </div>
   );
 }
 

@@ -384,6 +384,17 @@ export function PostMenu({ post, onClose }) {
 }
 
 // ---------------- Card ----------------
+function PostText({ post }) {
+  const { log } = useSocial();
+  const long = post.collapse || post.text.length > 220;
+  const [open, setOpen] = useState(!long);
+  if (open) return <p className="post-text"><RichText text={post.text} /></p>;
+  const cut = post.text.slice(0, 64).replace(/\s+\S*$/, "");
+  return (
+    <p className="post-text">{cut}… <button className="see-more" onClick={() => { setOpen(true); log("caption_expanded", { objectId: post.id }); }}>See more</button></p>
+  );
+}
+
 export default function PostCard({ post, expandComments = false, expandReplies, highlightComment, detail = false, anchor }) {
   const { world, openSheet, log } = useSocial();
   const [showComments, setShowComments] = useState(expandComments || detail || !!highlightComment);
@@ -406,7 +417,7 @@ export default function PostCard({ post, expandComments = false, expandReplies, 
   return (
     <article className="post-card" data-anchor={anchor ?? post.id}>
       <PostHeader post={post} onMenu={() => setMenu(true)} />
-      {post.text && <p className="post-text"><RichText text={post.text} /></p>}
+      {post.text && <PostText post={post} />}
       {post.event && <EventCard ev={post.event} />}
       {post.sharedPostId ? <SharedEmbed postId={post.sharedPostId} /> : <Photos post={post} />}
       {profileIdFor(post) && <ProfileCard personId={profileIdFor(post)} />}

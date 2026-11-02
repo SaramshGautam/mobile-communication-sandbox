@@ -102,30 +102,29 @@ src/
   components/TaskStrip.jsx    Instruction banner (step 1–4, researcher arrows)
   components/TaskPanel.jsx    Researcher menu: start tasks, steps, triggers, log export
   data/scenarios.json         Generated from the task bank (do not edit by hand)
-  messenger/                  WhatsApp-style app for the T01-M … T13-M tasks
+  messenger/                  WhatsApp-style app for the T01-M … T04-M tasks
     world.js                  Shared baseline data: contacts, chats, files, gallery, statuses
-    scenarios.js              Start screens, scripted triggers and call scripts
-  social/                     Facebook-style app for the T01-S … T13-S tasks
+    scenarios.js              Start screens and per-scenario state (e.g. your own status)
+  social/                     Facebook-style app for the T01-S … T04-S tasks
     world.js                  Shared baseline data: people, groups, posts, stories, events
-    scenarios.js              Start screens
-task-bank-v2/
-  TaskBank.xlsx               Source task bank (Messenger App + Social Media app sheets)
-  messenger.csv, social.csv   CSV exports of those two sheets
+    scenarios.js              Start screens and per-scenario state (e.g. your own story)
+task-bank-v3/
+  messenger.csv, social.csv   Current task bank: 4 scenarios × 4 steps per app
+task-bank-v2/                 Previous task bank (26 scenarios), kept for reference
 scripts/
-  convertTaskBank.mjs         task-bank-v2/*.csv  ->  src/data/scenarios.json
+  convertTaskBank.mjs         task-bank-v3/*.csv  ->  src/data/scenarios.json
   makeAssetsV2.py             Placeholder images (public/assets/social/*.svg)
 ```
 
 ## How tasks run
 
-- Each row group in the task bank is one **scenario** with four steps: Find → Understand → Reply → Share.
-- **Starting a task** (researcher menu, or `/?s=T05-M`) resets that app to the scenario's start state (TASK START).
-- **Moving to the next step** (small arrows in the instruction banner, or the menu) keeps the participant's screen and changes (CONTINUE). `/?s=T05-M&step=3` also works.
-- **Scripted events** (Lena's video call in T03-M, Priya's message in T07-M, Elena's location in T13-M) fire automatically after their trigger. If one does not happen, the researcher menu has a button to fire it.
+- Each row group in the task bank is one **scenario** with four steps (Find, Understand, Respond, Share). The *Scenario* column is what participants see; *Task Goal* is for researchers.
+- **Starting a task** (researcher menu, or `/?s=T03-M`) resets that app to the scenario's start state (TASK START).
+- **Moving to the next step** (small arrows in the instruction banner, or the menu) keeps the participant's screen and changes (CONTINUE). `/?s=T03-M&step=3` also works.
 - Open the researcher menu from **Settings/Menu → Study tasks**, or double-tap the step dots in the banner.
 - Every interaction is logged with the scenario ID, step and intent. Download it from the researcher menu (**Log**).
 
-After editing the task bank, export the two sheets to `task-bank-v2/messenger.csv` and `task-bank-v2/social.csv`, then run `npm run convert:tasks`.
+After editing `task-bank-v3/messenger.csv` or `task-bank-v3/social.csv`, run `npm run convert:tasks`.
 
 ## Remote logging (who is using the app, and what they do)
 
