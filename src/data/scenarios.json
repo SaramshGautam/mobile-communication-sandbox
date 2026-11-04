@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T18:30:01.208Z",
+  "generatedAt": "2026-11-04T19:34:26.585Z",
   "scenarios": [
     {
       "id": "T01-M",
@@ -114,7 +114,7 @@
         {
           "n": 1,
           "intent": "Find",
-          "goal": "A few weeks ago, Emma shared a photo of the place where an earlier picnic was held. Many messages and photos have been posted since then. Find that photo in the group chat.",
+          "goal": "Around mid-September, Emma shared a photo of the place where an earlier picnic was held. Many messages and photos have been posted since then. Find that photo in the group chat.",
           "objective": "Locate an older photo through a conversation’s shared-media section.",
           "demands": "1. Open the group information.\n2. Open Media, links and docs.\n3. Browse the photos.\n4. Open the photo showing the blue gazebo.",
           "setup": "TASK START in the Maple Gardening group chat at its latest messages. Emma’s blue-gazebo photo (Sep 14, IMG_1802.jpg) is not visible without scrolling far back. Shared media has 8 photos, including Rosa’s white-gazebo photo (Sep 21) and two picnic posters.",
@@ -251,7 +251,7 @@
         {
           "n": 4,
           "intent": "Share",
-          "goal": "Sarah Mitchell has posted photos of her workshops in her story. Send one of her story photos to your friend Linda, and ask if she would like to go for her birthday.",
+          "goal": "Sarah Mitchell has posted photos of her workshops in her story. Forward one of her story photos to your friend Linda, and ask if she would like to go for her birthday.",
           "objective": "Share a story with a friend.",
           "demands": "1. Open Sarah Mitchell’s story.\n2. Tap Send.\n3. Add a message asking Linda if she wants to go.\n4. Send it to Linda.",
           "setup": "CONTINUE. Sarah has a story with three workshop photos. Linda Park is a friend.",
@@ -396,12 +396,12 @@
         {
           "n": 3,
           "intent": "Respond",
-          "goal": "Michael posted this week’s hike in his story and asked a question about next week. Reply to him privately: say you enjoyed the hike, and answer his question.",
+          "goal": "Michael posted this week’s hike in his story and asked a question about next week. Pat’s comment on your hike photo has the answer. Reply to Michael privately: say you enjoyed the hike, and answer his question.",
           "objective": "Reply to someone’s story.",
-          "demands": "1. Open Michael’s story.\n2. Move to the second item (his question).\n3. Type a reply: you enjoyed the hike, and Pat has two spare seats.\n4. Send.",
+          "demands": "1. Open Michael’s story.\n2. Move to the second item (his question).\n3. Open your hike post and read Pat’s comment (he is driving and has two spare seats).\n4. Reply to Michael’s story: you enjoyed the hike, and Pat has two spare seats.\n5. Send.",
           "setup": "CONTINUE. Michael’s story has two items: a hike photo, then “Next week: I need a ride 🚗 Who has space?”. In step 1, Pat’s comment said he is driving next week with two spare seats; Daniel’s comment says he is driving but his car is full.",
           "outcome": "Michael receives a story reply saying the participant enjoyed the hike and that Pat has space (two spare seats). Naming Daniel is incorrect.",
-          "notes": "",
+          "notes": "Task 3 now points to Pat’s comment itself, so it no longer depends on finding the comment in task 1.",
           "sourceRow": 16
         },
         {

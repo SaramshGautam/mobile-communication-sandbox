@@ -14,7 +14,7 @@ You want to take one of her classes with your friend Linda on Linda’s birthday
 2. Tap Message.
 3. Type the question.
 4. Send.",CONTINUE. Message is available on her profile. A story reply also counts.,The participant sends Sarah Mitchell a private message asking about a workshop on November 21.,
-,Share,,"Sarah Mitchell has posted photos of her workshops in her story. Send one of her story photos to your friend Linda, and ask if she would like to go for her birthday.",Share a story with a friend.,"1. Open Sarah Mitchell’s story.
+,Share,,"Sarah Mitchell has posted photos of her workshops in her story. Forward one of her story photos to your friend Linda, and ask if she would like to go for her birthday.",Share a story with a friend.,"1. Open Sarah Mitchell’s story.
 2. Tap Send.
 3. Add a message asking Linda if she wants to go.
 4. Send it to Linda.",CONTINUE. Sarah has a story with three workshop photos. Linda Park is a friend.,Linda receives the story privately with a message.,
@@ -63,10 +63,11 @@ After the hike, you posted a photo of it on your profile.",Pat commented on your
 ,Understand,,"Earlier today, you posted a story: “We’re going hiking again next week! Reply if you’d like to join.” Check who has seen your story.",Identify who has viewed the participant’s story.,"1. Open your story.
 2. Open its viewer list.
 3. See who appears.","CONTINUE. Your story has the hiking text; viewers: Michael, Daniel, Pat, Linda.",The participant opens the viewer list and reports the viewers.,
-,Respond,,"Michael posted this week’s hike in his story and asked a question about next week. Reply to him privately: say you enjoyed the hike, and answer his question.",Reply to someone’s story.,"1. Open Michael’s story.
+,Respond,,"Michael posted this week’s hike in his story and asked a question about next week. Pat’s comment on your hike photo has the answer. Reply to Michael privately: say you enjoyed the hike, and answer his question.",Reply to someone’s story.,"1. Open Michael’s story.
 2. Move to the second item (his question).
-3. Type a reply: you enjoyed the hike, and Pat has two spare seats.
-4. Send.","CONTINUE. Michael’s story has two items: a hike photo, then “Next week: I need a ride 🚗 Who has space?”. In step 1, Pat’s comment said he is driving next week with two spare seats; Daniel’s comment says he is driving but his car is full.",Michael receives a story reply saying the participant enjoyed the hike and that Pat has space (two spare seats). Naming Daniel is incorrect.,
+3. Open your hike post and read Pat’s comment (he is driving and has two spare seats).
+4. Reply to Michael’s story: you enjoyed the hike, and Pat has two spare seats.
+5. Send.","CONTINUE. Michael’s story has two items: a hike photo, then “Next week: I need a ride 🚗 Who has space?”. In step 1, Pat’s comment said he is driving next week with two spare seats; Daniel’s comment says he is driving but his car is full.",Michael receives a story reply saying the participant enjoyed the hike and that Pat has space (two spare seats). Naming Daniel is incorrect.,"Task 3 now points to Pat’s comment itself, so it no longer depends on finding the comment in task 1."
 ,Share,,Daniel posted about next week’s hike. You want everyone who follows you to know about it. Share his post to your story.,Share someone’s post to your own story.,"1. Open Daniel’s post.
 2. Tap Share.
 3. Choose Share to your story.
