@@ -83,7 +83,7 @@ export default function App() {
       url.searchParams.delete("task");
       if (id) { url.searchParams.set("s", id); url.searchParams.set("step", String(idx + 1)); url.searchParams.delete("app"); }
       else { url.searchParams.delete("s"); url.searchParams.delete("step"); url.searchParams.set("app", app); }
-      window.history.replaceState(null, "", url);
+      window.history.replaceState(window.history.state, "", url);
     } catch { /* ignore */ }
   };
 
@@ -127,6 +127,25 @@ export default function App() {
     return () => window.removeEventListener("beforeunload", ask);
   }, [studySession]);
   useEffect(() => { if (wasReload()) logEvent("page_reloaded", { worldKept: true }); }, []); // eslint-disable-line
+
+  // Phone back gesture: never leave the page (which would show the landing screen).
+  // A spare history entry catches "back"; we step back once inside the app and
+  // put the spare entry back, so every back gesture is one step in the app.
+  const showTasksRef = useRef(showTasks);
+  showTasksRef.current = showTasks;
+  useEffect(() => {
+    const guard = () => { try { window.history.pushState({ sandboxGuard: true }, "", window.location.href); } catch { /* ignore */ } };
+    if (!window.history.state?.sandboxGuard) guard();
+    const onPop = () => {
+      guard();
+      if (!sessionRef.current) return; // landing screen: nothing to go back to
+      if (showTasksRef.current) { setShowTasks(false); return; }
+      const did = window.__appBack?.() ?? null;
+      logEvent("back_gesture", { result: did ?? "nothing_to_go_back_to" });
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []); // eslint-disable-line
 
   const goHome = () => {
     setHomeVisit((n) => n + 1);

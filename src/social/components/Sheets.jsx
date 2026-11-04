@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Send, Users, Link2, ChevronLeft, X, Download, Image as ImageIcon, Lock, Globe, Check, Search, ChevronRight, MessageCircle, BarChart3, PlusCircle,
 } from "lucide-react";
@@ -283,10 +283,15 @@ export function PhotoViewer({ photos, index, context, onClose }) {
 // ---------------- Device gallery picker ----------------
 export function GalleryPicker({ onPick, onClose, multiple = true }) {
   const { world, log } = useSocial();
+  useEffect(() => { // phone back gesture closes the picker (see App.jsx)
+    const onKey = (e) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
   const [sel, setSel] = useState([]);
   const toggle = (g) => setSel((s) => (s.includes(g.id) ? s.filter((x) => x !== g.id) : multiple ? [...s, g.id] : [g.id]));
   return (
-    <div className="fullscreen-modal" role="dialog" aria-label="Choose photos">
+    <div className="fullscreen-modal" data-esc role="dialog" aria-label="Choose photos">
       <div className="modal-head">
         <button className="icon-button" onClick={onClose} aria-label="Cancel"><X size={22} /></button>
         <strong>Photos</strong>
@@ -354,14 +359,16 @@ export function PostComposer({ groupId, editPostId, onClose }) {
   };
 
   const setOpt = (i, v) => setPoll((p) => ({ ...p, options: p.options.map((o, k) => (k === i ? v : o)) }));
+  const fit = useKeyboardFit();
 
   return (
-    <div className="fullscreen-modal" role="dialog" aria-label={editing ? "Edit post" : "Create post"}>
+    <div className={fit ? "fullscreen-modal composer-modal kb" : "fullscreen-modal composer-modal"} style={fit ?? undefined} role="dialog" aria-label={editing ? "Edit post" : "Create post"}>
       <div className="modal-head">
         <button className="icon-button" onClick={onClose} aria-label="Cancel"><X size={22} /></button>
         <strong>{editing ? "Edit post" : "Create post"}</strong>
         <button className="primary-small" disabled={!canPost} onClick={publish}>{editing ? "Save" : "Post"}</button>
       </div>
+      <div className="composer-body">
       <div className="composer-who">
         <PersonAvatar id={ME} />
         <span><strong>{person(world, ME).name}</strong>
@@ -402,6 +409,7 @@ export function PostComposer({ groupId, editPostId, onClose }) {
           </label>
         </div>
       )}
+      </div>
       {!editing && (
         <div className="composer-tools">
           <button className="composer-add" onClick={() => setPicking(true)}><ImageIcon size={22} color="#45bd62" /> Photo/video</button>
@@ -422,4 +430,24 @@ export function PostComposer({ groupId, editPostId, onClose }) {
       )}
     </div>
   );
+}
+
+// When the on-screen keyboard is open, size the composer to the visible area so
+// the Photo/video button sits just above the keyboard. (Android Chrome already
+// does this through interactive-widget=resizes-content in index.html; this covers iPhone.)
+function useKeyboardFit() {
+  const [box, setBox] = useState(null);
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => {
+      const keyboard = window.innerHeight - vv.height;
+      setBox(keyboard > 120 ? { position: "fixed", top: `${vv.offsetTop}px`, height: `${vv.height}px`, bottom: "auto" } : null);
+    };
+    update();
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    return () => { vv.removeEventListener("resize", update); vv.removeEventListener("scroll", update); };
+  }, []);
+  return box;
 }

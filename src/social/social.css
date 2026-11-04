@@ -77,7 +77,8 @@
 
 /* composer prompt & stories */
 .composer-prompt { display: flex; align-items: center; gap: 10px; background: var(--card); padding: 10px 12px; margin-bottom: 8px; }
-.composer-prompt > button:not(.icon-button) { flex: 1; text-align: left; border: 1px solid #ccd0d5; border-radius: 22px; background: transparent; padding: 10px 14px; color: var(--muted2); font-size: 15px; }
+.composer-prompt > .avatar-link { border: 0; background: transparent; padding: 0; border-radius: 50%; cursor: pointer; flex: 0 0 auto; }
+.composer-prompt > button:not(.icon-button):not(.avatar-link) { flex: 1; text-align: left; border: 1px solid #ccd0d5; border-radius: 22px; background: transparent; padding: 10px 14px; color: var(--muted2); font-size: 15px; }
 .feed .stories { margin-bottom: 8px; border: 0; }
 .feed .story .avatar { outline-color: var(--fb-blue); }
 
@@ -279,6 +280,11 @@
 .share-preview { margin: 0 16px; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: grid; gap: 4px; font-size: 14px; }
 
 .fullscreen-modal { position: absolute; inset: 0; z-index: 45; background: var(--card); display: flex; flex-direction: column; animation: up .2s ease; }
+/* Post composer: text and photos scroll; the Photo/video bar stays at the bottom, above the keyboard. */
+.composer-modal .composer-body { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.composer-modal.kb { left: 0; right: 0; width: min(100%, 520px); margin: 0 auto; z-index: 60; animation: none; }
+.composer-modal.kb .composer-text { min-height: 80px; }
+.composer-modal.kb .composer-add { padding-bottom: 12px; }
 .modal-head { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: center; }
 .modal-head strong { font-size: 17px; }
 .modal-sub { margin: 10px 14px 6px; font-weight: 700; }

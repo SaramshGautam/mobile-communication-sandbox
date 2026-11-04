@@ -20,12 +20,16 @@ export function PageHeader({ title, sub, right, onBack }) {
   );
 }
 
-function ComposerPrompt({ groupId, placeholder }) {
-  const { openComposer, log } = useSocial();
-  const open = () => { openComposer({ groupId }); log("composer_opened", { groupId: groupId ?? null }); };
+function ComposerPrompt({ groupId, placeholder, from = "feed" }) {
+  const { openComposer, log, nav } = useSocial();
+  const open = () => { openComposer({ groupId }); log("composer_opened", { groupId: groupId ?? null, from }); };
   return (
     <div className="composer-prompt">
-      <PersonAvatar id={ME} />
+      {from === "profile" ? <PersonAvatar id={ME} /> : (
+        <button className="avatar-link" aria-label="Your profile" onClick={() => { log("own_profile_opened", { from }); nav.push({ name: "profile", personId: ME }); }}>
+          <PersonAvatar id={ME} />
+        </button>
+      )}
       <button onClick={open}>{placeholder}</button>
       <button className="icon-button" aria-label="Add photo" onClick={open}><ImageIcon size={22} color="#45bd62" /></button>
     </div>
@@ -306,6 +310,7 @@ export function ProfilePage({ route }) {
           </div>
         )}
       </div>
+      {isMe && <ComposerPrompt from="profile" placeholder={`What’s on your mind, ${p.firstName}?`} />}
       <h3 className="section-label">Posts</h3>
       {posts.length === 0 && <div className="empty">No posts to show.</div>}
       {posts.map((x) => <PostCard key={x.id} post={x} />)}

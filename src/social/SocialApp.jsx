@@ -154,6 +154,29 @@ export default function SocialApp({ scenario, logEvent, openTasks, worldKey }) {
     else logEvent("start_state", { app: "social", tab: start.tab, stack: start.stack });
   }, []); // eslint-disable-line
 
+  // Phone back gesture / back button (App.jsx turns it into one in-app step back):
+  // close the top layer first, then go back one page, then back to the Home tab.
+  const backRef = useRef(null);
+  backRef.current = () => {
+    if (document.querySelector(".sheet-backdrop, [data-esc]")) {
+      window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+      return "closed_menu";
+    }
+    if (story) { setStory(null); return "closed_story"; }
+    if (storyCreator) { setStoryCreator(false); return "closed_story_creator"; }
+    if (viewer) { setViewer(null); return "closed_photo"; }
+    if (sheet) { setSheet(null); return "closed_share"; }
+    if (composer) { setComposer(null); return "closed_composer"; }
+    if (stack.length) { nav.back(); return "page_back"; }
+    if (tab !== "home") { nav.tab("home"); return "to_home_tab"; }
+    return null;
+  };
+  useEffect(() => {
+    const fn = () => backRef.current();
+    window.__appBack = fn;
+    return () => { if (window.__appBack === fn) delete window.__appBack; };
+  }, []);
+
   const ctx = {
     world,
     dispatch,
