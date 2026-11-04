@@ -7,6 +7,7 @@ import InstallPrompt from "./components/InstallPrompt.jsx";
 import SessionGate from "./components/SessionGate.jsx";
 import { logRemote, startSession, endSession, savedSession, resumeSession, getStatus, onStatus, remoteEnabled } from "./lib/remoteLog.js";
 import data from "./data/scenarios.json";
+import { keep, wasReload } from "./lib/keep.js";
 
 // URL: ?s=T01-S&step=2  (or ?app=messenger for free exploration)
 const fromUrl = () => {
@@ -24,9 +25,13 @@ export default function App() {
   const [scenarioId, setScenarioId] = useState(() => (scenarios.some((s) => s.id === init.s) ? init.s : null));
   const [stepIndex, setStepIndex] = useState(() => Math.min(3, Math.max(0, (init.step ?? 1) - 1)));
   const [freeApp, setFreeApp] = useState(init.app === "messenger" ? "messenger" : "social");
-  const [session, setSession] = useState(0);
+  // `session` names the current world; it survives a reload so the world can be restored.
+  const [session, setSession] = useState(() => keep.get("sandbox.world.n") ?? 0);
+  useEffect(() => { keep.set("sandbox.world.n", session); }, [session]);
+  const [homeVisit, setHomeVisit] = useState(0); // "Go to home screen": remount, same world
   const [showTasks, setShowTasks] = useState(false);
-  const [eventLog, setEventLog] = useState([]);
+  const [eventLog, setEventLog] = useState(() => keep.get("sandbox.eventLog") ?? []);
+  useEffect(() => { keep.set("sandbox.eventLog", eventLog); }, [eventLog]);
   const [fire, setFire] = useState(null); // researcher-fired trigger { id, n }
 
   const scenario = useMemo(() => scenarios.find((s) => s.id === scenarioId) ?? null, [scenarioId, scenarios]);
@@ -60,6 +65,8 @@ export default function App() {
     sessionRef.current = s;
     setStudySession(s);
     setEventLog([]);
+    keep.pruneWorlds("sandbox.world.social.", "");
+    setSession((n) => n + 1); // a new participant starts with a fresh world
     logEvent("session_started", { researcher: info.researcher || null, practice: !!info.practice, remoteLogging: remoteEnabled && !info.practice });
   };
   const finishSession = async () => {
@@ -111,11 +118,29 @@ export default function App() {
     syncUrl(null, 0, app);
   };
 
+  // Reloading asks first (the browser shows its own "Reload site?" box), and a
+  // reload keeps the participant's progress (lib/keep.js) and returns to the home screen.
+  useEffect(() => {
+    if (!studySession) return;
+    const ask = (e) => { e.preventDefault(); e.returnValue = ""; };
+    window.addEventListener("beforeunload", ask);
+    return () => window.removeEventListener("beforeunload", ask);
+  }, [studySession]);
+  useEffect(() => { if (wasReload()) logEvent("page_reloaded", { worldKept: true }); }, []); // eslint-disable-line
+
+  const goHome = () => {
+    setHomeVisit((n) => n + 1);
+    setShowTasks(false);
+    logEvent("sent_to_home_by_researcher", { app: appName });
+  };
+
   // Exposed for automated checks and for recovering a log if the download fails.
   useEffect(() => { window.__sandboxLog = eventLog; }, [eventLog]);
 
   const appName = scenario?.app ?? freeApp;
   const Shell = appName === "messenger" ? MessengerApp : SocialApp;
+  const worldKey = `sandbox.world.${appName}.${scenarioId ?? "free"}.${session}`;
+  useEffect(() => { keep.pruneWorlds("sandbox.world.social.", worldKey); }, [worldKey]);
 
   return (
     <div className="app-shell">
@@ -124,7 +149,8 @@ export default function App() {
       )}
       <div className="app-body">
         <Shell
-          key={`${scenarioId ?? appName}-${session}`}
+          key={`${scenarioId ?? appName}-${session}-${homeVisit}`}
+          worldKey={appName === "social" ? worldKey : undefined}
           scenario={scenario}
           step={step?.n ?? 0}
           logEvent={logEvent}
@@ -145,6 +171,7 @@ export default function App() {
             studySession={studySession}
             remoteStatus={remoteStatus}
             onEndSession={finishSession}
+            onHome={appName === "social" ? goHome : undefined}
             onClose={() => setShowTasks(false)}
           />
         )}

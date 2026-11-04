@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import {
-  Send, Users, Link2, Share2, ChevronLeft, X, Download, Image as ImageIcon, Lock, Globe, Check, Search, ChevronRight, MessageCircle, BarChart3, PlusCircle,
+  Send, Users, Link2, ChevronLeft, X, Download, Image as ImageIcon, Lock, Globe, Check, Search, ChevronRight, MessageCircle, BarChart3, PlusCircle,
 } from "lucide-react";
-import { useSocial, Sheet, SheetItem, PersonAvatar, GroupIcon, copyText } from "../ui.jsx";
+import { useSocial, Sheet, SheetItem, PersonAvatar, GroupIcon, copyText, ShareIcon } from "../ui.jsx";
 import { person, postUrl, profileUrl, uid, findDM, convTitle } from "../store.js";
 import { ME } from "../world.js";
 
@@ -274,7 +274,7 @@ export function PhotoViewer({ photos, index, context, onClose }) {
       <div className="viewer-actions">
         <button onClick={() => { dispatch({ type: "saveToGallery", photo: p }); log("photo_saved", { objectId: p.id, ...context }); toast("Saved to Photos"); }}><Download size={22} /><span>Save</span></button>
         <button onClick={() => { openSheet({ type: "photo", photo: p, direct: true }); log("photo_send_opened", { objectId: p.id, ...context }); }}><Send size={22} /><span>Send</span></button>
-        <button onClick={() => openSheet({ type: "photo", photo: p })}><Share2 size={22} /><span>More</span></button>
+        <button onClick={() => openSheet({ type: "photo", photo: p })}><ShareIcon size={22} /><span>More</span></button>
       </div>
     </div>
   );

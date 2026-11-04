@@ -170,3 +170,13 @@ export function useFlashScroll(targetId, deps = [], { flash = true, block = "cen
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [targetId, ...deps]);
 }
+
+// Facebook-style share icon: an outlined arrow curving to the right.
+// Takes the same size/strokeWidth props as the lucide icons it replaces.
+export function ShareIcon({ size = 24, strokeWidth = 2, ...rest }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...rest}>
+      <path d="M13.5 4.5 21 11.5l-7.5 7V15c-5 0-8.2 1.4-10.5 4.8.6-5.6 3.8-9.6 10.5-10.3z" />
+    </svg>
+  );
+}

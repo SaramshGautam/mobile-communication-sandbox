@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { CheckCircle2, Circle, Download, X, RotateCcw, Zap, ChevronLeft, ChevronRight, Compass, Cloud, CloudOff, LogOut } from "lucide-react";
+import { CheckCircle2, Circle, Download, X, RotateCcw, Zap, ChevronLeft, ChevronRight, Compass, Cloud, CloudOff, LogOut, Home } from "lucide-react";
 import { researcherTriggers as socialTriggers } from "../social/scenarios.js";
 import { researcherTriggers as messengerTriggers } from "../messenger/scenarios.js";
 
 // Researcher menu. Starting a scenario resets that app to the scenario's
 // TASK START state. Moving between steps keeps the participant's state.
-export default function TaskPanel({ scenarios, scenario, stepIndex, appName, onStart, onStep, onFree, onFire, eventLog, studySession, remoteStatus, onEndSession, onClose }) {
+export default function TaskPanel({ scenarios, scenario, stepIndex, appName, onStart, onStep, onFree, onFire, eventLog, studySession, remoteStatus, onEndSession, onHome, onClose }) {
   const [app, setApp] = useState(scenario?.app ?? appName ?? "messenger");
   const [open, setOpen] = useState(scenario?.id ?? null);
   const shown = scenarios.filter((s) => s.app === app);
@@ -71,6 +71,7 @@ export default function TaskPanel({ scenarios, scenario, stepIndex, appName, onS
         </div>
         <button className="secondary-button" onClick={downloadLog}><Download size={16} />Log ({eventLog.length})</button>
         <button className="secondary-button" onClick={() => onFree(app)}><Compass size={16} />Free explore</button>
+        {onHome && <button className="secondary-button" onClick={onHome} title="Back to the home screen, keeping everything the participant did"><Home size={16} />Go to home screen</button>}
       </div>
 
       <div className="task-list">

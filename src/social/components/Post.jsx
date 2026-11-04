@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  ThumbsUp, MessageCircle, Share2, MoreHorizontal, FileText, MapPin, Bookmark,
+  ThumbsUp, MessageCircle, MoreHorizontal, FileText, MapPin, Bookmark,
   BookmarkCheck, Link2, Send, Lock, ChevronRight, X, Smile, CalendarDays, Pencil, User,
 } from "lucide-react";
 import {
-  useSocial, PersonAvatar, AudienceIcon, RichText, useLongPress, Sheet, SheetItem, copyText,
-} from "../ui.jsx";
+  useSocial, PersonAvatar, AudienceIcon, RichText, useLongPress, Sheet, SheetItem, copyText, ShareIcon } from "../ui.jsx";
 import {
   REACTIONS, reactionById, person, countComments, canSee, postUrl, uid, profileUrl,
 } from "../store.js";
@@ -431,7 +430,7 @@ export default function PostCard({ post, expandComments = false, expandReplies, 
           <MessageCircle size={19} /> Comment
         </button>
         <button className="action-btn" onClick={() => { openSheet({ type: "post", postId: post.id }); log("share_opened", { objectId: post.id }); }}>
-          <Share2 size={19} /> Share
+          <ShareIcon size={19} /> Share
         </button>
       </div>
       {showComments && <Comments post={post} highlight={highlightComment} expandReplies={expandReplies} autoFocus={focusComposer} />}

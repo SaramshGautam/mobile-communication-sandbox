@@ -11,6 +11,7 @@ import { SocialContext } from "./ui.jsx";
 import "./social.css";
 import { createWorld, reducer, resolveUrl } from "./store.js";
 import { START_STATES, DEFAULT_START } from "./scenarios.js";
+import { keep } from "../lib/keep.js";
 import {
   HomeFeed,
   GroupsList,
@@ -60,14 +61,18 @@ const ROOTS = {
   menu: MenuPage,
 };
 
-export default function SocialApp({ scenario, logEvent, openTasks }) {
+export default function SocialApp({ scenario, logEvent, openTasks, worldKey }) {
   const start = START_STATES[scenario?.id] ?? DEFAULT_START;
+  // A saved world means the page was reloaded (or the researcher sent the
+  // participant home): keep every change, but start again from the home screen.
+  const [restored] = useState(() => (worldKey ? keep.get(worldKey) : null));
   const [world, dispatch] = useReducer(reducer, null, () =>
-    createWorld(start.setup)
+    restored ?? createWorld(start.setup)
   );
-  const [tab, setTab] = useState(start.tab);
+  useEffect(() => { if (worldKey) keep.set(worldKey, world); }, [world, worldKey]);
+  const [tab, setTab] = useState(restored ? "home" : start.tab);
   const [stack, setStack] = useState(() =>
-    start.stack.map((r) => ({ ...r, quiet: true }))
+    restored ? [] : start.stack.map((r) => ({ ...r, quiet: true }))
   );
   const [sheet, setSheet] = useState(null);
   const [viewer, setViewer] = useState(null);
@@ -145,11 +150,8 @@ export default function SocialApp({ scenario, logEvent, openTasks }) {
   }, [routeKey]); // eslint-disable-line
 
   useEffect(() => {
-    logEvent("start_state", {
-      app: "social",
-      tab: start.tab,
-      stack: start.stack,
-    });
+    if (restored) logEvent("world_restored", { app: "social", tab: "home" });
+    else logEvent("start_state", { app: "social", tab: start.tab, stack: start.stack });
   }, []); // eslint-disable-line
 
   const ctx = {

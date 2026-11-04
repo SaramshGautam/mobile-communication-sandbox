@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import {
-  ChevronLeft, Search, Lock, Image as ImageIcon, MessageCircle, MoreHorizontal, Link2, Share2, UserCheck,
+  ChevronLeft, Search, Lock, Image as ImageIcon, MessageCircle, MoreHorizontal, Link2, UserCheck,
   Bookmark, Users, FileText, MapPin, Navigation, Settings, ClipboardList, Bell, Star, Check, Plus, Globe, UserPlus, CalendarDays, Rss,
 } from "lucide-react";
-import { useSocial, PersonAvatar, GroupIcon, Sheet, SheetItem, copyText, useFlashScroll } from "../ui.jsx";
+import { useSocial, PersonAvatar, GroupIcon, Sheet, SheetItem, copyText, useFlashScroll, ShareIcon } from "../ui.jsx";
 import PostCard from "./Post.jsx";
 import { person, canSee, countComments, profileUrl, findDM, uid } from "../store.js";
 import { RequestButtons } from "./Extras.jsx";
@@ -247,8 +247,9 @@ export function PostDetail({ route }) {
 
 // ---------------- Profile ----------------
 export function ProfilePage({ route }) {
-  const { world, nav, log, openSheet, toast, dispatch, openStoryCreator } = useSocial();
+  const { world, nav, log, openSheet, toast, dispatch, openStoryCreator, openStory } = useSocial();
   const p = person(world, route.personId);
+  const story = world.stories.find((s) => s.author === p.id && s.items.length > 0);
   const [menu, setMenu] = useState(false);
   const isMe = p.id === ME;
   const following = p.followedByMe || p.relationship === "following";
@@ -270,7 +271,11 @@ export function ProfilePage({ route }) {
       <PageHeader title={p.name} right={<button className="icon-button" aria-label="Search" onClick={() => nav.push({ name: "search" })}><Search size={21} /></button>} />
       <div className="profile-cover" />
       <div className="profile-id">
-        <PersonAvatar id={p.id} size="xl" />
+        {story ? (
+          <button className={story.viewed ? "profile-story viewed" : "profile-story"} onClick={() => { log("profile_story_opened", { objectId: p.id, storyId: story.id }); openStory(story.id); }} aria-label={`${isMe ? "Your" : p.name + "’s"} story`}>
+            <PersonAvatar id={p.id} size="xl" />
+          </button>
+        ) : <PersonAvatar id={p.id} size="xl" />}
         <h2>{p.name}</h2>
         {p.username && <p className="profile-username">@{p.username}</p>}
         {p.bio && <p className="profile-bio">{p.bio}</p>}
@@ -306,7 +311,7 @@ export function ProfilePage({ route }) {
       {posts.map((x) => <PostCard key={x.id} post={x} />)}
       {menu && (
         <Sheet onClose={() => setMenu(false)}>
-          <SheetItem icon={Share2} label="Share profile" sub="Send in Messenger or share to a group" onClick={() => { setMenu(false); openSheet({ type: "profile", personId: p.id }); log("profile_share_opened", { objectId: p.id }); }} />
+          <SheetItem icon={ShareIcon} label="Share profile" sub="Send in Messenger or share to a group" onClick={() => { setMenu(false); openSheet({ type: "profile", personId: p.id }); log("profile_share_opened", { objectId: p.id }); }} />
           <SheetItem icon={Link2} label="Copy link to profile" onClick={async () => { await copyText(profileUrl(p.id)); log("profile_link_copied", { objectId: p.id, url: profileUrl(p.id) }); toast("Link copied"); setMenu(false); }} />
         </Sheet>
       )}
@@ -445,7 +450,7 @@ export function PdfViewer({ route }) {
       <PageHeader title={d.filename} sub={d.url ? new URL(d.url).hostname : "Shared in group"} right={d.url && (
         <>
           <button className="icon-button" aria-label="Copy link" onClick={async () => { await copyText(d.url); log("link_copied", { kind: "pdf", objectId: d.id, url: d.url }); toast("Link copied"); }}><Link2 size={20} /></button>
-          <button className="icon-button" aria-label="Share document" onClick={() => { openSheet({ type: "link", url: d.url, label: d.filename }); log("share_opened", { kind: "pdf", objectId: d.id }); }}><Share2 size={20} /></button>
+          <button className="icon-button" aria-label="Share document" onClick={() => { openSheet({ type: "link", url: d.url, label: d.filename }); log("share_opened", { kind: "pdf", objectId: d.id }); }}><ShareIcon size={20} /></button>
         </>
       )} />
       <div className="doc-pages">
@@ -474,7 +479,7 @@ export function MapViewer({ route }) {
       <div className="map-actions">
         <button className="btn primary"><Navigation size={16} /> Directions</button>
         <button className="btn secondary" onClick={async () => { await copyText(p.url); log("link_copied", { kind: "map", objectId: p.id, url: p.url }); toast("Link copied"); }}><Link2 size={16} /> Copy link</button>
-        <button className="btn secondary" onClick={() => { openSheet({ type: "link", url: p.url, label: p.name }); log("share_opened", { kind: "map", objectId: p.id }); }}><Share2 size={16} /> Share</button>
+        <button className="btn secondary" onClick={() => { openSheet({ type: "link", url: p.url, label: p.name }); log("share_opened", { kind: "map", objectId: p.id }); }}><ShareIcon size={16} /> Share</button>
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ export function StoryItem({ item }) {
 // Full-screen story viewer. Tap the right side for the next item, left for the
 // previous one. Items never expire; reopening a story replays it from the start.
 export function StoryViewer({ storyId, onClose }) {
-  const { world, dispatch, log, toast, openSheet } = useSocial();
+  const { world, dispatch, log, toast, openSheet, nav } = useSocial();
   const order = world.stories.map((s) => s.id);
   const [menu, setMenu] = useState(false);
   const [viewers, setViewers] = useState(false);
@@ -86,6 +86,12 @@ export function StoryViewer({ storyId, onClose }) {
     dispatch({ type: "send", convId: dm?.id, toPerson: dm ? undefined : story.author, newConvId: uid("conv"), messages: [{ id, storyRef: { storyId: sid, itemId: item.id, text: item.text, src: item.src, bg: item.bg, author: story.author }, ...msg }] });
     log(logType, { storyId: sid, itemId: item.id, author: story.author, msgId: id, ...extra });
   };
+  // Tapping the name or picture closes the story and opens that person's profile.
+  const openProfile = () => {
+    log("story_author_profile_opened", { storyId: sid, itemId: item.id, author: story.author });
+    onClose();
+    nav.push({ name: "profile", personId: story.author });
+  };
   const react = (emoji) => {
     sendToAuthor({ reaction: emoji }, "story_reaction_sent", { reaction: emoji });
     toast(`Reaction sent to ${author.firstName}`);
@@ -107,8 +113,10 @@ export function StoryViewer({ storyId, onClose }) {
         ))}
       </div>
       <div className="story-top">
-        <PersonAvatar id={story.author} size="sm" />
-        <span><strong>{mine ? "Your story" : author.name}</strong><small>{story.time}{mine && story.audience ? ` · ${audienceLabel(world, story)}` : ""}</small></span>
+        <button className="story-author" onClick={openProfile} aria-label={`Open ${mine ? "your" : author.name + "’s"} profile`}>
+          <PersonAvatar id={story.author} size="sm" />
+          <span><strong>{mine ? "Your story" : author.name}</strong><small>{story.time}{mine && story.audience ? ` · ${audienceLabel(world, story)}` : ""}</small></span>
+        </button>
         <button className="icon-button" onClick={() => setPaused((p) => !p)} aria-label={paused ? "Play" : "Pause"}>{paused ? "▶" : "❚❚"}</button>
         {mine && <button className="icon-button" onClick={() => { setMenu(true); log("my_story_menu_opened", { storyId: sid, itemId: item.id }); }} aria-label="Story options"><MoreHorizontal size={24} /></button>}
         <button className="icon-button" onClick={() => { log("story_closed", { storyId: sid, itemId: item.id }); onClose(); }} aria-label="Close story"><X size={26} /></button>
