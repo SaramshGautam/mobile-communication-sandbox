@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T19:34:26.585Z",
+  "generatedAt": "2026-11-05T04:11:07.748Z",
   "scenarios": [
     {
       "id": "T01-M",
@@ -369,49 +369,49 @@
       "id": "T04-S",
       "app": "social",
       "number": 4,
-      "background": "You use this app to keep up with friends and share photos.\nDaniel runs a local hiking group.\nThis week, you went on a hike with Daniel and your neighbors Pat and Michael.\nAfter the hike, you posted a photo of it on your profile.",
+      "background": "You use this social media app to keep up with friends and share photos.\nDaniel is someone in your neighborhood who organizes hikes for a local hiking group.\nThis week, you joined a hike with Daniel and your neighbors Pat and Michael.\nAfterward, you posted a photo from the hike on your profile.\nThere’s another hike planned for next week. Pat is driving and has two spare seats.",
       "steps": [
         {
           "n": 1,
           "intent": "Find",
-          "goal": "Pat commented on your hike photo. Find his comment.",
+          "goal": "Pat commented on the photo you posted from this week’s hike. Find his comment.",
           "objective": "Find someone’s comment on your own post.",
-          "demands": "1. Start at the home feed.\n2. Open the notification about Pat’s comment, or open your profile and the hike post.\n3. Open the comments.\n4. Read Pat’s comment.",
-          "setup": "TASK START at the home feed. Pat’s comment: “Great photo! That last climb was worth it.” Reachable from notifications or your profile.",
-          "outcome": "The participant finds Pat’s comment under their post.",
-          "notes": "Two routes: code the shorter (notifications) and note the profile route.",
+          "demands": "1. Start at the home page.\n2. Open your own profile and locate the photo from the hike, or open the notification about Pat’s comment.\n3. Open the post’s comments.\n4. Locate and read Pat’s comment.",
+          "setup": "Start at the home page. Pat’s comment says, “Great photo! That last climb was worth it.” The participant finds it through notifications or their profile.",
+          "outcome": "The participant finds the comment under their post.",
+          "notes": "",
           "sourceRow": 14
         },
         {
           "n": 2,
           "intent": "Understand",
-          "goal": "Earlier today, you posted a story: “We’re going hiking again next week! Reply if you’d like to join.” Check who has seen your story.",
-          "objective": "Identify who has viewed the participant’s story.",
-          "demands": "1. Open your story.\n2. Open its viewer list.\n3. See who appears.",
-          "setup": "CONTINUE. Your story has the hiking text; viewers: Michael, Daniel, Pat, Linda.",
-          "outcome": "The participant opens the viewer list and reports the viewers.",
+          "goal": "Earlier today, you posted a Story saying, “We’re going hiking again next week! Reply if you’d like to join.” Check who has viewed your Story.",
+          "objective": "Identify who has viewed the participant’s Story.",
+          "demands": "1. Start at the home page.\n2. Open your own active Story.\n3. Open its viewer list.\n4. See who appears in the list.",
+          "setup": "Start at the home page. The participant already has an active Story containing the hiking announcement, with a fixed list of viewers (Michael, Daniel, Pat, Linda). Support access to the participant’s Story from the home page or their profile.",
+          "outcome": "The participant opens the correct Story’s viewer list.",
           "notes": "",
           "sourceRow": 15
         },
         {
           "n": 3,
           "intent": "Respond",
-          "goal": "Michael posted this week’s hike in his story and asked a question about next week. Pat’s comment on your hike photo has the answer. Reply to Michael privately: say you enjoyed the hike, and answer his question.",
-          "objective": "Reply to someone’s story.",
-          "demands": "1. Open Michael’s story.\n2. Move to the second item (his question).\n3. Open your hike post and read Pat’s comment (he is driving and has two spare seats).\n4. Reply to Michael’s story: you enjoyed the hike, and Pat has two spare seats.\n5. Send.",
-          "setup": "CONTINUE. Michael’s story has two items: a hike photo, then “Next week: I need a ride 🚗 Who has space?”. In step 1, Pat’s comment said he is driving next week with two spare seats; Daniel’s comment says he is driving but his car is full.",
-          "outcome": "Michael receives a story reply saying the participant enjoyed the hike and that Pat has space (two spare seats). Naming Daniel is incorrect.",
-          "notes": "Task 3 now points to Pat’s comment itself, so it no longer depends on finding the comment in task 1.",
+          "goal": "Michael has posted two stories: 1) one from this week’s hike, and 2) a question about next week’s hike. Open them and reply to both: 1) say that you enjoyed the walk this week, and 2) answer his question.",
+          "objective": "Reply to someone’s multiple stories.",
+          "demands": "1. Start at the home page.\n2. Open Michael’s Stories.\n3. Locate the reply field on each Story.\n4. Type a message.\n5. Send the reply.\n6. Verify that the replies were sent to Michael.",
+          "setup": "Start at the home page with Michael’s Story in the story tray. Story 1: a photo of this week’s hike. Story 2: “I need a ride to next week’s hike. Does anyone have a spare seat?” The participant sends him private Story replies conveying both points (enjoyed the hike; Pat has two spare seats).",
+          "outcome": "Michael receives the participant’s replies to his stories.",
+          "notes": "",
           "sourceRow": 16
         },
         {
           "n": 4,
           "intent": "Share",
-          "goal": "Daniel posted about next week’s hike. You want everyone who follows you to know about it. Share his post to your story.",
-          "objective": "Share someone’s post to your own story.",
-          "demands": "1. Open Daniel’s post.\n2. Tap Share.\n3. Choose Share to your story.\n4. Check the preview and share.",
-          "setup": "CONTINUE. Daniel’s post is near the top of the home feed.",
-          "outcome": "Daniel’s post appears in the participant’s story.",
+          "goal": "Daniel has announced next week’s hike in a new post. You want everyone who follows you on this app to know about it. Share his announcement to your own Story.",
+          "objective": "Share someone’s post as a story on your own profile.",
+          "demands": "1. Start at the home page on Daniel’s post.\n2. Select the share option on Daniel’s announcement post.\n3. Choose “Add to your Story.”\n4. Check that the Story preview contains the correct announcement.\n5. Publish it to your Story.\n6. Verify that it appears in the participant’s own Story.",
+          "setup": "Start with Daniel’s announcement open.\nCaption: “Let’s head outdoors again next week! 🌿 Join us for a hike and some good company. We’ll meet at the main entrance to Maple Park. Bring water, comfortable walking shoes, and a friend—everyone is welcome!”\nThe participant publishes it to their own Story, linked to the original post.",
+          "outcome": "The participant shares Daniel’s post to their own Story.",
           "notes": "",
           "sourceRow": 17
         }

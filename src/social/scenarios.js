@@ -33,7 +33,7 @@ export const START_STATES = {
   } },
   "T04-S": { ...feed, setup: (w) => { // your hiking story with viewers
     addMyStory(w, [
-      { id: "st_me_hike", kind: "text", text: "We’re going hiking again next week! Reply if you’d like to join.", bg: "#2e8b57", time: "4h",
+      { id: "st_me_hike", kind: "photo", src: P("my-story-hiking-next-week"), alt: "We’re going hiking again next week! Reply if you’d like to join.", time: "4h",
         viewers: [["michael", "3h"], ["daniel", "3h"], ["pat", "2h"], ["linda", "1h"]] },
     ]);
   } },

@@ -24,8 +24,8 @@ export const people = {
   jenna: { id: "jenna", name: "Jenna Lopez", firstName: "Jenna", username: "jenna.lopez", avatar: A + "jenna-lopez.webp", bio: "Neighbor · Garden enthusiast", relationship: "friend" },
   // T04-S
   daniel: { id: "daniel", name: "Daniel Brooks", firstName: "Daniel", username: "daniel.brooks", avatar: A + "daniel-brooks.webp", bio: "Organizer, Maple Hiking Group", relationship: "friend" },
-  pat: { id: "pat", name: "Pat Williams", firstName: "Pat", username: "pat.williams", avatar: A + "omar-haddad.webp", bio: "Neighbor · Weekend hiker", relationship: "friend" },
-  michael: { id: "michael", name: "Michael Chen", firstName: "Michael", username: "michael.chen", avatar: A + "luis-ortega.webp", bio: "Neighbor", relationship: "friend" },
+  pat: { id: "pat", name: "Pat Williams", firstName: "Pat", username: "pat.williams", avatar: A + "pat-williams.webp", bio: "Neighbor · Weekend hiker", relationship: "friend" },
+  michael: { id: "michael", name: "Michael Chen", firstName: "Michael", username: "michael.chen", avatar: A + "michael-chen.webp", bio: "Neighbor", relationship: "friend" },
   // Everyday friends and pages
   grace: { id: "grace", name: "Grace Hill", firstName: "Grace", username: "grace.hill", bio: "Maple resident", relationship: "friend", avatar: A + "grace-hill.webp" },
   lee: { id: "lee", name: "Lee Johnson", firstName: "Lee", username: "lee.johnson", avatar: A + "lee-johnson.webp", bio: "Oak Street since 2009", relationship: "friend" },
@@ -72,8 +72,8 @@ export const posts = [
     ] },
   // ----- T04-S: Daniel's announcement -----
   { id: "dn_next_hike", author: "daniel", audience: "public", time: "Today · 7:30 AM", inFeed: 2,
-    text: "Next week’s hike: Saturday, November 15, 9 a.m. Meet at the Hill Trail parking lot. About 6 miles, moderate pace. Everyone is welcome — bring water and good shoes!",
-    photos: [photo("ph_dn_trail", P("map-hill-trail"), "Map of the Hill Trail route")],
+    text: "Let’s head outdoors again next week! 🌿 Join us for a hike and some good company. We’ll meet at the main entrance to Maple Park. Bring water, comfortable walking shoes, and a friend—everyone is welcome!",
+    photos: [photo("ph_dn_trail", P("daniel-next-hike"), "Hiking group poster: Join us next week. Meet at Maple Park, main entrance. Everyone welcome!")],
     reactions: { pat: "like", michael: "love" }, comments: [] },
   // ----- Everyday feed -----
   { id: "feed_lee_garden", author: "lee", audience: "friends", time: "Yesterday at 8:05 AM", inFeed: 3,
@@ -89,12 +89,12 @@ export const posts = [
   // ----- T04-S: your hike post -----
   { id: "my_hike", author: "me", audience: "friends", time: "Wednesday at 6:10 PM",
     text: "What a hike today with Daniel, Pat and Michael! 🥾",
-    photos: [photo("ph_my_hike", P("hike-overlook"), "Daniel, Pat and Michael at the top of the trail, looking over autumn hills")],
+    photos: [photo("ph_my_hike", P("hike-overlook"), "Daniel, Pat and Michael walking along a trail toward the hills")],
     reactions: { pat: "love", daniel: "like", michael: "like", linda: "like" },
     comments: [
       { id: "c_hk_dn", author: "daniel", time: "2d", text: "Thanks for coming along!", replies: [] },
       { id: "c_hk_mi", author: "michael", time: "2d", text: "Great day 🙌", replies: [] },
-      { id: "c_hk_pat", author: "pat", time: "5h", text: "Great photo! That last climb was worth it. I’m driving next week and have two spare seats if anyone needs a ride.", replies: [] },
+      { id: "c_hk_pat", author: "pat", time: "5h", text: "Great photo! That last climb was worth it.", replies: [] },
       { id: "c_hk_dn2", author: "daniel", time: "3h", text: "I’m driving too, but my car is already full.", replies: [] },
     ] },
   { id: "my_soup", author: "me", audience: "friends", time: "October 5",
@@ -128,8 +128,8 @@ export const stories = [
     { id: "st_ra1", kind: "photo", src: P("rachel-pottery-night"), alt: "Friends making pottery at a studio table", text: "Pottery night with friends 🏺" },
   ] },
   { id: "st_michael", author: "michael", time: "2h", audience: "friends", items: [
-    { id: "st_mi1", kind: "photo", src: P("hike-trail-story"), alt: "Hikers walking up a forest trail this week", text: "This week’s hike ⛰️" },
-    { id: "st_mi2", kind: "text", text: "Next week: I need a ride 🚗 Who has space?", bg: "#41658a" },
+    { id: "st_mi1", kind: "photo", src: P("hike-trail-story"), alt: "Three hikers walking along a trail this week", text: "This week’s hike ⛰️" },
+    { id: "st_mi2", kind: "photo", src: P("michael-ride-question"), alt: "I need a ride to next week’s hike. Does anyone have a spare seat?" },
   ] },
   { id: "st_lee", author: "lee", time: "5h", audience: "friends", items: [
     { id: "st_lee_1", kind: "text", text: "Coffee and the crossword ☕", bg: "#8a5a2b" },

@@ -53,22 +53,29 @@ You also want to share a photo of your garden as a post on your profile. The pho
 3. Write a caption.
 4. Post.
 5. Check your profile.","CONTINUE. The gallery has the garden photo, the blurry photo and other photos.",A new post with the garden photo and a caption appears on the participant’s profile.,
-T-04S,Find,"You use this app to keep up with friends and share photos.
-Daniel runs a local hiking group.
-This week, you went on a hike with Daniel and your neighbors Pat and Michael.
-After the hike, you posted a photo of it on your profile.",Pat commented on your hike photo. Find his comment.,Find someone’s comment on your own post.,"1. Start at the home feed.
-2. Open the notification about Pat’s comment, or open your profile and the hike post.
-3. Open the comments.
-4. Read Pat’s comment.",TASK START at the home feed. Pat’s comment: “Great photo! That last climb was worth it.” Reachable from notifications or your profile.,The participant finds Pat’s comment under their post.,Two routes: code the shorter (notifications) and note the profile route.
-,Understand,,"Earlier today, you posted a story: “We’re going hiking again next week! Reply if you’d like to join.” Check who has seen your story.",Identify who has viewed the participant’s story.,"1. Open your story.
-2. Open its viewer list.
-3. See who appears.","CONTINUE. Your story has the hiking text; viewers: Michael, Daniel, Pat, Linda.",The participant opens the viewer list and reports the viewers.,
-,Respond,,"Michael posted this week’s hike in his story and asked a question about next week. Pat’s comment on your hike photo has the answer. Reply to Michael privately: say you enjoyed the hike, and answer his question.",Reply to someone’s story.,"1. Open Michael’s story.
-2. Move to the second item (his question).
-3. Open your hike post and read Pat’s comment (he is driving and has two spare seats).
-4. Reply to Michael’s story: you enjoyed the hike, and Pat has two spare seats.
-5. Send.","CONTINUE. Michael’s story has two items: a hike photo, then “Next week: I need a ride 🚗 Who has space?”. In step 1, Pat’s comment said he is driving next week with two spare seats; Daniel’s comment says he is driving but his car is full.",Michael receives a story reply saying the participant enjoyed the hike and that Pat has space (two spare seats). Naming Daniel is incorrect.,"Task 3 now points to Pat’s comment itself, so it no longer depends on finding the comment in task 1."
-,Share,,Daniel posted about next week’s hike. You want everyone who follows you to know about it. Share his post to your story.,Share someone’s post to your own story.,"1. Open Daniel’s post.
-2. Tap Share.
-3. Choose Share to your story.
-4. Check the preview and share.",CONTINUE. Daniel’s post is near the top of the home feed.,Daniel’s post appears in the participant’s story.,
+T-04S,Find,"You use this social media app to keep up with friends and share photos.
+Daniel is someone in your neighborhood who organizes hikes for a local hiking group.
+This week, you joined a hike with Daniel and your neighbors Pat and Michael.
+Afterward, you posted a photo from the hike on your profile.
+There’s another hike planned for next week. Pat is driving and has two spare seats.",Pat commented on the photo you posted from this week’s hike. Find his comment.,Find someone’s comment on your own post.,"1. Start at the home page.
+2. Open your own profile and locate the photo from the hike, or open the notification about Pat’s comment.
+3. Open the post’s comments.
+4. Locate and read Pat’s comment.","Start at the home page. Pat’s comment says, “Great photo! That last climb was worth it.” The participant finds it through notifications or their profile.",The participant finds the comment under their post.,
+,Understand,,"Earlier today, you posted a Story saying, “We’re going hiking again next week! Reply if you’d like to join.” Check who has viewed your Story.",Identify who has viewed the participant’s Story.,"1. Start at the home page.
+2. Open your own active Story.
+3. Open its viewer list.
+4. See who appears in the list.","Start at the home page. The participant already has an active Story containing the hiking announcement, with a fixed list of viewers (Michael, Daniel, Pat, Linda). Support access to the participant’s Story from the home page or their profile.",The participant opens the correct Story’s viewer list.,
+,Respond,,"Michael has posted two stories: 1) one from this week’s hike, and 2) a question about next week’s hike. Open them and reply to both: 1) say that you enjoyed the walk this week, and 2) answer his question.",Reply to someone’s multiple stories.,"1. Start at the home page.
+2. Open Michael’s Stories.
+3. Locate the reply field on each Story.
+4. Type a message.
+5. Send the reply.
+6. Verify that the replies were sent to Michael.",Start at the home page with Michael’s Story in the story tray. Story 1: a photo of this week’s hike. Story 2: “I need a ride to next week’s hike. Does anyone have a spare seat?” The participant sends him private Story replies conveying both points (enjoyed the hike; Pat has two spare seats).,Michael receives the participant’s replies to his stories.,
+,Share,,Daniel has announced next week’s hike in a new post. You want everyone who follows you on this app to know about it. Share his announcement to your own Story.,Share someone’s post as a story on your own profile.,"1. Start at the home page on Daniel’s post.
+2. Select the share option on Daniel’s announcement post.
+3. Choose “Add to your Story.”
+4. Check that the Story preview contains the correct announcement.
+5. Publish it to your Story.
+6. Verify that it appears in the participant’s own Story.","Start with Daniel’s announcement open.
+Caption: “Let’s head outdoors again next week! 🌿 Join us for a hike and some good company. We’ll meet at the main entrance to Maple Park. Bring water, comfortable walking shoes, and a friend—everyone is welcome!”
+The participant publishes it to their own Story, linked to the original post.",The participant shares Daniel’s post to their own Story.,
