@@ -12,9 +12,9 @@ export const ME = "me";
 export const people = {
   me: { id: "me", name: "Jordan Morgan", firstName: "Jordan", username: "jordan.morgan", bio: "Gardening, good books and neighborhood walks.", relationship: "you" },
   // T01-S
-  linda: { id: "linda", name: "Linda Park", firstName: "Linda", username: "linda.park", avatar: A + "priya-shah.webp", bio: "Book lover · Maple", relationship: "friend" },
-  rachel: { id: "rachel", name: "Rachel Brady", firstName: "Rachel", username: "rachel.brady", avatar: A + "anna-morgan.webp", bio: "Maple Neighbors Social Club", relationship: "request", public: true, lives: "Lives in Maple" },
-  sarah_pottery: { id: "sarah_pottery", name: "Sarah Mitchell", firstName: "Sarah", username: "Sarah_Mitchell", bio: "Pottery classes for adults in Maple · Wheel and hand-building · Maple Arts Studio", relationship: "none", public: true, followers: "486 followers" },
+  linda: { id: "linda", name: "Linda Park", firstName: "Linda", username: "linda.park", avatar: A + "linda-park.webp", bio: "Book lover · Maple", relationship: "friend" },
+  rachel: { id: "rachel", name: "Rachel Brady", firstName: "Rachel", username: "rachel.brady", avatar: A + "rachel-brady.webp", bio: "Maple Neighbors Social Club", relationship: "request", public: true, lives: "Lives in Maple" },
+  sarah_pottery: { id: "sarah_pottery", name: "Sarah Mitchell", firstName: "Sarah", username: "Sarah_Mitchell", avatar: A + "sarah-mitchell.webp", bio: "Pottery classes for adults in Maple · Wheel and hand-building · Maple Arts Studio", relationship: "none", public: true, followers: "486 followers" },
   sarah_runner: { id: "sarah_runner", name: "Sarah Mitchell", firstName: "Sarah", username: "SarahMitchell47", bio: "Runner · Coffee lover · Chicago", relationship: "none", public: true, followers: "1.1K followers" },
   sarah_nurse: { id: "sarah_nurse", name: "Sarah Mitchell", firstName: "Sarah", username: "Sarah_Mitchell2000", bio: "Nurse · Mom of two · Riverside", relationship: "none", public: true, followers: "230 followers" },
   // T02-S
@@ -103,9 +103,9 @@ export const posts = [
   // ----- T01-S: the three Sarah Mitchell accounts -----
   { id: "sp_class", author: "sarah_pottery", audience: "public", time: "October 30",
     text: "New pottery classes for adults start in November! Beginners welcome. Saturdays at Maple Arts Studio. Message me for dates and prices.",
-    photos: [photo("ph_sp1", P("pottery-1"), "A clay pot on a pottery wheel")], reactions: { grace: "like" }, comments: [] },
+    photos: [photo("ph_sp1", P("pottery-1"), "Shaping a clay pot on a pottery wheel")], reactions: { grace: "like" }, comments: [] },
   { id: "sp_glaze", author: "sarah_pottery", audience: "public", time: "October 22",
-    text: "Glazing day! Look at these colors.", photos: [photo("ph_sp2", P("pottery-2"), "Glazed blue bowls")], reactions: {}, comments: [] },
+    text: "Glazing day! Look at these colors.", photos: [photo("ph_sp2", P("pottery-2"), "Painting glaze on cups at the studio")], reactions: {}, comments: [] },
   { id: "sr_run", author: "sarah_runner", audience: "public", time: "October 27",
     text: "Half marathon done! Thanks for all the support 🏃‍♀️", reactions: {}, comments: [] },
   { id: "sn_post", author: "sarah_nurse", audience: "public", time: "October 19",
@@ -122,7 +122,10 @@ export const stories = [
   { id: "st_sarah", author: "sarah_pottery", time: "3h", audience: "public", items: [
     { id: "st_sp1", kind: "photo", src: P("pottery-1"), alt: "Pottery wheel class", text: "Pottery wheel class 🏺" },
     { id: "st_sp2", kind: "photo", src: P("pottery-2"), alt: "Glazing bowls", text: "Glazing our bowls" },
-    { id: "st_sp3", kind: "photo", src: P("pottery-3"), alt: "Saturday hand-building class", text: "Saturday hand-building" },
+    { id: "st_sp3", kind: "photo", src: P("pottery-3"), alt: "Finished cups and bowls from class", text: "Fresh from the kiln" },
+  ] },
+  { id: "st_rachel", author: "rachel", time: "6h", audience: "public", items: [
+    { id: "st_ra1", kind: "photo", src: P("rachel-pottery-night"), alt: "Friends making pottery at a studio table", text: "Pottery night with friends 🏺" },
   ] },
   { id: "st_michael", author: "michael", time: "2h", audience: "friends", items: [
     { id: "st_mi1", kind: "photo", src: P("hike-trail-story"), alt: "Hikers walking up a forest trail this week", text: "This week’s hike ⛰️" },
