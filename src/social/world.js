@@ -21,7 +21,7 @@ export const people = {
   maple_cc: { id: "maple_cc", name: "Maple Community Center", firstName: "Maple Community Center", username: "maplecommunitycenter", isPage: true, public: true, bio: "Events and classes for Maple residents · 24 Oak Street", relationship: "following", followedByMe: true, followers: "3.2K followers" },
   susan: { id: "susan", name: "Susan Clark", firstName: "Susan", username: "susan.clark", avatar: A + "susan-clark-social.webp", bio: "Neighbor · Always cooking something", relationship: "friend" },
   // T03-S
-  jenna: { id: "jenna", name: "Jenna Lopez", firstName: "Jenna", username: "jenna.lopez", avatar: A + "maria-santos.webp", bio: "Neighbor · Garden enthusiast", relationship: "friend" },
+  jenna: { id: "jenna", name: "Jenna Lopez", firstName: "Jenna", username: "jenna.lopez", avatar: A + "jenna-lopez.webp", bio: "Neighbor · Garden enthusiast", relationship: "friend" },
   // T04-S
   daniel: { id: "daniel", name: "Daniel Brooks", firstName: "Daniel", username: "daniel.brooks", avatar: A + "daniel-brooks.webp", bio: "Organizer, Maple Hiking Group", relationship: "friend" },
   pat: { id: "pat", name: "Pat Williams", firstName: "Pat", username: "pat.williams", avatar: A + "omar-haddad.webp", bio: "Neighbor · Weekend hiker", relationship: "friend" },
@@ -161,7 +161,7 @@ export const notifications = [
 
 // ---------- Study phone photo gallery ----------
 export const gallery = [
-  { id: "g_garden", title: "Garden flowers.jpg", src: P("gallery-garden-flowers") },
+  { id: "g_garden", title: "Garden flowers.jpg", src: P("garden-post") },
   { id: "g_blurry", title: "IMG_5120.jpg", src: P("garden-blurry") },
   { id: "g_hike", title: "Hike.jpg", src: P("hike-overlook") },
   { id: "g_cake", title: "Birthday cake.jpg", src: P("gallery-noah-birthday-cake") },

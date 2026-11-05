@@ -19,13 +19,13 @@ export const START_STATES = {
   "T02-S": feed, // Maple Community Center lunch post
   "T03-S": { ...feed, setup: (w) => { // your garden story (with an accidental blurry photo) and Jenna's reply
     addMyStory(w, [
-      { id: "st_me_garden", kind: "photo", src: P("gallery-garden-flowers"), alt: "Flowers in your garden", text: "My garden this morning 🌼", time: "3h", viewers: [["jenna", "2h"], ["susan", "2h"], ["lee", "1h"]] },
+      { id: "st_me_garden", kind: "photo", src: P("garden-story"), alt: "Flowers in your garden", text: "My garden this morning 🌼", time: "3h", viewers: [["jenna", "2h"], ["susan", "2h"], ["lee", "1h"]] },
       { id: "st_me_blurry", kind: "photo", src: P("garden-blurry"), alt: "A blurry photo", time: "3h", viewers: [["susan", "2h"], ["lee", "1h"]] },
     ]);
     const c = { id: "c_jenna", kind: "dm", with: "jenna", messages: [
       { id: "je_1", from: "jenna", day: "Oct 20", time: "5:00 PM", text: "Thanks for the tomato seedlings!" },
       { id: "je_reply", from: "jenna", day: "Today", time: "9:40 AM", text: "Beautiful! Send me a photo of them when they bloom.",
-        storyRef: { storyId: "st_me", itemId: "st_me_garden", src: P("gallery-garden-flowers"), author: ME } },
+        storyRef: { storyId: "st_me", itemId: "st_me_garden", src: P("garden-story"), author: ME } },
     ] };
     w.conversations.c_jenna = c;
     w.convOrder = ["c_jenna", ...w.convOrder];
