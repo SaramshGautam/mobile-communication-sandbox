@@ -19,7 +19,7 @@ export const people = {
   sarah_nurse: { id: "sarah_nurse", name: "Sarah Mitchell", firstName: "Sarah", username: "Sarah_Mitchell2000", bio: "Nurse · Mom of two · Riverside", relationship: "none", public: true, followers: "230 followers" },
   // T02-S
   maple_cc: { id: "maple_cc", name: "Maple Community Center", firstName: "Maple Community Center", username: "maplecommunitycenter", isPage: true, public: true, bio: "Events and classes for Maple residents · 24 Oak Street", relationship: "following", followedByMe: true, followers: "3.2K followers" },
-  susan: { id: "susan", name: "Susan Clark", firstName: "Susan", username: "susan.clark", avatar: A + "susan-clark.webp", bio: "Neighbor · Always cooking something", relationship: "friend" },
+  susan: { id: "susan", name: "Susan Clark", firstName: "Susan", username: "susan.clark", avatar: A + "susan-clark-social.webp", bio: "Neighbor · Always cooking something", relationship: "friend" },
   // T03-S
   jenna: { id: "jenna", name: "Jenna Lopez", firstName: "Jenna", username: "jenna.lopez", avatar: A + "maria-santos.webp", bio: "Neighbor · Garden enthusiast", relationship: "friend" },
   // T04-S
