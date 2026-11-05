@@ -89,7 +89,7 @@ export const posts = [
   // ----- T04-S: your hike post -----
   { id: "my_hike", author: "me", audience: "friends", time: "Wednesday at 6:10 PM",
     text: "What a hike today with Daniel, Pat and Michael! 🥾",
-    photos: [photo("ph_my_hike", P("mina-travel-mountains"), "Mountain view from the top of the trail")],
+    photos: [photo("ph_my_hike", P("hike-overlook"), "Daniel, Pat and Michael at the top of the trail, looking over autumn hills")],
     reactions: { pat: "love", daniel: "like", michael: "like", linda: "like" },
     comments: [
       { id: "c_hk_dn", author: "daniel", time: "2d", text: "Thanks for coming along!", replies: [] },
@@ -125,7 +125,7 @@ export const stories = [
     { id: "st_sp3", kind: "photo", src: P("pottery-3"), alt: "Saturday hand-building class", text: "Saturday hand-building" },
   ] },
   { id: "st_michael", author: "michael", time: "2h", audience: "friends", items: [
-    { id: "st_mi1", kind: "photo", src: P("mina-travel-harbor"), alt: "View from this week’s hike", text: "This week’s hike ⛰️" },
+    { id: "st_mi1", kind: "photo", src: P("hike-trail-story"), alt: "Hikers walking up a forest trail this week", text: "This week’s hike ⛰️" },
     { id: "st_mi2", kind: "text", text: "Next week: I need a ride 🚗 Who has space?", bg: "#41658a" },
   ] },
   { id: "st_lee", author: "lee", time: "5h", audience: "friends", items: [
@@ -160,7 +160,7 @@ export const notifications = [
 export const gallery = [
   { id: "g_garden", title: "Garden flowers.jpg", src: P("gallery-garden-flowers") },
   { id: "g_blurry", title: "IMG_5120.jpg", src: P("garden-blurry") },
-  { id: "g_hike", title: "Hike.jpg", src: P("mina-travel-mountains") },
+  { id: "g_hike", title: "Hike.jpg", src: P("hike-overlook") },
   { id: "g_cake", title: "Birthday cake.jpg", src: P("gallery-noah-birthday-cake") },
   { id: "g_kettle", title: "Kettle.jpg", src: P("household-kettle") },
   { id: "g_receipt", title: "Receipt.jpg", src: P("gallery-shopping-receipt") },
